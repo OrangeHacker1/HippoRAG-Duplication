@@ -8,6 +8,7 @@ docs = [
 ]
 
 builder = KGBuilder()
-builder.build_from_docs(docs)
+#builder.build_from_docs(docs)
+builder.build(docs)
 
 print("Knowledge Graph built.")

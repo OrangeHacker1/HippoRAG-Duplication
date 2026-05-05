@@ -1,9 +1,8 @@
 # run_query.py
-from retrieval.retriever import HippoRetriever
+from retrieval.retriever import HippoRAG
 
-retriever = HippoRetriever()
+rag = HippoRAG()
 
-query = "Who developed relativity and what did it impact?"
-answer = retriever.retrieve(query)
+answer =rag.query("Who influenced physics through relativity?")
 
 print("\nANSWER:\n", answer)
