@@ -25,3 +25,11 @@
 
 # HippoRAG Qualities
 
+| Component | HippoRAG Concept |
+|-----------|------------------|
+|Triples |	hippocampal encoding|
+|Graph |	memory index |
+|PPR |	associative recall |
+|Query seeds |	cue-triggered recall |
+|LLM |	neocortex reasoning |
+
