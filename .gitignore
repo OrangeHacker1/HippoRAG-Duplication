@@ -1,6 +1,10 @@
 # Ignore Submodule
 Official-HippoRAG-Repo/
 
+# Ignore virtual environments anywhere in the project
+.venv/
+**/.venv/
+
 # Environment secrets
 .env
 
