@@ -1,0 +1,16 @@
+services:
+  build-kg:
+    build: .
+    command: python run_build_kg.py
+    env_file: .env
+    volumes:
+      - ./kg:/app/kg  # persist the graph.pkl between runs
+
+  query:
+    build: .
+    command: python run_query.py
+    env_file: .env
+    volumes:
+      - ./kg:/app/kg  # read the same graph.pkl built above
+    depends_on:
+      - build-kg

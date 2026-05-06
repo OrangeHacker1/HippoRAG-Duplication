@@ -1,2 +1,9 @@
-# Ignore Submodule 
+# Ignore Submodule
 Official-HippoRAG-Repo/
+
+# Environment secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
