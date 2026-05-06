@@ -1,13 +1,27 @@
-FROM python:3.11-slim
+# --- build stage ---
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-# Install dependencies first (cached layer)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
-COPY . .
+# --- runtime stage ---
+FROM python:3.11-slim AS runtime
 
-# Default command — override in docker-compose or CLI
-CMD ["python", "run_query.py"]
+WORKDIR /app
+
+# Run as non-root user
+RUN useradd -m appuser
+USER appuser
+
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --chown=appuser:appuser . .
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+
+CMD ["uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "8000"]

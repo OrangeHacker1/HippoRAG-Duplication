@@ -54,14 +54,14 @@
 ## Prioritized TODO List
 
 - [x] Gap 1 — Fix `retrieval/filter.py` stub — LLM now parses and returns relevant triple indices
-- [ ] Gap 2 — Wire `query_processor.py` into `retriever.py` to extract seeds from the query
-- [ ] Gap 3 — Fix `llm/llm_client.py` — replace `eval()` with JSON-format prompt and structured parsing
-- [ ] Gap 4 — Fix context in `retrieval/retriever.py` — pull actual passage text from graph nodes instead of node names
-- [ ] Gap 5 — Add evaluation
-  - [ ] Gap 5a — Build a multi-hop test corpus (documents with facts intentionally scattered across separate docs)
-  - [ ] Gap 5b — Write test questions with gold answers that require connecting facts from 2+ documents
-  - [ ] Gap 5c — Implement Recall@k metric — did the right passages get retrieved? (reference: `Official-HippoRAG-Repo/src/hipporag/evaluation/retrieval_eval.py`)
-  - [ ] Gap 5d — Implement Exact Match and F1 score metrics (reference: `Official-HippoRAG-Repo/src/hipporag/evaluation/qa_eval.py`)
-  - [ ] Gap 5e — Write an evaluation runner script that feeds all questions through the pipeline and computes aggregate scores
+- [x] Gap 2 — Wire `query_processor.py` into `retriever.py` to extract seeds from the query
+- [x] Gap 3 — Fix `llm/llm_client.py` — replace `eval()` with JSON-format prompt and structured parsing
+- [x] Gap 4 — Fix context in `retrieval/retriever.py` — pull actual passage text from graph nodes instead of node names
+- [x] Gap 5 — Add evaluation
+  - [x] Gap 5a — Build a multi-hop test corpus (`data/eval_dataset.py`)
+  - [x] Gap 5b — Write test questions with gold answers (`data/eval_dataset.py`)
+  - [x] Gap 5c — Implement Recall@k metric (`eval/metrics.py`)
+  - [x] Gap 5d — Implement Exact Match and F1 score metrics (`eval/metrics.py`)
+  - [x] Gap 5e — Write evaluation runner script (`run_eval.py`)
 
 > NER before triple extraction is the one thing from the official repo that the skeleton intentionally simplifies — add later if needed.

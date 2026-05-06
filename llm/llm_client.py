@@ -26,19 +26,24 @@ class LLMClient:
         return response.json()["choices"][0]["message"]["content"]
 
     def extract_triples(self, text: str):
-        prompt = f"""
-Extract triples (subject, relation, object).
-Return ONLY Python tuples.
+        prompt = f"""Extract knowledge graph triples from the text below.
+Return ONLY a JSON array of [subject, relation, object] arrays. No explanation.
 
-{text}
-"""
+Example:
+[["Albert Einstein", "developed", "theory of relativity"], ["theory of relativity", "is part of", "physics"]]
+
+Text: {text}"""
+
         output = self.generate(prompt)
 
         triples = []
-        for line in output.split("\n"):
-            if "(" in line:
-                try:
-                    triples.append(eval(line.strip()))
-                except:
-                    continue
+        try:
+            start = output.index("[")
+            end = output.rindex("]") + 1
+            parsed = __import__("json").loads(output[start:end])
+            for item in parsed:
+                if isinstance(item, list) and len(item) == 3:
+                    triples.append(tuple(item))
+        except (ValueError, Exception):
+            pass
         return triples
