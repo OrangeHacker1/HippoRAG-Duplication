@@ -177,10 +177,89 @@ def f1_score(predicted: str, gold_answers: List[str]) -> float:
 
 ### `api/app.py` — FastAPI endpoints
 
+#### `GET /health`
+Returns HTTP 200 with body:
+```json
+{"status": "ok"}
 ```
-GET  /health          → {"status": "ok"}
-POST /query           → {"question": str} → {"answer": str, "passages": List[str], "request_id": str}
+
+#### `GET /`
+Returns HTTP 200 with an HTML page containing:
+- A `<textarea>` or `<input>` for the question
+- A Submit button
+- A section for displaying the answer (id or label "Answer")
+- A section for displaying retrieved passages (id or label "Retrieved Passages")
+
+#### `GET /evaluate`
+Returns HTTP 200 with an HTML page containing a "Run Evaluation" button that triggers `POST /api/evaluate`.
+
+#### `POST /api/query`
+Request body (JSON):
+```json
+{"question": "string"}
 ```
+
+Success response HTTP 200:
+```json
+{
+  "answer": "string",
+  "passages": ["string", "..."],
+  "request_id": "string"
+}
+```
+
+Error — empty or whitespace-only question, HTTP 422:
+```json
+{"detail": "Query must not be empty."}
+```
+
+Error — LLM endpoint unreachable (`requests.exceptions.ConnectionError` or `ConnectTimeout`), HTTP 503:
+```json
+{"detail": "The language model is currently unavailable. Please try again later."}
+```
+
+Error — knowledge graph not loaded, HTTP 503:
+```json
+{"detail": "Knowledge graph not loaded. Run python run_build_kg.py first."}
+```
+
+#### `POST /api/evaluate`
+No request body required.
+
+Success response HTTP 200:
+```json
+{
+  "aggregate": {
+    "Recall@1": 0.0,
+    "Recall@2": 0.0,
+    "Recall@5": 0.0,
+    "ExactMatch": 0.0,
+    "F1": 0.0
+  },
+  "results": [
+    {
+      "question": "string",
+      "answer": "string",
+      "passages": ["string"],
+      "em": 0.0,
+      "f1": 0.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    }
+  ],
+  "request_id": "string"
+}
+```
+
+All aggregate metric values are floats in [0.0, 1.0]. The `results` list contains one entry per question in `data/eval_dataset.QUESTIONS`.
+
+#### Logging
+Every request to `POST /api/query` and `POST /api/evaluate` must:
+1. Generate a UUID `request_id` at the start of the request
+2. Emit a structured JSON log line on arrival: `{"timestamp": ..., "level": "INFO", "module": "app", "message": "Query received: <question>", "request_id": "<uuid>"}`
+3. Emit a structured JSON log line on completion or error
+4. Include `request_id` in the response body
 
 ---
 
@@ -216,3 +295,71 @@ POST /query           → {"question": str} → {"answer": str, "passages": List
 - **Max iterations:** `30`
 - **Similarity threshold for synonymy edges:** `0.75`
 - **Config keys:** `retrieval.ppr_alpha`, `retrieval.max_iter`, `kg.similarity_threshold`
+
+---
+
+## Configuration
+
+### `config/config.yaml` — full structure
+
+```yaml
+llm:
+  temperature: 0.0
+  max_tokens: 512
+  retries: 3
+
+kg:
+  save_path: kg/graph.pkl
+  similarity_threshold: 0.75
+  max_passages: 1000
+
+retrieval:
+  top_k: 5
+  ppr_alpha: 0.85
+  max_iter: 30
+
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2
+
+logging:
+  verbose: true
+```
+
+Loaded by `config/config_loader.py`:
+```python
+def load_config(path="config/config.yaml") -> dict:
+    """Load and return the YAML config as a dict."""
+```
+
+### Environment Variables (`.env`)
+
+Required variables loaded by `config/env_loader.py`:
+
+| Variable | Description |
+|---|---|
+| `TEACHER_BASE_URL` | Base URL of the OpenAI-compatible LLM endpoint (e.g. `http://host/v1`) |
+| `TEACHER_MODEL` | Model name served at the endpoint (e.g. `gpt-4o-mini`) |
+| `TEACHER_API_KEY` | API key for the endpoint |
+
+`env_loader.py` raises `ValueError` if any required variable is missing.
+
+```python
+def load_environment() -> dict:
+    """
+    Load .env and return dict with keys: teacher_base, teacher_model, teacher_key.
+    Raises ValueError if any key is missing.
+    """
+```
+
+### `data/eval_dataset.py` — structure
+
+```python
+CORPUS: List[str]  # raw document strings for building the KG
+
+QUESTIONS: List[dict]  # each dict has:
+# {
+#   "question": str,
+#   "gold_docs": List[str],    # exact corpus strings needed to answer
+#   "gold_answers": List[str]  # acceptable answer strings
+# }
+```

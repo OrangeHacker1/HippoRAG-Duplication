@@ -10,12 +10,20 @@ run:
 	uvicorn api.app:app --host 0.0.0.0 --port 8000
 
 test:
-	pytest tests/ \
+	pytest tests/unit/ \
 		--junitxml=reports/unit.xml \
-		--cov=kg --cov=retrieval --cov=llm --cov=api \
+		-v
+	pytest tests/integration/ \
+		--junitxml=reports/integration.xml \
+		-v
+	pytest tests/user_stories/ \
+		--junitxml=reports/user_stories.xml \
+		-v
+	pytest tests/ \
+		--cov=kg --cov=retrieval --cov=llm --cov=api --cov=eval \
 		--cov-report=xml:reports/coverage.xml \
 		--cov-report=html:reports/coverage_html \
-		-v
+		-q
 
 lint:
 	ruff check .
@@ -23,7 +31,7 @@ lint:
 	mypy kg/ retrieval/ llm/ api/ --ignore-missing-imports
 
 audit:
-	pip-audit -o reports/security.txt || true
+	pip-audit --format=text -o reports/security.txt || true
 
 reproduce:
 	docker compose build
