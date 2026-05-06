@@ -1,4 +1,6 @@
-# Usage
+# HippoRAG Duplication
+
+## Usage
 
 To install the dependencies, run:
 
@@ -14,7 +16,7 @@ To run a prompt, you will run:
 
 
 
-# Current Structure
+## Current Structure
 
                 
         hipporag/
@@ -42,7 +44,7 @@ To run a prompt, you will run:
         ├── run_query.py
         └── requirements.txt
 
-# HippoRAG Qualities
+## HippoRAG Qualities
 
 | Component | HippoRAG Concept |
 |-----------|------------------|
