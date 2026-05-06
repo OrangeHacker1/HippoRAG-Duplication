@@ -1,5 +1,6 @@
 # retrieval/filter.py
 from llm.llm_client import LLMClient
+import re
 
 
 class TripleFilter:
@@ -7,17 +8,26 @@ class TripleFilter:
         self.llm = LLMClient()
 
     def filter(self, query, triples):
-        prompt = f"""
-Select relevant triples for answering the query.
+        if not triples:
+            return []
 
-Query:
-{query}
+        numbered = "\n".join(
+            f"{i}: ({s}, {r}, {o})" for i, (s, r, o, _) in enumerate(triples)
+        )
+
+        prompt = f"""You are given a query and a numbered list of knowledge graph triples.
+Return ONLY the numbers of triples that are relevant to answering the query.
+Format: a comma-separated list of integers, e.g. 0, 2, 5
+
+Query: {query}
 
 Triples:
-{triples}
+{numbered}
 
-Return ONLY relevant triples.
-"""
+Relevant triple numbers:"""
+
         output = self.llm.generate(prompt)
 
-        return triples  # simplified (can parse later)
+        indices = [int(x) for x in re.findall(r"\d+", output) if int(x) < len(triples)]
+
+        return [triples[i] for i in indices] if indices else triples
