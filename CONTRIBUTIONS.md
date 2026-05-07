@@ -4,8 +4,8 @@
 
 | Member | Role | Modules Owned | Percent Contribution |
 |---|---|---|---|
-| Samantha Salas | Lead Developer | `retrieval/`, `api/`, `eval/`, `docs/` | 60% |
-| OrangeHacker1 | Developer | `kg/`, `llm/`, `config/`, `data/` | 40% |
+| Samantha Salas | Developer | `retrieval/`, `api/`, `eval/`, `docs/` | 50% |
+| OrangeHacker1 | Developer | `kg/`, `llm/`, `config/`, `data/` | 50% |
 
 ## Details
 
