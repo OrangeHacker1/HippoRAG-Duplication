@@ -1,37 +1,44 @@
 .PHONY: install build-kg run test lint audit reproduce download-data download-models demo loadtest
 
+PYTHON := .venv/bin/python
+PYTEST  := .venv/bin/pytest
+PIP     := .venv/bin/pip
+
 install:
-	pip install -r requirements.txt
+	$(PIP) install -r requirements.txt
 
 build-kg:
-	python run_build_kg.py
+	$(PYTHON) run_build_kg.py
 
 run:
-	uvicorn api.app:app --host 0.0.0.0 --port 8000
+	.venv/bin/uvicorn api.app:app --host 0.0.0.0 --port 8000
 
 test:
-	pytest tests/unit/ \
+	mkdir -p reports
+	$(PYTEST) tests/unit/ \
 		--junitxml=reports/unit.xml \
 		-v
-	pytest tests/integration/ \
+	$(PYTEST) tests/integration/ \
 		--junitxml=reports/integration.xml \
 		-v
-	pytest tests/user_stories/ \
+	$(PYTEST) tests/user_stories/ \
 		--junitxml=reports/user_stories.xml \
 		-v
-	pytest tests/ \
+	$(PYTEST) tests/ \
 		--cov=kg --cov=retrieval --cov=llm --cov=api --cov=eval \
 		--cov-report=xml:reports/coverage.xml \
 		--cov-report=html:reports/coverage_html \
 		-q
 
 lint:
-	ruff check .
-	black --check .
-	mypy kg/ retrieval/ llm/ api/ --ignore-missing-imports
+	.venv/bin/ruff check .
+	.venv/bin/black --check .
+	.venv/bin/mypy kg/ retrieval/ llm/ api/ --ignore-missing-imports
 
 audit:
-	pip-audit --format=text -o reports/security.txt || true
+	$(PIP) install pip-audit -q
+	mkdir -p reports
+	.venv/bin/pip-audit 2>&1 | tee reports/security.txt || true
 
 reproduce:
 	docker compose build
@@ -42,12 +49,12 @@ download-data:
 	@echo "Eval dataset is bundled in data/eval_dataset.py — no download required."
 
 download-models:
-	python -c "from kg.embeddings import EmbeddingEngine; EmbeddingEngine()"
+	$(PYTHON) -c "from kg.embeddings import EmbeddingEngine; EmbeddingEngine()"
 
 demo:
 	bash scripts/demo.sh
 
 loadtest:
-	locust -f tests/load/locustfile.py --headless -u 10 -r 2 -t 60s \
+	.venv/bin/locust -f tests/load/locustfile.py --headless -u 10 -r 2 -t 60s \
 		--host http://localhost:8000 \
 		--json > reports/benchmarks.json

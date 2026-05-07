@@ -2,12 +2,15 @@
 import networkx as nx
 
 
-def run_ppr(graph, seeds, alpha=0.85, max_iter=30):
-    personalization = {n: 0 for n in graph.nodes}
+def run_ppr(graph, seeds, alpha=0.85, max_iter=100):
+    valid_seeds = [s for s in seeds if s in graph.nodes]
 
-    for s in seeds:
-        if s in personalization:
+    if valid_seeds:
+        personalization = {n: 0 for n in graph.nodes}
+        for s in valid_seeds:
             personalization[s] = 1
+    else:
+        personalization = None  # uniform distribution
 
     return nx.pagerank(
         graph,
