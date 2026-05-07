@@ -22,8 +22,8 @@
 - [x] `docs/STORIES.md` — US-01 through US-06 with Given/When/Then and numbered steps
 - [x] `grading/traceability.yaml` — maps each story to spec section, modules, and tests
 - [x] `scripts/regenerate.sh` and `scripts/regenerate_prompt.md`
-- [ ] `docs/diagrams/architecture.png` — render `docs/diagrams/architecture.mmd` at mermaid.live and save as PNG
-- [ ] `docs/assets/stories/us_01_expected.png` through `us_06_expected.png` — screenshots of live UI per story
+- [x] `docs/diagrams/architecture.png`
+- [x] `docs/assets/stories/us_01_expected.png` through `us_06_expected.png`
 
 ### Design — Reproducibility Manifest (10 pts)
 - [x] `grading/manifest.yaml` — Python version, seed, model IDs, dataset versions, expected metrics
@@ -35,8 +35,9 @@
 - [ ] Update `commit_sha` in `grading/manifest.yaml` to final commit before submission
 
 ### Deploy — Build and Deployment (6 pts)
-- [x] `Dockerfile` — multi-stage, non-root user, health check
+- [x] `Dockerfile` — multi-stage, non-root user, health check (CPU-only torch)
 - [x] `docker-compose.yml` — health checks on all services, dependency ordering
+- [x] `.dockerignore` — excludes .venv, submodule, .git from build context
 - [x] `.env.example` with required placeholders and comments
 - [x] `.env` in `.gitignore`
 - [x] Quick start in `README.md`
@@ -46,14 +47,13 @@
 - [x] `tests/integration/` — `test_api.py`
 - [x] `tests/user_stories/` — `test_stories.py` with `@pytest.mark.user_story("US-NN")`
 - [x] `scripts/demo.sh`
-- [ ] `reports/unit.xml` — run `make test`
-- [ ] `reports/integration.xml` — run `make test`
-- [ ] `reports/user_stories.xml` — run `make test`
-- [ ] `reports/coverage.xml` — run `make test`
-- [ ] `reports/coverage_html/` — run `make test`
+- [x] `reports/unit.xml`
+- [x] `reports/integration.xml`
+- [x] `reports/user_stories.xml`
+- [x] `reports/coverage.xml` and `reports/coverage_html/`
 
 ### Test — Stress and Robustness (6 pts)
-- [x] `tests/edge/test_edge_cases.py` — empty, whitespace, very long, non-ASCII, multilingual, adversarial, XSS
+- [x] `tests/edge/test_edge_cases.py`
 - [x] `tests/load/locustfile.py`
 - [x] `docs/benchmarks.md`
 - [ ] `reports/benchmarks.json` — run `make loadtest` against live system
@@ -61,42 +61,80 @@
 ### Implement — Code Quality and Responsible AI (6 pts)
 - [x] `pyproject.toml` — ruff, black, mypy configured
 - [x] `make lint` target
-- [x] `docs/MODEL_CARD.md` — Intended Use, Limitations, Risks, Out of Scope
-- [ ] `reports/security.txt` — run `make audit`
+- [x] `docs/MODEL_CARD.md`
+- [x] `reports/security.txt`
 
 ### Operate — Logging (5 pts)
-- [x] Structured JSON logging in `api/logger.py` — timestamp, level, module, request_id
-- [x] `request_id` generated per request and propagated through all log lines
-- [x] `docs/LOGGING.md` — worked example with captured request_id and log lines
+- [x] Structured JSON logging in `api/logger.py`
+- [x] `request_id` propagated through all components
+- [x] `docs/LOGGING.md`
 
 ### Operate — Application Functionality and UI (20 pts)
-- [x] `api/app.py` — FastAPI web app with query, evaluate, health endpoints
-- [x] `api/templates/index.html` — query page
-- [x] `api/templates/evaluate.html` — evaluation page
-- [x] `docs/STORIES.md` — followable by human without reading source
-- [x] US-05 and US-06 are error path stories with documented expected messages
-- [x] `reports/walkthrough.md` — template ready for TA
-- [ ] `docs/assets/stories/us_01_expected.png` through `us_06_expected.png` — **take screenshots of live UI**
+- [x] `api/app.py` — FastAPI with query, evaluate, health endpoints
+- [x] `api/templates/index.html` and `evaluate.html`
+- [x] `docs/STORIES.md`
+- [x] US-05 and US-06 are error path stories
+- [x] `reports/walkthrough.md`
+- [x] `docs/assets/stories/us_01_expected.png` through `us_06_expected.png`
 
 ### Operate — User Documentation (6 pts)
-- [x] `README.md` — title, description, tech stack, quick start, results, source layout
-- [x] `docs/usage.md` — one section per story
-- [ ] `docs/assets/stories/us_NN_expected.png` — same screenshots needed above
+- [x] `README.md`
+- [x] `docs/usage.md`
 - [ ] `docs/assets/demo.gif` — record a short screen capture of the full flow
 
 ### Team — Contributions (4 pts)
-- [x] `CONTRIBUTIONS.md` — roles, modules owned, percentages summing to 100
-- [x] `reports/git_contributions.txt` — generated from `git shortlog`
+- [x] `CONTRIBUTIONS.md`
+- [x] `reports/git_contributions.txt`
 
 ---
 
-## Remaining Manual Actions (need a human)
+## V2 Paper Table Replication (Professor Request)
 
-1. **Run the UI** — `python run_build_kg.py` then `uvicorn api.app:app --port 8000`
-2. **Take 6 screenshots** — one per story, save to `docs/assets/stories/us_NN_expected.png`
-3. **Render architecture diagram** — paste `docs/diagrams/architecture.mmd` into mermaid.live → export as `docs/diagrams/architecture.png`
-4. **Record demo.gif** — short screen capture of query → answer flow, save to `docs/assets/demo.gif`
-5. **Run generated reports** — `make test`, `make audit`, `make loadtest`
-6. **Update commit_sha** — run `git rev-parse HEAD` and paste into `grading/manifest.yaml` before final push
+The paper has 5 main evaluation tables. Goal: replicate as many as possible on a
+MuSiQue subset (50–100 questions, 200–500 corpus passages) using our LLM endpoint.
+Data is already available at `Official-HippoRAG-Repo/reproduce/dataset/`.
 
-> NER before triple extraction is the one simplification vs. the official repo — add later if needed.
+### Table 2 — QA Performance (F1 scores) ← most important
+Paper reports F1 on: NQ, PopQA, MuSiQue, 2Wiki, HotpotQA, LV-Eval, NarrativeQA
+We target: **MuSiQue subset only**
+
+- [ ] Copy `musique.json` + `musique_corpus.json` from submodule to `data/`
+- [ ] Write `scripts/run_musique_eval.py` — loads subset, builds KG, runs queries, reports F1
+- [ ] Run the script (needs VPN + ~30–60 min)
+- [ ] Add results to `REPORT.md` as Table 2 partial replication
+- [ ] Note deviation: we use `all-MiniLM-L6-v2` instead of NV-Embed-v2, and UTSA LLM instead of Llama-3.3-70B
+
+### Table 3 — Retrieval Performance (Recall@5) ← second priority
+Paper reports Recall@5 for retrieved passages (not just answer F1)
+We target: **MuSiQue subset only**
+
+- [ ] Add Recall@5 passage metric to eval script (gold docs are in `musique.json` → `paragraphs`)
+- [ ] Report Recall@5 alongside F1 in `REPORT.md`
+
+### Table 4 — Ablation Study ← third priority (if time allows)
+Paper tests: NER-to-node vs Query-to-node vs Query-to-triple linking methods
+We target: compare our current approach (NER/entity matching) vs query-to-triple
+
+- [ ] Implement query-to-triple linking variant in `retrieval/retriever.py`
+- [ ] Run both variants on MuSiQue subset
+- [ ] Report Recall@5 difference in `REPORT.md`
+
+### Table 7 — Robustness to retrievers (MuSiQue subset) ← bonus if time allows
+Paper uses: GTE-Qwen2-7B, GritLM-7B, NV-Embed-v2
+We have: all-MiniLM-L6-v2 only — skip unless time permits
+
+### Tables 5, 6, 8, 9 — Skip
+Table 5: hyperparameter sweep (too expensive)
+Table 6: qualitative examples (no code needed, low value)
+Tables 8, 9: repeat of Table 2/3 with GPT-4o-mini (different LLM, out of scope)
+
+---
+
+## Remaining Manual Actions
+
+1. [ ] **Make repo public** on GitHub (Settings → Change visibility → Public)
+2. [ ] **Decide branch** — submit Samantha's-Branch URL or merge to main
+3. [ ] **Run loadtest** — `docker compose up` then `make loadtest` → `reports/benchmarks.json`
+4. [ ] **Update commit_sha** — final `git rev-parse HEAD` → `grading/manifest.yaml`
+5. [ ] **Run MuSiQue eval** — needs VPN, 30–60 min runtime
+6. [ ] **Record demo.gif** — optional but listed in rubric

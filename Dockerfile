@@ -4,6 +4,8 @@ FROM python:3.11-slim AS builder
 WORKDIR /app
 
 COPY requirements.txt .
+# Install CPU-only torch first (avoids downloading 2GB CUDA build)
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
 # --- runtime stage ---
