@@ -1,6 +1,6 @@
 python_version: "3.11"
 seed: 42
-commit_sha: "380914d4b7ee47bc0f194c7eefeb9f6a957434c0"
+commit_sha: "f8c028097d07731232d9f87ebe32daf6f75b6380"
 
 models:
   embedding:
