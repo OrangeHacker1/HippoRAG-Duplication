@@ -25,7 +25,7 @@ The system is designed to answer multi-hop questions that require connecting fac
 | Eval Dataset | `data/eval_dataset.py` | Multi-hop test corpus, questions, gold documents, and gold answers |
 | Config Loader | `config/config_loader.py` | Loads `config/config.yaml` |
 | Env Loader | `config/env_loader.py` | Loads `.env` file; validates required environment variables |
-| API Server | `api/app.py` | FastAPI application exposing `/query` and `/health` endpoints |
+| API Server | `api/app.py` | FastAPI application exposing `/query` and `/health` endpoints; holds a module-level `rag: HippoRAG | None` variable initialized at startup via a lifespan context manager; startup failure (e.g. missing KG) sets `rag = None` and logs a warning rather than crashing |
 | KG Build Script | `run_build_kg.py` | CLI entry point for building the knowledge graph |
 | Query Script | `run_query.py` | CLI entry point for a single query |
 | Eval Script | `run_eval.py` | CLI entry point for the full evaluation pipeline |
@@ -317,6 +317,7 @@ retrieval:
   top_k: 5
   ppr_alpha: 0.85
   max_iter: 30
+  passage_weight: 0.05
 
 embedding:
   model: sentence-transformers/all-MiniLM-L6-v2
