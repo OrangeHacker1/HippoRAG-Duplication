@@ -16,6 +16,7 @@ retrieval:
   top_k: 5
   ppr_alpha: 0.85
   max_iter: 30
+  passage_weight: 0.05
 
 embedding:
   model: sentence-transformers/all-MiniLM-L6-v2
