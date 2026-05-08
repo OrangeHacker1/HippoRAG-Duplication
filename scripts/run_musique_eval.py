@@ -15,7 +15,6 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from kg.graph_store import KnowledgeGraph
 from kg.builder import KGBuilder
 from kg.embeddings import EmbeddingEngine
 from retrieval.triple_matcher import TripleMatcher
@@ -78,10 +77,9 @@ def main():
     print(f"Corpus: {len(corpus_texts)} unique passages")
 
     print("Building knowledge graph (this will take a while — one LLM call per passage)...")
-    kg = KnowledgeGraph()
-    builder = KGBuilder(kg)
+    builder = KGBuilder()
     builder.build(corpus_texts)
-    kg.save("kg/musique_graph.pkl")
+    kg = builder.kg
     print(f"KG: {kg.graph.number_of_nodes()} nodes, {kg.graph.number_of_edges()} edges")
 
     # Set up retrieval components
