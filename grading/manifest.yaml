@@ -1,0 +1,38 @@
+python_version: "3.11"
+seed: 42
+commit_sha: "f8c028097d07731232d9f87ebe32daf6f75b6380"
+
+models:
+  embedding:
+    id: "sentence-transformers/all-MiniLM-L6-v2"
+    source: "huggingface"
+    version: "3.0.1"
+  llm:
+    id: "${TEACHER_MODEL}"
+    source: "${TEACHER_BASE_URL}"
+    version: "configurable via .env"
+
+datasets:
+  eval:
+    id: "hipporag-eval-multihop"
+    source: "data/eval_dataset.py"
+    version: "1.0"
+    num_questions: 4
+    num_corpus_docs: 10
+
+expected_metrics:
+  Recall@1:
+    value: 0.50
+    tolerance: 0.20
+  Recall@2:
+    value: 0.75
+    tolerance: 0.20
+  Recall@5:
+    value: 0.90
+    tolerance: 0.15
+  ExactMatch:
+    value: 0.50
+    tolerance: 0.25
+  F1:
+    value: 0.55
+    tolerance: 0.25

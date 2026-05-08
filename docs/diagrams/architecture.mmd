@@ -1,0 +1,33 @@
+flowchart TD
+    subgraph Indexing
+        D[Documents] --> LLM1[LLM: extract_triples]
+        LLM1 --> KG[Knowledge Graph\nentity + passage nodes]
+        KG --> EMB1[EmbeddingEngine\nlink similar nodes]
+        EMB1 --> PKL[(graph.pkl)]
+    end
+
+    subgraph Retrieval
+        Q[Query] --> TM[TripleMatcher\nembed + score triples]
+        TM --> TF[TripleFilter\nLLM selects relevant]
+        Q --> QP[QueryProcessor\nLLM extracts entities]
+        TF --> SEEDS[Seed Nodes]
+        QP --> EMB2[EmbeddingEngine\nmatch to graph nodes]
+        EMB2 --> SEEDS
+        PKL --> PPR[Personalized PageRank]
+        SEEDS --> PPR
+        PPR --> PASS[Top-K Passage Nodes]
+    end
+
+    subgraph Generation
+        PASS --> CTX[Context]
+        Q --> LLM2[LLM: generate answer]
+        CTX --> LLM2
+        LLM2 --> ANS[Answer]
+    end
+
+    subgraph API
+        UI[Web UI] --> EP[FastAPI /api/query]
+        EP --> Q
+        ANS --> EP
+        EP --> UI
+    end

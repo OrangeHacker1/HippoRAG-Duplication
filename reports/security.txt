@@ -1,0 +1,37 @@
+WARNING:pip_audit._dependency_source.pip:pip-audit will run pip against /home/sqmi/HippoRAG-Development/HippoRAG-Duplication/.venv/bin/python3, but you have a virtual environment loaded at /usr. This may result in unintuitive audits, since your local environment will not be audited. You can forcefully override this behavior by setting PIPAPI_PYTHON_LOCATION to the location of your virtual environment's Python interpreter.
+Found 33 known vulnerabilities in 9 packages
+Name             Version ID                  Fix Versions
+---------------- ------- ------------------- ------------
+black            24.8.0  GHSA-3936-cmfr-pm3m 26.3.1
+jinja2           3.1.4   GHSA-q2x7-8rv6-6q7h 3.1.5
+jinja2           3.1.4   GHSA-gmj6-6f8f-6699 3.1.5
+jinja2           3.1.4   GHSA-cpwx-vrp4-4pq7 3.1.6
+pip              24.0    GHSA-4xh5-x5gv-qwph 25.3
+pip              24.0    GHSA-6vgw-5pg2-w6jp 26.0
+pip              24.0    GHSA-58qw-9mgm-455v
+pip              24.0    GHSA-jp4c-xjxw-mgf9 26.1
+pytest           8.3.2   GHSA-6w46-j5rx-g56g 9.0.3
+python-dotenv    1.0.1   GHSA-mf9w-mj56-hr94 1.2.2
+python-multipart 0.0.9   GHSA-59g5-xgcq-4qw3 0.0.18
+python-multipart 0.0.9   GHSA-wp53-j4wj-2cfg 0.0.22
+python-multipart 0.0.9   GHSA-mj87-hwqh-73pj 0.0.26
+python-multipart 0.0.9   GHSA-pp6c-gr5w-3c5g 0.0.27
+requests         2.32.3  GHSA-9hjg-9r4m-mvj7 2.32.4
+requests         2.32.3  GHSA-gc5v-m9x4-r6x2 2.33.0
+starlette        0.38.6  GHSA-f96h-pmfr-66vw 0.40.0
+starlette        0.38.6  GHSA-2c2j-9gv5-cj73 0.47.2
+transformers     4.44.2  PYSEC-2024-227      4.48.0
+transformers     4.44.2  PYSEC-2024-229      4.48.0
+transformers     4.44.2  PYSEC-2024-228      4.48.0
+transformers     4.44.2  PYSEC-2025-40       4.49.0
+transformers     4.44.2  GHSA-6rvg-6v2m-4j46 4.48.0
+transformers     4.44.2  GHSA-fpwr-67px-3qhx 4.50.0
+transformers     4.44.2  GHSA-q2wp-rjmx-x6x9 4.51.0
+transformers     4.44.2  GHSA-jjph-296x-mrcr 4.51.0
+transformers     4.44.2  GHSA-phhr-52qp-3mj4 4.52.1
+transformers     4.44.2  GHSA-37mw-44qp-f5jm 4.52.1
+transformers     4.44.2  GHSA-9356-575x-2w9m 4.53.0
+transformers     4.44.2  GHSA-59p9-h35m-wg4g 4.53.0
+transformers     4.44.2  GHSA-rcv9-qm8p-9p6j 4.53.0
+transformers     4.44.2  GHSA-4w7r-h757-3r74 4.53.0
+transformers     4.44.2  GHSA-69w3-r845-3855 5.0.0rc3

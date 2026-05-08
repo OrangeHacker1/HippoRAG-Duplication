@@ -22,17 +22,21 @@ class KGBuilder:
                 self.kg.add_triple(s, r, o, doc)
                 node_texts.extend([s, o])
 
-        # Embedding linking
-        embeddings = self.embedder.encode(node_texts)
+        # Embedding linking — vectorized cosine similarity (avoids O(n²) loop)
+        if node_texts:
+            import numpy as np
+            from sklearn.metrics.pairwise import cosine_similarity as batch_cosine
 
-        for i, a in enumerate(node_texts):
-            for j, b in enumerate(node_texts):
-                if i >= j:
-                    continue
+            unique_texts = list(dict.fromkeys(node_texts))  # deduplicate, preserve order
+            embeddings = self.embedder.encode(unique_texts)
+            emb_matrix = np.array(embeddings)
+            sim_matrix = batch_cosine(emb_matrix)
+            threshold = self.config["kg"]["similarity_threshold"]
 
-                sim = self.embedder.similarity(embeddings[i], embeddings[j])
-
-                if sim > self.config["kg"]["similarity_threshold"]:
-                    self.kg.graph.add_edge(a, b, relation="similar")
+            n = len(unique_texts)
+            for i in range(n):
+                for j in range(i + 1, n):
+                    if sim_matrix[i, j] > threshold:
+                        self.kg.graph.add_edge(unique_texts[i], unique_texts[j], relation="similar")
 
         self.kg.save(self.config["kg"]["save_path"])
