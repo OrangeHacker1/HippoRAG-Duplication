@@ -1,29 +1,41 @@
-# --- build stage ---
-FROM python:3.11-slim AS builder
+# Multi-stage build. Final image runs as a non-root user.
 
-WORKDIR /app
+# ---------------------------------------------------------------------------
+# Builder stage
+# ---------------------------------------------------------------------------
+FROM python:3.11.9-slim-bookworm AS builder
 
-COPY requirements.txt .
-# Install CPU-only torch first (avoids downloading 2GB CUDA build)
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /build
+COPY requirements.txt ./
+RUN pip wheel --wheel-dir=/wheels -r requirements.txt
 
-# --- runtime stage ---
-FROM python:3.11-slim AS runtime
+# ---------------------------------------------------------------------------
+# Runtime stage
+# ---------------------------------------------------------------------------
+FROM python:3.11.9-slim-bookworm
 
-WORKDIR /app
+# Non-root user
+RUN useradd -m -u 1000 -s /bin/bash app
+USER app
+WORKDIR /home/app
 
-# Run as non-root user
-RUN useradd -m appuser
-USER appuser
+# Install pinned wheels
+COPY --from=builder /wheels /wheels
+COPY requirements.txt ./
+RUN pip install --user --no-index --find-links=/wheels -r requirements.txt
+ENV PATH=/home/app/.local/bin:$PATH
 
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --chown=appuser:appuser . .
+# Copy source
+COPY --chown=app:app src ./src
+COPY --chown=app:app pyproject.toml ./
+RUN pip install --user -e .
 
-EXPOSE 8000
+# Application port
+EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+# Health endpoint must respond 200; docker-compose health check uses this
+HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health', timeout=3)" || exit 1
 
-CMD ["uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run application
+CMD ["uvicorn", "myproject.api:app", "--host", "0.0.0.0", "--port", "8080"]
