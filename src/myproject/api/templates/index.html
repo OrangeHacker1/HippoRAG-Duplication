@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HippoRAG</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 60px auto; padding: 0 20px; }
+    h1 { color: #333; }
+    nav a { margin-right: 16px; color: #555; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    textarea { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; }
+    button { margin-top: 10px; padding: 10px 24px; font-size: 16px; background: #4a90e2; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:disabled { background: #aaa; }
+    #error { color: #c0392b; margin-top: 12px; font-weight: bold; }
+    #answer-section, #passages-section { margin-top: 24px; display: none; }
+    #answer-box { background: #f0f4ff; padding: 16px; border-radius: 4px; white-space: pre-wrap; }
+    .passage { background: #f9f9f9; border-left: 4px solid #4a90e2; padding: 10px 14px; margin-bottom: 8px; border-radius: 2px; }
+    #spinner { display: none; margin-top: 12px; color: #888; }
+  </style>
+</head>
+<body>
+  <nav><a href="/">Query</a><a href="/evaluate">Evaluate</a></nav>
+  <h1>HippoRAG</h1>
+  <p>Ask a question answered by the knowledge graph.</p>
+
+  <textarea id="question" rows="3" placeholder="Ask a question..."></textarea>
+  <br>
+  <button id="submit-btn" onclick="submitQuery()">Submit</button>
+  <div id="spinner">Thinking...</div>
+  <div id="error"></div>
+
+  <div id="answer-section">
+    <h2>Answer</h2>
+    <div id="answer-box"></div>
+  </div>
+
+  <div id="passages-section">
+    <h2>Retrieved Passages</h2>
+    <div id="passages-list"></div>
+  </div>
+
+  <script>
+    async function submitQuery() {
+      const question = document.getElementById("question").value.trim();
+      const errorDiv = document.getElementById("error");
+      const spinner = document.getElementById("spinner");
+      const btn = document.getElementById("submit-btn");
+
+      errorDiv.textContent = "";
+      document.getElementById("answer-section").style.display = "none";
+      document.getElementById("passages-section").style.display = "none";
+
+      if (!question) {
+        errorDiv.textContent = "Query must not be empty.";
+        return;
+      }
+
+      btn.disabled = true;
+      spinner.style.display = "block";
+
+      try {
+        const res = await fetch("/api/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorDiv.textContent = data.detail || "An error occurred.";
+          return;
+        }
+
+        document.getElementById("answer-box").textContent = data.answer;
+        document.getElementById("answer-section").style.display = "block";
+
+        const list = document.getElementById("passages-list");
+        list.innerHTML = "";
+        (data.passages || []).forEach(p => {
+          const div = document.createElement("div");
+          div.className = "passage";
+          div.textContent = p;
+          list.appendChild(div);
+        });
+        document.getElementById("passages-section").style.display = "block";
+
+      } catch (e) {
+        errorDiv.textContent = "The language model is currently unavailable. Please try again later.";
+      } finally {
+        btn.disabled = false;
+        spinner.style.display = "none";
+      }
+    }
+
+    document.getElementById("question").addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitQuery(); }
+    });
+  </script>
+</body>
+</html>

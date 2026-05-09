@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HippoRAG — Evaluate</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 60px auto; padding: 0 20px; }
+    h1 { color: #333; }
+    nav a { margin-right: 16px; color: #555; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    button { padding: 10px 24px; font-size: 16px; background: #4a90e2; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:disabled { background: #aaa; }
+    #spinner { display: none; margin-top: 12px; color: #888; }
+    #error { color: #c0392b; margin-top: 12px; font-weight: bold; }
+    #results { display: none; margin-top: 24px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
+    th { background: #f0f4ff; }
+    .q-block { background: #f9f9f9; border-left: 4px solid #4a90e2; padding: 12px 16px; margin-bottom: 12px; border-radius: 2px; }
+    .q-block strong { display: block; margin-bottom: 4px; }
+    .passage-item { font-size: 13px; color: #555; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <nav><a href="/">Query</a><a href="/evaluate">Evaluate</a></nav>
+  <h1>Evaluation</h1>
+  <p>Runs the full evaluation pipeline against the multi-hop test dataset.</p>
+
+  <button id="run-btn" onclick="runEval()">Run Evaluation</button>
+  <div id="spinner">Running evaluation, please wait...</div>
+  <div id="error"></div>
+
+  <div id="results">
+    <h2>Aggregate Scores</h2>
+    <table id="agg-table"><thead><tr><th>Metric</th><th>Score</th></tr></thead><tbody></tbody></table>
+
+    <h2 style="margin-top:32px;">Per-Question Results</h2>
+    <div id="per-question"></div>
+  </div>
+
+  <script>
+    async function runEval() {
+      const btn = document.getElementById("run-btn");
+      const spinner = document.getElementById("spinner");
+      const errorDiv = document.getElementById("error");
+      const results = document.getElementById("results");
+
+      errorDiv.textContent = "";
+      results.style.display = "none";
+      btn.disabled = true;
+      spinner.style.display = "block";
+
+      try {
+        const res = await fetch("/api/evaluate", { method: "POST" });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorDiv.textContent = data.detail || "An error occurred.";
+          return;
+        }
+
+        const aggBody = document.querySelector("#agg-table tbody");
+        aggBody.innerHTML = "";
+        Object.entries(data.aggregate).forEach(([k, v]) => {
+          aggBody.innerHTML += `<tr><td>${k}</td><td>${v}</td></tr>`;
+        });
+
+        const pq = document.getElementById("per-question");
+        pq.innerHTML = "";
+        data.results.forEach((r, i) => {
+          const passages = (r.passages || []).map(p => `<div class="passage-item">• ${p}</div>`).join("");
+          pq.innerHTML += `
+            <div class="q-block">
+              <strong>Q${i+1}: ${r.question}</strong>
+              <div><b>Answer:</b> ${r.answer}</div>
+              <div><b>EM:</b> ${r.em} &nbsp; <b>F1:</b> ${r.f1} &nbsp; <b>Recall@1:</b> ${r["Recall@1"]} &nbsp; <b>Recall@2:</b> ${r["Recall@2"]} &nbsp; <b>Recall@5:</b> ${r["Recall@5"]}</div>
+              <div style="margin-top:6px"><b>Retrieved Passages:</b>${passages}</div>
+            </div>`;
+        });
+
+        results.style.display = "block";
+
+      } catch (e) {
+        errorDiv.textContent = "The language model is currently unavailable. Please try again later.";
+      } finally {
+        btn.disabled = false;
+        spinner.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

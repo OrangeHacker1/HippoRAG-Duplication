@@ -1,0 +1,55 @@
+# Ignore Submodule
+Official-HippoRAG-Repo/
+
+# Ignore virtual environments anywhere in the project
+.venv/
+**/.venv/
+
+# Environment secrets
+.env
+
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Data and models (must be downloaded, never committed)
+data/
+models/
+
+# Generated artifacts
+regenerated/
+reports/coverage_html/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+
+# Ignore Submodule
+#Official-HippoRAG-Repo/
+
+# Ignore virtual environments anywhere in the project
+#.venv/
+#**/.venv/
+
+# Environment secrets
+#.env
+
+# Python cache
+#__pycache__/
+#*.pyc
