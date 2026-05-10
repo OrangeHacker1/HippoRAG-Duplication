@@ -1,34 +1,36 @@
 services:
   app:
     build: .
+    image: myproject:local
+    container_name: myproject_app
+    env_file:
+      - .env
     ports:
-      - "8000:8000"
-    env_file: .env
-    volumes:
-      - ./kg:/app/kg
+      - "${APP_PORT:-8080}:8080"
+    depends_on:
+      vectordb:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
       retries: 3
       start_period: 15s
-    depends_on:
-      build-kg:
-        condition: service_completed_successfully
+    restart: unless-stopped
 
-  build-kg:
-    build: .
-    command: python run_build_kg.py
-    env_file: .env
+  # Example second service: vector database. Replace or remove for your project.
+  vectordb:
+    image: qdrant/qdrant:v1.9.0
+    container_name: myproject_vectordb
     volumes:
-      - ./kg:/app/kg
+      - vectordb_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:6333/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
 
-  eval:
-    build: .
-    command: python run_eval.py
-    env_file: .env
-    volumes:
-      - ./kg:/app/kg
-    depends_on:
-      build-kg:
-        condition: service_completed_successfully
+volumes:
+  vectordb_data:

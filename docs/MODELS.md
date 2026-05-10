@@ -1,47 +1,31 @@
-# Model Documentation
+# Models
 
-## Embedding Model
+> Every model used by the project must be listed here with source, version,
+> license, and download command. Model checkpoints must NOT be committed
+> to the repo.
 
-| Field | Value |
-|---|---|
-| Model ID | `sentence-transformers/all-MiniLM-L6-v2` |
-| Source | HuggingFace Hub |
-| Version | via `sentence-transformers==3.0.1` |
-| License | Apache 2.0 |
-| Size | ~90 MB |
-| Downloaded automatically | Yes — on first run via `SentenceTransformer()` |
+## Model 1: [name]
 
-### Use
+- **Source:** [HuggingFace org/model, Anthropic API, OpenAI API, etc.]
+- **Identifier:** [e.g. claude-opus-4-5-20251101 or sentence-transformers/all-MiniLM-L6-v2]
+- **Revision/version:** [git sha for HF, model id for API]
+- **License:** [e.g. Apache 2.0, MIT, commercial API]
+- **Size:** [e.g. 90 MB or "API only"]
+- **Used for:** [e.g. query embedding, generation, classification]
 
-Used to encode entity node names, triple texts, and query strings for cosine similarity matching. Downloaded automatically to `~/.cache/huggingface/` on first run.
+### Download
 
-To pre-download: `make download-models`
-
----
-
-## Language Model (LLM)
-
-| Field | Value |
-|---|---|
-| Model ID | Configurable via `TEACHER_MODEL` in `.env` |
-| Endpoint | Configurable via `TEACHER_BASE_URL` in `.env` |
-| Protocol | OpenAI-compatible `/v1/chat/completions` |
-| Default | `llama-3.3-70b-instruct-awq` on local GPUStack |
-| License | Depends on configured model |
-
-### Use
-
-Used for three tasks:
-1. **Triple extraction** — extract `[[subject, relation, object]]` JSON from documents
-2. **Triple filtering** — select relevant triples for a query
-3. **Entity extraction** — extract named entities from a query string
-4. **Answer generation** — generate a natural language answer from retrieved passages
-
-### Configuration
-
-Set the following in `.env` (see `.env.example`):
+```bash
+make download-models
 ```
-TEACHER_BASE_URL=http://<host>/v1
-TEACHER_MODEL=<model-name>
-TEACHER_API_KEY=<api-key>
+
+API-based models (Anthropic, OpenAI) do not require a download step; they
+require credentials in `.env`.
+
+For HuggingFace models:
+
+```bash
+mkdir -p models
+huggingface-cli download <org/model> --revision <revision> \
+    --local-dir models/<model_name>
 ```

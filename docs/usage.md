@@ -1,62 +1,31 @@
 # Usage Guide
 
-## US-01: Submit a Query and Receive an Answer
+> Every feature listed in `docs/STORIES.md` must have a corresponding section here.
+> The TA verifies this mapping during the Documentation walkthrough.
 
-1. Open `http://localhost:8000` in your browser.
-2. Type a question into the **"Ask a question"** field.
-3. Click **Submit** (or press Enter).
-4. The **Answer** section appears with a generated response.
+## Submitting a query (US-01)
 
-**Example input:** `Who influenced physics through relativity?`
-**Expected output:** An answer referencing Albert Einstein and the theory of relativity.
+To ask a question:
 
----
+1. Visit http://localhost:8080.
+2. Type your question in the search box.
+3. Click "Submit".
+4. The answer appears below the search box, with citations.
 
-## US-02: View Retrieved Passages
+Tips:
+- Questions phrased as full sentences work better than keyword fragments.
+- The system retrieves the top 5 most relevant documents by default. To change,
+  pass `max_results` in the API request body (see `docs/SPEC.md` section 4.1).
 
-After submitting a query (US-01), scroll below the answer to the **Retrieved Passages** section. Each passage is a sentence from the corpus that the system used to generate the answer.
+## Empty input handling (US-02)
 
----
+If you click Submit without typing anything, the UI displays
+"Please enter a question" inline. No API call is made, so no quota is consumed.
 
-## US-03: System Health Check
+## Configuration troubleshooting (US-03)
 
-To verify the system is running:
+If the system shows "The model service is not configured", the
+`ANTHROPIC_API_KEY` is missing or empty in `.env`. Stop the app, edit `.env`,
+and run `docker compose up` again.
 
-```bash
-curl http://localhost:8000/health
-```
-
-Expected response:
-```json
-{"status": "ok"}
-```
-
----
-
-## US-04: Run Evaluation
-
-1. Open `http://localhost:8000/evaluate` in your browser.
-2. Click **Run Evaluation**.
-3. Wait for the results (up to 60 seconds).
-4. An aggregate table shows Recall@1, Recall@2, Recall@5, ExactMatch, and F1.
-5. Per-question results appear below the table.
-
----
-
-## US-05: Empty Query Error
-
-If you submit an empty or whitespace-only question, the system displays:
-
-> **Query must not be empty.**
-
-No answer is generated. Correct your input and resubmit.
-
----
-
-## US-06: LLM Unavailable Error
-
-If the configured LLM endpoint is unreachable, the system displays:
-
-> **The language model is currently unavailable. Please try again later.**
-
-Check your `.env` configuration and verify the LLM server is running.
+> Add one section per story.

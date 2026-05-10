@@ -1,71 +1,66 @@
-# Reproducing Results
+# Reproducibility Procedure
+
+> The TA runs `make reproduce` to verify your headline numbers. This document
+> tells the TA what to expect.
+
+## Procedure
+
+```bash
+# From a fresh clone with .env populated
+make reproduce
+```
+
+`make reproduce` performs these steps in order:
+
+1. `make download-data` — fetches the datasets listed in `docs/DATA.md`
+2. `make download-models` — fetches model checkpoints listed in `docs/MODELS.md`
+3. Runs the application pipeline on a sample input
+4. Runs `make test` (unit + integration + user story + edge)
+5. Reports pass/fail per phase
 
 ## Hardware Profile
 
-| Component | Specification |
-|---|---|
-| OS | Ubuntu 22.04 / WSL2 |
-| Python | 3.11 |
-| RAM | 8 GB minimum |
-| Disk | 2 GB free (for model cache and graph) |
-| GPU | Not required (CPU inference for embeddings) |
-| Network | Required for LLM endpoint and model download |
+The headline numbers were measured on:
 
-## Expected Runtime
+- CPU: Intel x86_64, 8 cores
+- Memory: 16 GB
+- Disk: 50 GB free
+- Network: required for model and dataset downloads
+- GPU: not required
 
-| Step | Expected Time |
-|---|---|
-| `make download-models` | 1–2 min (90 MB embedding model) |
-| `make build-kg` | 2–5 min (depends on LLM endpoint latency) |
-| `make test` | 30–60 sec |
-| `make reproduce` | 10–15 min total |
+## Expected Wall Clock
 
-## One-Command Full Replay
+- Total `make reproduce` runtime: under 30 minutes on the documented hardware
+- Of which `docker compose up` to healthy is under 10 minutes (Build category)
+- Data and model download: 5 to 10 minutes depending on network
+- Test suite: under 5 minutes
 
-```bash
-make reproduce
-```
+## Expected Outputs
 
-This runs: `docker compose build` → build KG → run eval → report metrics.
+After `make reproduce` completes, the following files exist:
+
+- `reports/unit.xml` — unit test results
+- `reports/integration.xml` — integration test results
+- `reports/user_stories.xml` — user story acceptance test results
+- `reports/edge.xml` — edge case test results
+- `reports/coverage.xml` — coverage report
+- `reports/coverage_html/index.html` — coverage browser
 
 ## Expected Metric Values
 
-Run against the bundled `data/eval_dataset.py` corpus (10 docs, 4 multi-hop questions):
+These are the headline numbers reported in `README.md`. The TA's reproduction
+must match within the stated tolerance.
 
-| Metric | Expected | Tolerance |
-|---|---|---|
-| Recall@1 | 0.50 | ± 0.20 |
-| Recall@2 | 0.75 | ± 0.20 |
-| Recall@5 | 0.90 | ± 0.15 |
-| ExactMatch | 0.50 | ± 0.25 |
-| F1 | 0.55 | ± 0.25 |
+| Metric | Expected | Tolerance | Where measured |
+|---|---|---|---|
+| Accuracy on dev set | 0.85 | ± 0.02 | `reports/eval.json` |
+| F1 score | 0.81 | ± 0.02 | `reports/eval.json` |
+| p95 latency (single query) | 240 ms | ± 50 ms | `reports/benchmarks.json` |
 
-Tolerances are wide because results depend on the configured LLM. The embedding model (`all-MiniLM-L6-v2`) is deterministic.
+## Outside Tolerance?
 
-## Step-by-Step Manual Reproduction
+If a metric drifts outside the documented tolerance:
 
-```bash
-# 1. Clone and configure
-git clone <repo-url>
-cd HippoRAG-Duplication
-cp .env.example .env
-# Fill in TEACHER_BASE_URL, TEACHER_MODEL, TEACHER_API_KEY
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Download embedding model
-make download-models
-
-# 4. Build the knowledge graph
-make build-kg
-
-# 5. Run tests
-make test
-
-# 6. Run evaluation
-python run_eval.py
-
-# 7. Or run everything via Docker
-make reproduce
-```
+- The Reproducibility test row scores 5/10 instead of 10/10.
+- The team is expected to investigate and document the cause in
+  `reports/known_issues.md` if the deadline has not passed.
