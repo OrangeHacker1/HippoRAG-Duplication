@@ -1,4 +1,4 @@
-# [Project Title — replace with your project name]
+# [Project Title — HippoRAG Duplication]
 
 [One paragraph project description. What does it do, who is it for, what problem does it solve. Keep it to 3 to 5 sentences.]
 
