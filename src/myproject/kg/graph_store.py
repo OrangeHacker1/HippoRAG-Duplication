@@ -1,5 +1,6 @@
 import networkx as nx
 import pickle
+from pathlib import Path
 
 
 class KnowledgeGraph:
@@ -15,7 +16,6 @@ class KnowledgeGraph:
 
         self.triples.append((s, r, o, source_text))
 
-        # Add passage node
         if source_text:
             passage_id = f"passage_{hash(source_text)}"
             self.graph.add_node(passage_id, type="passage", text=source_text)
@@ -23,10 +23,19 @@ class KnowledgeGraph:
             self.graph.add_edge(s, passage_id, relation="contains")
             self.graph.add_edge(o, passage_id, relation="contains")
 
-    def save(self, path):
-        with open(path, "wb") as f:
+    def _resolve_path(self, path: str) -> Path:
+        """Resolve a config-provided path relative to the project src root."""
+        base = Path(__file__).parent.parent  # goes up from kg/ to myproject/
+        resolved = base / path
+        resolved.parent.mkdir(parents=True, exist_ok=True)
+        return resolved
+
+    def save(self, path: str):
+        resolved = self._resolve_path(path)
+        with open(resolved, "wb") as f:
             pickle.dump((self.graph, self.triples), f)
 
-    def load(self, path):
-        with open(path, "rb") as f:
+    def load(self, path: str):
+        resolved = self._resolve_path(path)
+        with open(resolved, "rb") as f:
             self.graph, self.triples = pickle.load(f)

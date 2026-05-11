@@ -8,7 +8,7 @@ llm:
   retries: 3
 
 kg:
-  save_path: kg/graph.pkl
+  save_path: myproject/kg/graph.pkl
   similarity_threshold: 0.75
   max_passages: 1000
 

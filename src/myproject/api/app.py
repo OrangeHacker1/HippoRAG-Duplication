@@ -49,6 +49,7 @@ def index(request: Request):
 
 @app.post("/api/query")
 def query(body: QueryRequest, request: Request):
+    global rag
     request_id = str(uuid.uuid4())
 
     if not body.question.strip():
@@ -56,9 +57,17 @@ def query(body: QueryRequest, request: Request):
         raise HTTPException(status_code=422, detail="Query must not be empty.")
 
     if rag is None:
+        try:
+            rag = HippoRAG()
+            logger.info("HippoRAG loaded on demand.", extra={"request_id": request_id})
+        except Exception as e:
+            logger.warning(f"HippoRAG still not available: {e}", extra={"request_id": request_id})
+
+    # If still None after the attempt, the KG genuinely doesn't exist yet
+    if rag is None:
         raise HTTPException(
             status_code=503,
-            detail="Knowledge graph not loaded. Run python run_build_kg.py first."
+            detail="Knowledge graph not loaded. Build it first at /build."
         )
 
     logger.info(f"Query received: {body.question}", extra={"request_id": request_id})
@@ -84,6 +93,8 @@ def query(body: QueryRequest, request: Request):
             status_code=503,
             detail="The language model is currently unavailable. Please try again later."
         )
+
+
 
 
 @app.get("/evaluate", response_class=HTMLResponse)

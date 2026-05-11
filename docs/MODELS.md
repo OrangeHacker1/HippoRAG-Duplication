@@ -4,6 +4,33 @@
 > license, and download command. Model checkpoints must NOT be committed
 > to the repo.
 
+## Model 1: Default RAG Model
+
+- **Source:** API
+- **Identifier:** llama-3.3-70b-instruct-awq
+- **Revision/version:** [git sha for HF, model id for API]
+- **License:** [e.g. Apache 2.0, MIT, commercial API]
+- **Size:** API Only
+- **Used for:** Embeding / Constructing RAG; Retrieval
+
+### Download
+
+```bash
+make download-models
+```
+
+API-based models (Anthropic, OpenAI) do not require a download step; they
+require credentials in `.env`.
+
+For HuggingFace models:
+
+```bash
+mkdir -p models
+huggingface-cli download <org/model> --revision <revision> \
+    --local-dir models/<model_name>
+```
+
+
 ## Model 1: [name]
 
 - **Source:** [HuggingFace org/model, Anthropic API, OpenAI API, etc.]

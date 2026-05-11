@@ -41,6 +41,9 @@
    (c) each citation showing a document title and a quoted snippet.
 6. Compare the screen to `docs/assets/stories/us_01_expected.png`. The layout
    should match (exact text content will vary).
+7. If the text box responds with 'Knowledge graph not loaded. Run python run_build_kg.py first.'
+   (a) Manual: Run the command ' docker compose exec app python src/myproject/run_build_kg.py' in the terminal.
+   (b) UI: Use the training tab to manually select what you want trained.
 
 **Expected end state:** see `docs/assets/stories/us_01_expected.png`.
 
@@ -110,3 +113,76 @@
 >   - Numbered manual steps a human can follow without reading source code
 >   - A reference screenshot in docs/assets/stories/
 >   - A matching test in tests/user_stories/test_us_NN.py
+
+## US-04: Retrieved Passages Are Visible Alongside the Answer
+
+**As a** user,
+**I want to** see which source passages were used to generate the answer,
+**So that** I can verify the answer is grounded in the documents.
+
+### Acceptance Criteria
+
+- **Given** the user has submitted a question (US-01),
+- **When** the answer is displayed,
+- **Then** the retrieved passages are listed below the answer, each as a separate item.
+
+### Manual Steps
+
+1. Complete steps 1–4 of US-01.
+2. Confirm a section labeled **"Retrieved Passages"** is visible on the page.
+3. Confirm each passage is displayed as a distinct list item or card.
+4. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
+5. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
+
+---
+
+## US-05: Run Evaluation and View Metrics
+
+**As a** researcher,
+**I want to** trigger the evaluation pipeline from the web interface,
+**So that** I can see Recall@k, Exact Match, and F1 scores for the system.
+
+### Acceptance Criteria
+
+- **Given** the knowledge graph has been built,
+- **When** the user navigates to the Evaluate page and clicks **"Run Evaluation"**,
+- **Then** the system displays Recall@1, Recall@2, Recall@5, Exact Match, and F1 scores.
+
+### Manual Steps
+
+1. Open a browser and navigate to `http://localhost:8000/evaluate`.
+2. Confirm the page loads with a **"Run Evaluation"** button.
+3. Click **"Run Evaluation"**.
+4. Wait for the results to appear (may take up to 60 seconds).
+5. Confirm a results table appears with rows for: `Recall@1`, `Recall@2`, `Recall@5`, `ExactMatch`, `F1`.
+6. Confirm all values are numeric and between 0.0 and 1.0.
+
+**Reference screenshot:** `docs/assets/stories/us_04_expected.png`
+
+---
+
+## US-06: LLM Timeout Returns a Graceful Error (Error Path)
+
+**As a** user,
+**I want to** see a friendly error message when the LLM is unreachable,
+**So that** the application does not crash or expose internal stack traces.
+
+### Acceptance Criteria
+
+- **Given** the LLM endpoint is unreachable (e.g. wrong URL in `.env`),
+- **When** the user submits a valid question,
+- **Then** the system returns HTTP 503 and displays the message: `"The language model is currently unavailable. Please try again later."`.
+
+### Manual Steps
+
+1. Stop the running system: `docker compose down`.
+2. Edit `.env` and set `TEACHER_BASE_URL` to an unreachable address (e.g. `http://localhost:9999/v1`).
+3. Restart: `docker compose up -d`.
+4. Open a browser and navigate to `http://localhost:8000`.
+5. Type any question and click **Submit**.
+6. Confirm an error message is displayed: **"The language model is currently unavailable. Please try again later."**
+7. Confirm no Python stack trace is visible on the page.
+8. Restore the original `TEACHER_BASE_URL` in `.env` and restart the system.
+
+**Reference screenshot:** `docs/assets/stories/us_06_expected.png`
+
