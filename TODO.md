@@ -1,140 +1,59 @@
-# HippoRAG TODO
+# HippoRAG Duplication — TODO
 
-## Implementation Gaps (All Done)
-
-- [x] Gap 1 — Fix `retrieval/filter.py` stub — LLM now parses and returns relevant triple indices
-- [x] Gap 2 — Wire `query_processor.py` into `retriever.py` to extract seeds from the query
-- [x] Gap 3 — Fix `llm/llm_client.py` — replace `eval()` with JSON-format prompt and structured parsing
-- [x] Gap 4 — Fix context in `retrieval/retriever.py` — pull actual passage text from graph nodes instead of node names
-- [x] Gap 5 — Add evaluation
-  - [x] Gap 5a — Build a multi-hop test corpus (`data/eval_dataset.py`)
-  - [x] Gap 5b — Write test questions with gold answers (`data/eval_dataset.py`)
-  - [x] Gap 5c — Implement Recall@k metric (`eval/metrics.py`)
-  - [x] Gap 5d — Implement Exact Match and F1 score metrics (`eval/metrics.py`)
-  - [x] Gap 5e — Write evaluation runner script (`run_eval.py`)
+Current branch: **main**
+Code lives in: **`src/myproject/`** (package name `myproject` is pinned by course template)
+Grader script: **`grading/grade.py`** (course-issued, do not modify)
 
 ---
 
-## Rubric Checklist (Deadline: May 10, 11:59 PM)
+## Critical — Breaks grade.py scoring
 
-### Plan — Specification Driven Development (25 pts)
-- [x] `docs/SPEC.md` — Purpose, Component Inventory, Data Flow, Public Interfaces, Model & Prompt Selection, Config structure
-- [x] `docs/STORIES.md` — US-01 through US-06 with Given/When/Then and numbered steps
-- [x] `grading/traceability.yaml` — maps each story to spec section, modules, and tests
-- [x] `scripts/regenerate.sh` and `scripts/regenerate_prompt.md`
-- [x] `docs/diagrams/architecture.png`
-- [x] `docs/assets/stories/us_01_expected.png` through `us_06_expected.png`
+- [ ] **`src/myproject/data/eval_dataset.py` missing** — `app.py` imports `from myproject.data.eval_dataset import QUESTIONS` but only a `__pycache__` exists. App will crash on startup. Copy from `Samantha's-Branch:src/myproject/data/eval_dataset.py`.
 
-### Design — Reproducibility Manifest (10 pts)
-- [x] `grading/manifest.yaml` — Python version, seed, model IDs, dataset versions, expected metrics
-- [x] `docs/DATA.md`
-- [x] `docs/MODELS.md`
-- [x] `docs/REPRODUCE.md` — hardware profile, expected runtime, metric tolerances
-- [x] `requirements.txt` with pinned versions
-- [x] `make reproduce`, `make download-data`, `make download-models` targets in Makefile
-- [ ] Update `commit_sha` in `grading/manifest.yaml` to final commit before submission
+- [ ] **`src/myproject/router.py` missing** — `tests/user_stories/test_us_01.py` imports `from myproject.router import route_query`. Module doesn't exist → test fails → `reports/user_stories.xml` scores zero for regen.
 
-### Deploy — Build and Deployment (6 pts)
-- [x] `Dockerfile` — multi-stage, non-root user, health check (CPU-only torch)
-- [x] `docker-compose.yml` — health checks on all services, dependency ordering
-- [x] `.dockerignore` — excludes .venv, submodule, .git from build context
-- [x] `.env.example` with required placeholders and comments
-- [x] `.env` in `.gitignore`
-- [x] Quick start in `README.md`
+- [ ] **`tests/user_stories/test_us_01.py` broken** — calls `route_query()` and expects `{answer, citations, latency_ms}`. Once `router.py` exists, the return shape must match.
 
-### Test — Verification and Automated Testing (12 pts)
-- [x] `tests/unit/` — `test_metrics.py`, `test_graph_store.py`, `test_ppr.py`
-- [x] `tests/integration/` — `test_api.py`
-- [x] `tests/user_stories/` — `test_stories.py` with `@pytest.mark.user_story("US-NN")`
-- [x] `scripts/demo.sh`
-- [x] `reports/unit.xml`
-- [x] `reports/integration.xml`
-- [x] `reports/user_stories.xml`
-- [x] `reports/coverage.xml` and `reports/coverage_html/`
+- [ ] **`tests/user_stories/test_us_02.py` broken** — sends `{"text": ""}` but API takes `{"question": ""}`.
 
-### Test — Stress and Robustness (6 pts)
-- [x] `tests/edge/test_edge_cases.py`
-- [x] `tests/load/locustfile.py`
-- [x] `docs/benchmarks.md`
-- [ ] `reports/benchmarks.json` — run `make loadtest` against live system
+- [ ] **`reports/edge.xml` missing** — grade.py reads this for Stress & Robustness (6 pts). Run edge tests: `pytest tests/edge/ --junitxml=reports/edge.xml`.
 
-### Implement — Code Quality and Responsible AI (6 pts)
-- [x] `pyproject.toml` — ruff, black, mypy configured
-- [x] `make lint` target
-- [x] `docs/MODEL_CARD.md`
-- [x] `reports/security.txt`
+- [ ] **`reports/regenerated_user_stories.xml` missing** — grade.py reads this for Spec Driven Development (25 pts). Requires running `scripts/regenerate.sh` with `ANTHROPIC_API_KEY` set.
 
-### Operate — Logging (5 pts)
-- [x] Structured JSON logging in `api/logger.py`
-- [x] `request_id` propagated through all components
-- [x] `docs/LOGGING.md`
-
-### Operate — Application Functionality and UI (20 pts)
-- [x] `api/app.py` — FastAPI with query, evaluate, health endpoints
-- [x] `api/templates/index.html` and `evaluate.html`
-- [x] `docs/STORIES.md`
-- [x] US-05 and US-06 are error path stories
-- [x] `reports/walkthrough.md`
-- [x] `docs/assets/stories/us_01_expected.png` through `us_06_expected.png`
-
-### Operate — User Documentation (6 pts)
-- [x] `README.md`
-- [x] `docs/usage.md`
-- [ ] `docs/assets/demo.gif` — record a short screen capture of the full flow
-
-### Team — Contributions (4 pts)
-- [x] `CONTRIBUTIONS.md`
-- [x] `reports/git_contributions.txt`
+- [ ] **`grading/manifest.yaml` incomplete** — `commit_sha: ""` is empty. Also lists wrong model (`claude-opus-4-5-20251101` for QA) and wrong dataset (`nist_csrc_pubs`). Fix all three fields, then fill `commit_sha` on the final commit.
 
 ---
 
-## V2 Paper Table Replication (Professor Request)
+## Important — Affects Docker / TA walkthrough
 
-The paper has 5 main evaluation tables. Goal: replicate as many as possible on a
-MuSiQue subset (50–100 questions, 200–500 corpus passages) using our LLM endpoint.
-Data is already available at `Official-HippoRAG-Repo/reproduce/dataset/`.
+- [ ] **`.dockerignore` deleted** — Docker build context includes `.venv`, `.git`, etc. Restore it.
 
-### Table 2 — QA Performance (F1 scores) ← most important
-Paper reports F1 on: NQ, PopQA, MuSiQue, 2Wiki, HotpotQA, LV-Eval, NarrativeQA
-We target: **MuSiQue subset only**
+- [ ] **Dockerfile CMD on port 8080, STORIES.md says 8000** — `docs/STORIES.md` manual steps reference `http://localhost:8000` but Dockerfile runs on 8080. One must match the other.
 
-- [ ] Copy `musique.json` + `musique_corpus.json` from submodule to `data/`
-- [ ] Write `scripts/run_musique_eval.py` — loads subset, builds KG, runs queries, reports F1
-- [ ] Run the script (needs VPN + ~30–60 min)
-- [ ] Add results to `REPORT.md` as Table 2 partial replication
-- [ ] Note deviation: we use `all-MiniLM-L6-v2` instead of NV-Embed-v2, and UTSA LLM instead of Llama-3.3-70B
-
-### Table 3 — Retrieval Performance (Recall@5) ← second priority
-Paper reports Recall@5 for retrieved passages (not just answer F1)
-We target: **MuSiQue subset only**
-
-- [ ] Add Recall@5 passage metric to eval script (gold docs are in `musique.json` → `paragraphs`)
-- [ ] Report Recall@5 alongside F1 in `REPORT.md`
-
-### Table 4 — Ablation Study ← third priority (if time allows)
-Paper tests: NER-to-node vs Query-to-node vs Query-to-triple linking methods
-We target: compare our current approach (NER/entity matching) vs query-to-triple
-
-- [ ] Implement query-to-triple linking variant in `retrieval/retriever.py`
-- [ ] Run both variants on MuSiQue subset
-- [ ] Report Recall@5 difference in `REPORT.md`
-
-### Table 7 — Robustness to retrievers (MuSiQue subset) ← bonus if time allows
-Paper uses: GTE-Qwen2-7B, GritLM-7B, NV-Embed-v2
-We have: all-MiniLM-L6-v2 only — skip unless time permits
-
-### Tables 5, 6, 8, 9 — Skip
-Table 5: hyperparameter sweep (too expensive)
-Table 6: qualitative examples (no code needed, low value)
-Tables 8, 9: repeat of Table 2/3 with GPT-4o-mini (different LLM, out of scope)
+- [ ] **`reports/benchmarks.json` missing** — not checked by grade.py but listed in rubric under Stress & Robustness. Generate with: start server → `make loadtest`. (Low priority vs items above.)
 
 ---
 
-## Remaining Manual Actions
+## Nice to Have
 
-1. [ ] **Make repo public** on GitHub (Settings → Change visibility → Public)
-2. [ ] **Decide branch** — submit Samantha's-Branch URL or merge to main
-3. [ ] **Run loadtest** — `docker compose up` then `make loadtest` → `reports/benchmarks.json`
-4. [ ] **Update commit_sha** — final `git rev-parse HEAD` → `grading/manifest.yaml`
-5. [ ] **Run MuSiQue eval** — needs VPN, 30–60 min runtime
-6. [ ] **Record demo.gif** — optional but listed in rubric
+- [ ] **`grading/manifest.yaml` model_ids** — currently lists `claude-opus-4-5-20251101` and `nist_csrc_pubs` dataset. Should reflect actual models: `sentence-transformers/all-MiniLM-L6-v2` + UTSA LLM, dataset: MuSiQue + eval_dataset.
+
+- [ ] **`commit_sha`** — update to final HEAD after all other changes are committed and pushed.
+
+- [ ] **`docs/assets/demo.gif`** — optional per rubric, listed under User Documentation (6 pts).
+
+---
+
+## Already Done (on main)
+
+- [x] `grading/grade.py` — course-issued grader copied in
+- [x] `reports/unit.xml`, `integration.xml`, `user_stories.xml`, `coverage.xml` — restored
+- [x] `reports/security.txt`, `git_contributions.txt` — restored
+- [x] `reports/walkthrough.md` — exists
+- [x] `scripts/regenerate_prompt.md` — course-issued version present
+- [x] `scripts/regenerate.sh` — present
+- [x] `docs/STORIES.md` — updated with correct HippoRAG stories
+- [x] `Dockerfile` — multi-stage, non-root, CPU-only torch, health check
+- [x] `docker-compose.yml` — Qdrant removed, build-kg service added
+- [x] `myproject` package installed (`pip install -e .`)
+- [x] `README.md` — filled in
