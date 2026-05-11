@@ -5,9 +5,8 @@ Official-HippoRAG-Repo/
 .venv/
 **/.venv/
 
-# Environment secrets
-.env
-
+# Ignore template files
+cs6263_template/
 
 # Python
 __pycache__/
