@@ -2,12 +2,12 @@ traceability:
   - story_id: US-01
     spec_section: "Public Interfaces / HippoRAG.retrieve() and HippoRAG.query()"
     source_modules:
-      - retrieval/retriever.py
-      - retrieval/triple_matcher.py
-      - retrieval/filter.py
-      - retrieval/ppr.py
-      - llm/llm_client.py
-      - api/app.py
+      - src/myproject/retrieval/retriever.py
+      - src/myproject/retrieval/triple_matcher.py
+      - src/myproject/retrieval/filter.py
+      - src/myproject/retrieval/ppr.py
+      - src/myproject/llm/llm_client.py
+      - src/myproject/api/app.py
     tests:
       - tests/user_stories/test_stories.py::test_us01_submit_query_returns_answer
       - tests/integration/test_api.py::TestQueryEndpoint::test_valid_query_returns_answer
@@ -15,16 +15,16 @@ traceability:
   - story_id: US-02
     spec_section: "Data Flow / Retrieval and Answer Generation"
     source_modules:
-      - retrieval/retriever.py
-      - kg/graph_store.py
-      - api/app.py
+      - src/myproject/retrieval/retriever.py
+      - src/myproject/kg/graph_store.py
+      - src/myproject/api/app.py
     tests:
       - tests/user_stories/test_stories.py::test_us02_retrieved_passages_visible
 
   - story_id: US-03
     spec_section: "Public Interfaces / API Server"
     source_modules:
-      - api/app.py
+      - src/myproject/api/app.py
     tests:
       - tests/user_stories/test_stories.py::test_us03_health_check
       - tests/integration/test_api.py::TestHealthEndpoint::test_health_returns_ok
@@ -32,16 +32,16 @@ traceability:
   - story_id: US-04
     spec_section: "Public Interfaces / API Server / POST /api/evaluate"
     source_modules:
-      - api/app.py
-      - eval/metrics.py
-      - data/eval_dataset.py
+      - src/myproject/api/app.py
+      - src/myproject/eval/metrics.py
+      - src/myproject/data/eval_dataset.py
     tests:
       - tests/user_stories/test_stories.py::test_us04_evaluate_returns_metrics
 
   - story_id: US-05
     spec_section: "Public Interfaces / API Server / POST /api/query"
     source_modules:
-      - api/app.py
+      - src/myproject/api/app.py
     tests:
       - tests/user_stories/test_stories.py::test_us05_empty_query_returns_error
       - tests/integration/test_api.py::TestQueryEndpoint::test_empty_query_returns_422
@@ -50,8 +50,8 @@ traceability:
   - story_id: US-06
     spec_section: "Public Interfaces / API Server / POST /api/query"
     source_modules:
-      - api/app.py
-      - llm/llm_client.py
+      - src/myproject/api/app.py
+      - src/myproject/llm/llm_client.py
     tests:
       - tests/user_stories/test_stories.py::test_us06_llm_unavailable_returns_503
       - tests/integration/test_api.py::TestQueryEndpoint::test_llm_timeout_returns_503

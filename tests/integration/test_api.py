@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
-from api.app import app
+from myproject.api.app import app
 
 
 @pytest.fixture
@@ -34,7 +34,7 @@ class TestQueryEndpoint:
         mock_rag.retrieve.return_value = ["Einstein developed relativity."]
         mock_rag.llm.generate.return_value = "Albert Einstein."
 
-        with patch("api.app.rag", mock_rag):
+        with patch("myproject.api.app.rag", mock_rag):
             res = client.post("/api/query", json={"question": "Who developed relativity?"})
 
         assert res.status_code == 200
@@ -49,7 +49,7 @@ class TestQueryEndpoint:
         mock_rag = MagicMock()
         mock_rag.retrieve.side_effect = req.exceptions.ConnectTimeout()
 
-        with patch("api.app.rag", mock_rag):
+        with patch("myproject.api.app.rag", mock_rag):
             res = client.post("/api/query", json={"question": "Who developed relativity?"})
 
         assert res.status_code == 503

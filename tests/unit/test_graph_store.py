@@ -1,7 +1,7 @@
 import pytest
 import tempfile
 import os
-from kg.graph_store import KnowledgeGraph
+from myproject.kg.graph_store import KnowledgeGraph
 
 
 @pytest.mark.unit

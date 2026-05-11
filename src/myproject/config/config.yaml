@@ -1,0 +1,24 @@
+###
+# HippoRAG Configuration
+###
+
+llm:
+  temperature: 0.0
+  max_tokens: 512
+  retries: 3
+
+kg:
+  save_path: src/myproject/kg/graph.pkl
+  similarity_threshold: 0.75
+  max_passages: 1000
+
+retrieval:
+  top_k: 5
+  ppr_alpha: 0.85
+  max_iter: 30
+
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2
+
+logging:
+  verbose: true

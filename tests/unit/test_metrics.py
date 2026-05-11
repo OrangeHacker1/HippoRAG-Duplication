@@ -1,5 +1,5 @@
 import pytest
-from eval.metrics import recall_at_k, exact_match, f1_score
+from myproject.eval.metrics import recall_at_k, exact_match, f1_score
 
 
 @pytest.mark.unit

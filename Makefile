@@ -6,12 +6,13 @@ PIP     := .venv/bin/pip
 
 install:
 	$(PIP) install -r requirements.txt
+	$(PIP) install -e . --no-deps
 
 build-kg:
-	$(PYTHON) run_build_kg.py
+	$(PYTHON) EXTRA/run_build_kg.py
 
 run:
-	.venv/bin/uvicorn api.app:app --host 0.0.0.0 --port 8000
+	.venv/bin/uvicorn myproject.api.app:app --host 0.0.0.0 --port 8000
 
 test:
 	mkdir -p reports
@@ -25,7 +26,7 @@ test:
 		--junitxml=reports/user_stories.xml \
 		-v
 	$(PYTEST) tests/ \
-		--cov=kg --cov=retrieval --cov=llm --cov=api --cov=eval \
+		--cov=myproject \
 		--cov-report=xml:reports/coverage.xml \
 		--cov-report=html:reports/coverage_html \
 		-q
@@ -33,7 +34,7 @@ test:
 lint:
 	.venv/bin/ruff check .
 	.venv/bin/black --check .
-	.venv/bin/mypy kg/ retrieval/ llm/ api/ --ignore-missing-imports
+	.venv/bin/mypy src/myproject/ --ignore-missing-imports
 
 audit:
 	$(PIP) install pip-audit -q
@@ -46,10 +47,10 @@ reproduce:
 	docker compose run --rm eval
 
 download-data:
-	@echo "Eval dataset is bundled in data/eval_dataset.py — no download required."
+	@echo "Eval dataset is bundled in src/myproject/data/eval_dataset.py — no download required."
 
 download-models:
-	$(PYTHON) -c "from kg.embeddings import EmbeddingEngine; EmbeddingEngine()"
+	$(PYTHON) -c "from myproject.kg.embeddings import EmbeddingEngine; EmbeddingEngine()"
 
 demo:
 	bash scripts/demo.sh

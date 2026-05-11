@@ -32,7 +32,7 @@ echo "Spec:  $SPEC"
 echo "Output: $OUTPUT_DIR"
 echo ""
 
-python3 scripts/_regenerate_helper.py "$SPEC" "$PROMPT" "$OUTPUT_DIR" "$MODEL"
+python3 EXTRA/scripts/_regenerate_helper.py "$SPEC" "$PROMPT" "$OUTPUT_DIR" "$MODEL"
 
 echo ""
 echo "Running user story tests against regenerated code..."

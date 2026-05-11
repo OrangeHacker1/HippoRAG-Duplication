@@ -1,6 +1,6 @@
 import pytest
 import networkx as nx
-from retrieval.ppr import run_ppr
+from myproject.retrieval.ppr import run_ppr
 
 
 @pytest.mark.unit

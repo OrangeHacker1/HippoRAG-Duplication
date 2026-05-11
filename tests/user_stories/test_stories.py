@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
-from api.app import app
+from myproject.api.app import app
 
 
 @pytest.fixture
@@ -27,7 +27,7 @@ def test_us01_submit_query_returns_answer(client, mock_rag):
     When the user submits a non-empty question,
     Then the response contains a non-empty answer string.
     """
-    with patch("api.app.rag", mock_rag):
+    with patch("myproject.api.app.rag", mock_rag):
         res = client.post("/api/query", json={"question": "Who influenced physics through relativity?"})
 
     assert res.status_code == 200
@@ -43,7 +43,7 @@ def test_us02_retrieved_passages_visible(client, mock_rag):
     When the answer is displayed,
     Then retrieved passages are returned as a non-empty list.
     """
-    with patch("api.app.rag", mock_rag):
+    with patch("myproject.api.app.rag", mock_rag):
         res = client.post("/api/query", json={"question": "Who influenced physics through relativity?"})
 
     assert res.status_code == 200
@@ -72,7 +72,7 @@ def test_us04_evaluate_returns_metrics(client, mock_rag):
     When POST /api/evaluate is called,
     Then the response contains Recall@k, ExactMatch, and F1 scores.
     """
-    with patch("api.app.rag", mock_rag):
+    with patch("myproject.api.app.rag", mock_rag):
         res = client.post("/api/evaluate")
 
     assert res.status_code == 200
@@ -109,7 +109,7 @@ def test_us06_llm_unavailable_returns_503(client):
     mock_rag = MagicMock()
     mock_rag.retrieve.side_effect = req.exceptions.ConnectTimeout()
 
-    with patch("api.app.rag", mock_rag):
+    with patch("myproject.api.app.rag", mock_rag):
         res = client.post("/api/query", json={"question": "Who developed relativity?"})
 
     assert res.status_code == 503
