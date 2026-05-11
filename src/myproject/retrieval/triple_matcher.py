@@ -1,5 +1,5 @@
 # retrieval/triple_matcher.py
-from kg.embeddings import EmbeddingEngine
+from myproject.kg.embeddings import EmbeddingEngine
 
 
 class TripleMatcher:

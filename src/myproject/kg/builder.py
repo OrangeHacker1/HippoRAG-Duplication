@@ -1,8 +1,8 @@
 # kg/builder.py
-from llm.llm_client import LLMClient
-from kg.graph_store import KnowledgeGraph
-from kg.embeddings import EmbeddingEngine
-from config.config_loader import load_config
+from myproject.llm.llm_client import LLMClient
+from myproject.kg.graph_store import KnowledgeGraph
+from myproject.kg.embeddings import EmbeddingEngine
+from myproject.config.config_loader import load_config
 
 
 class KGBuilder:

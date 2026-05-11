@@ -1,5 +1,5 @@
 # retrieval/filter.py
-from llm.llm_client import LLMClient
+from myproject.llm.llm_client import LLMClient
 import re
 
 

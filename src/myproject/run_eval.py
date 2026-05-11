@@ -1,9 +1,9 @@
 # run_eval.py
 import random
-from kg.builder import KGBuilder
-from retrieval.retriever import HippoRAG
-from eval.metrics import recall_at_k, exact_match, f1_score
-from data.eval_dataset import CORPUS, QUESTIONS
+from myproject.kg.builder import KGBuilder
+from myproject.retrieval.retriever import HippoRAG
+from myproject.eval.metrics import recall_at_k, exact_match, f1_score
+from myproject.data.eval_dataset import CORPUS, QUESTIONS
 
 print("Building knowledge graph from eval corpus...")
 builder = KGBuilder()

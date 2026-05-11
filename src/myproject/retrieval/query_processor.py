@@ -1,5 +1,5 @@
 # retrieval/query_processor.py
-from llm.llm_client import LLMClient
+from myproject.llm.llm_client import LLMClient
 
 class QueryProcessor:
     def __init__(self):

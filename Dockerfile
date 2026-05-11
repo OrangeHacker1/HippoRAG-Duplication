@@ -28,6 +28,8 @@ ENV PATH=/home/app/.local/bin:$PATH
 # Copy source
 COPY --chown=app:app src ./src
 COPY --chown=app:app pyproject.toml ./
+COPY --chown=app:app data ./data
+# Error Here
 RUN pip install --user -e .
 
 # Application port
@@ -38,4 +40,4 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health', timeout=3)" || exit 1
 
 # Run application
-CMD ["uvicorn", "myproject.api:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "myproject.api.app:app", "--host", "0.0.0.0", "--port", "8080"]

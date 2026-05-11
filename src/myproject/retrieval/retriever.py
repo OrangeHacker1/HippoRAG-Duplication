@@ -1,12 +1,12 @@
 # retrieval/retriever.py
-from kg.graph_store import KnowledgeGraph
-from kg.embeddings import EmbeddingEngine
-from retrieval.triple_matcher import TripleMatcher
-from retrieval.filter import TripleFilter
-from retrieval.query_processor import QueryProcessor
-from retrieval.ppr import run_ppr
-from llm.llm_client import LLMClient
-from config.config_loader import load_config
+from myproject.kg.graph_store import KnowledgeGraph
+from myproject.kg.embeddings import EmbeddingEngine
+from myproject.retrieval.triple_matcher import TripleMatcher
+from myproject.retrieval.filter import TripleFilter
+from myproject.retrieval.query_processor import QueryProcessor
+from myproject.retrieval.ppr import run_ppr
+from myproject.llm.llm_client import LLMClient
+from myproject.config.config_loader import load_config
 
 
 class HippoRAG:

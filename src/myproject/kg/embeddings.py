@@ -1,7 +1,7 @@
 # kg/embeddings.py
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from config.config_loader import load_config
+from myproject.config.config_loader import load_config
 
 
 class EmbeddingEngine:

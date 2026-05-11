@@ -1,7 +1,7 @@
 # llm/llm_client.py
 import requests
-from config.config_loader import load_config
-from config.env_loader import load_environment
+from myproject.config.config_loader import load_config
+from myproject.config.env_loader import load_environment
 
 
 class LLMClient:

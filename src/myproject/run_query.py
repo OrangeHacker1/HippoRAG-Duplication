@@ -1,5 +1,5 @@
 # run_query.py
-from retrieval.retriever import HippoRAG
+from myproject.retrieval.retriever import HippoRAG
 
 rag = HippoRAG()
 

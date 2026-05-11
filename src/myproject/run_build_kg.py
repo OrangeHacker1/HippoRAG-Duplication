@@ -1,5 +1,5 @@
 # run_build_kg.py
-from kg.builder import KGBuilder
+from myproject.kg.builder import KGBuilder
 
 docs = [
     "Albert Einstein developed the theory of relativity.",
