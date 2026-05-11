@@ -150,7 +150,7 @@
 
 ### Manual Steps
 
-1. Open a browser and navigate to `http://localhost:8000/evaluate`.
+1. Open a browser and navigate to `http://localhost:8080/evaluate`.
 2. Confirm the page loads with a **"Run Evaluation"** button.
 3. Click **"Run Evaluation"**.
 4. Wait for the results to appear (may take up to 60 seconds).
@@ -178,7 +178,7 @@
 1. Stop the running system: `docker compose down`.
 2. Edit `.env` and set `TEACHER_BASE_URL` to an unreachable address (e.g. `http://localhost:9999/v1`).
 3. Restart: `docker compose up -d`.
-4. Open a browser and navigate to `http://localhost:8000`.
+4. Open a browser and navigate to `http://localhost:8080`.
 5. Type any question and click **Submit**.
 6. Confirm an error message is displayed: **"The language model is currently unavailable. Please try again later."**
 7. Confirm no Python stack trace is visible on the page.

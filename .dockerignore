@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+Official-HippoRAG-Repo/
+reports/coverage_html/
+.coverage
+*.pkl
+.env
+.claude/
+cs6263_template/
+EXTRA/
