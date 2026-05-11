@@ -26,9 +26,9 @@ Grader script: **`grading/grade.py`** (course-issued, do not modify)
 
 ## Important — Affects Docker / TA walkthrough
 
-- [ ] **`.dockerignore` deleted** — Docker build context includes `.venv`, `.git`, etc. Restore it.
+- [x] **`.dockerignore` deleted** — restored on `finalize-wip`
 
-- [ ] **Dockerfile CMD on port 8080, STORIES.md says 8000** — `docs/STORIES.md` manual steps reference `http://localhost:8000` but Dockerfile runs on 8080. One must match the other.
+- [x] **Dockerfile CMD on port 8080, STORIES.md says 8000** — fixed two stray 8000 refs in STORIES.md to 8080
 
 - [ ] **`reports/benchmarks.json` missing** — not checked by grade.py but listed in rubric under Stress & Robustness. Generate with: start server → `make loadtest`. (Low priority vs items above.)
 
@@ -36,7 +36,7 @@ Grader script: **`grading/grade.py`** (course-issued, do not modify)
 
 ## Nice to Have
 
-- [ ] **`grading/manifest.yaml` model_ids** — currently lists `claude-opus-4-5-20251101` and `nist_csrc_pubs` dataset. Should reflect actual models: `sentence-transformers/all-MiniLM-L6-v2` + UTSA LLM, dataset: MuSiQue + eval_dataset.
+- [x] **`grading/manifest.yaml` model_ids** — corrected to UTSA LLM + MiniLM-L6-v2, datasets updated to hipporag-eval-multihop and musique-validation-subset
 
 - [ ] **`commit_sha`** — update to final HEAD after all other changes are committed and pushed.
 
