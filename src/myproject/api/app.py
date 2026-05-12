@@ -11,8 +11,8 @@ from pydantic import BaseModel
 from myproject.api.logger import get_logger
 from myproject.retrieval.retriever import HippoRAG
 from myproject.eval.metrics import recall_at_k, exact_match, f1_score
-from data.eval_dataset import QUESTIONS
-#from da
+from myproject.data.eval_dataset import QUESTIONS
+
 logger = get_logger(__name__)
 
 rag: HippoRAG | None = None

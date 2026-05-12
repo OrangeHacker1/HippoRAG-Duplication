@@ -22,7 +22,7 @@ build/
 dist/
 
 # Data and models (must be downloaded, never committed)
-data/
+/data/
 models/
 
 # Generated artifacts
