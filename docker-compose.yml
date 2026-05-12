@@ -7,6 +7,13 @@ services:
       - .env
     ports:
       - "${APP_PORT:-8080}:8080"
+    volumes:
+      # --- KG PERSISTENCE ---
+      # This named volume survives `docker compose down` and `docker compose up`.
+      # All saved KG pickles live here. To permanently delete a saved model,
+      # run: docker volume rm <project>_kg_data
+      # Or delete the specific subfolder: docker exec myproject_app rm -rf /app/models/<name>
+      - kg_data:/app/models
     depends_on:
       vectordb:
         condition: service_healthy
@@ -39,4 +46,8 @@ services:
     restart: unless-stopped
 
 volumes:
+  # Persists the Qdrant vector index across container restarts
   vectordb_data:
+  # Persists saved HippoRAG knowledge graphs across container restarts.
+  # Delete with: docker volume rm <project_name>_kg_data
+  kg_data:

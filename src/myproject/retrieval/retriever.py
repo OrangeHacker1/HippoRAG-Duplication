@@ -9,11 +9,77 @@ from myproject.llm.llm_client import LLMClient
 from myproject.config.config_loader import load_config
 
 
+
+def _extract_triples_from_graph(graph) -> list:
+    """
+    Reconstruct the triples list from a loaded NetworkX DiGraph.
+ 
+    During KG construction, KnowledgeGraph.add_triple() builds two things:
+      1. The NetworkX graph (nodes + edges with a 'relation' attribute).
+      2. A flat list of (subject, relation, object, source_text) tuples
+         stored in KnowledgeGraph.triples — this is what TripleMatcher reads.
+ 
+    When we load a graph from disk via persistence.load_kg(), only the
+    NetworkX DiGraph is restored from the pickle.  The triples list must be
+    rebuilt from the graph edges so TripleMatcher has something to embed.
+ 
+    We only include edges between entity nodes (skipping "similar" and
+    "contains" structural edges), which are the true knowledge triples.
+    The source_text is recovered from the first passage node that the
+    subject entity links to via a "contains" edge, or None if not found.
+    """
+    triples = []
+    for s, o, data in graph.edges(data=True):
+        relation = data.get("relation", "")
+ 
+        # Skip structural edges — only entity-to-entity knowledge triples
+        if relation in ("similar", "contains"):
+            continue
+ 
+        s_type = graph.nodes[s].get("type")
+        o_type = graph.nodes[o].get("type")
+ 
+        if s_type == "entity" and o_type == "entity":
+            # Try to recover source text from a passage linked to the subject
+            source_text = None
+            for neighbor in graph.successors(s):
+                if graph.nodes[neighbor].get("type") == "passage":
+                    source_text = graph.nodes[neighbor].get("text")
+                    break
+            triples.append((s, relation, o, source_text))
+ 
+    return triples
+
+
 class HippoRAG:
-    def __init__(self):
+    def __init__(self, graph=None):
+        """
+        Initialise HippoRAG.
+
+        Parameters
+        ----------
+        graph : networkx.DiGraph, optional
+            A pre-loaded knowledge graph (e.g. loaded from the models volume
+            by persistence.load_kg).  When supplied, the constructor skips the
+            disk-load step and uses this graph directly.
+
+            If None (default), the graph is loaded from the path specified in
+            config.yaml under kg.save_path — this is the original behaviour
+            and remains fully supported.
+        """
         self.config = load_config()
         self.kg = KnowledgeGraph()
-        self.kg.load(self.config["kg"]["save_path"])
+
+        if graph is not None:
+            # ── Fast path: graph was already loaded by the caller ────────────
+            # Assign the NetworkX DiGraph directly into the KnowledgeGraph
+            # wrapper.  We also need to rebuild the triples list from the graph
+            # edges, because KnowledgeGraph.triples is what TripleMatcher reads.
+            self.kg.graph = graph
+            self.kg.triples = _extract_triples_from_graph(graph)
+        else:
+            # ── Default path: load from config save_path ─────────────────────
+            self.kg.load(self.config["kg"]["save_path"])
 
         self.matcher = TripleMatcher(self.kg.triples)
         self.filter = TripleFilter()
@@ -25,7 +91,9 @@ class HippoRAG:
             n for n, d in self.kg.graph.nodes(data=True)
             if d.get("type") == "entity"
         ]
-        self.entity_embeddings = self.embedder.encode(self.entity_nodes) if self.entity_nodes else []
+        self.entity_embeddings = (
+            self.embedder.encode(self.entity_nodes) if self.entity_nodes else []
+        )
 
     def _match_query_entities(self, entities, threshold=0.75):
         if not entities or not self.entity_nodes:

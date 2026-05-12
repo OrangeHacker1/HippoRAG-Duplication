@@ -16,20 +16,31 @@ FROM python:3.11.9-slim-bookworm
 
 # Non-root user
 RUN useradd -m -u 1000 -s /bin/bash app
+
+# ---------------------------------------------------------------------------
+# IMPORTANT:
+# Create persistent model directory BEFORE switching users
+# ---------------------------------------------------------------------------
+RUN mkdir -p /app/models && chown -R app:app /app
+
+# Switch to non-root user
 USER app
+
 WORKDIR /home/app
 
 # Install pinned wheels
 COPY --from=builder /wheels /wheels
 COPY requirements.txt ./
+
 RUN pip install --user --no-index --find-links=/wheels -r requirements.txt
+
 ENV PATH=/home/app/.local/bin:$PATH
 
 # Copy source
 COPY --chown=app:app src ./src
 COPY --chown=app:app pyproject.toml ./
 COPY --chown=app:app data ./data
-# Error Here
+
 RUN pip install --user -e .
 
 # Application port

@@ -77,8 +77,6 @@ where = ["src"]
 testpaths = ["tests"]
 markers = [
     "user_story: associate a test with a user story ID, e.g. @pytest.mark.user_story('US-01')",
-    "unit: mark a test as a unit test",
-    "integration: mark a test as an integration test",
 ]
 addopts = "-q --strict-markers"
 

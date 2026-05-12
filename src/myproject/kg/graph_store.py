@@ -24,9 +24,20 @@ class KnowledgeGraph:
             self.graph.add_edge(o, passage_id, relation="contains")
 
     def _resolve_path(self, path: str) -> Path:
-        """Resolve a config-provided path relative to the project src root."""
-        base = Path(__file__).parent.parent  # goes up from kg/ to myproject/
-        resolved = base / path
+        """
+        Resolve both absolute Docker paths and relative local-dev paths.
+        """
+
+        p = Path(path)
+
+        # Absolute path inside Docker/container
+        if p.is_absolute():
+            p.parent.mkdir(parents=True, exist_ok=True)
+            return p
+
+        # Relative local-dev path
+        base = Path(__file__).parent.parent
+        resolved = base / p
         resolved.parent.mkdir(parents=True, exist_ok=True)
         return resolved
 
