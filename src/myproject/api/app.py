@@ -124,6 +124,136 @@ logger = get_logger(__name__)
 rag: HippoRAG | None = None
 
 
+# ====================
+#   Question Loader
+# ====================
+def load_questions_from_json_file(json_filename: str) -> list[dict]:
+    """
+    Load evaluation questions from a JSON file in DATA_DIR.
+
+    Supports two formats:
+
+    Format A — native (matches bundled QUESTIONS shape):
+        [
+          {
+            "question":    "Who was born first, X or Y?",
+            "gold_answers": ["X"],
+            "gold_docs":    ["Doc title one", "Doc title two"]
+          },
+          ...
+        ]
+
+    Format B — MuSiQue / HotpotQA style:
+        [
+          {
+            "question": "Who was born first, X or Y?",
+            "answer":   "X",                          # single string
+            "answers":  [{"answer": "X"}, ...],       # or list of dicts
+            "supporting_facts": [["Title one", 0], ["Title two", 2], ...]
+          },
+          ...
+        ]
+        Mapped to Format A:
+          gold_answers ← unique strings from "answers" list (fallback: ["answer"])
+          gold_docs    ← unique titles from "supporting_facts"
+
+    Parameters
+    ----------
+    json_filename : str
+        Bare filename (e.g. "musique_eval.json"). Resolved against DATA_DIR.
+
+    Returns
+    -------
+    list[dict]
+        Each dict has keys: "question" (str), "gold_answers" (list[str]),
+        "gold_docs" (list[str]).
+
+    Raises
+    ------
+    FileNotFoundError  — file does not exist in DATA_DIR
+    ValueError         — JSON is malformed, not a list, or no valid questions
+    """
+    json_path = DATA_DIR / json_filename
+
+    if not json_path.is_file():
+        raise FileNotFoundError(
+            f"Eval file not found: '{json_path}'. "
+            "Make sure the file is in the data/ directory."
+        )
+
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Could not parse '{json_path}' as JSON: {exc}") from exc
+
+    if not isinstance(raw, list):
+        raise ValueError(
+            f"Expected a JSON array at the top level of '{json_path}', "
+            f"but got {type(raw).__name__}."
+        )
+
+    if len(raw) == 0:
+        raise ValueError(f"Eval file '{json_path}' is an empty array.")
+
+    questions: list[dict] = []
+
+    for i, item in enumerate(raw):
+        if not isinstance(item, dict):
+            logger.warning(f"eval loader: item {i} is not a dict — skipping.")
+            continue
+
+        question = item.get("question", "").strip()
+        if not question:
+            logger.warning(f"eval loader: item {i} has no 'question' — skipping.")
+            continue
+
+        # ── Detect format ────────────────────────────────────────────────────
+        if "gold_answers" in item:
+            # Format A — already in native shape
+            gold_answers = [str(a).strip() for a in item.get("gold_answers", []) if str(a).strip()]
+            gold_docs    = [str(d).strip() for d in item.get("gold_docs",    []) if str(d).strip()]
+
+        else:
+            # Format B — MuSiQue / HotpotQA
+            # gold_answers: prefer "answers" list of dicts, fallback to "answer" string
+            raw_answers = item.get("answers", [])
+            if isinstance(raw_answers, list) and raw_answers:
+                seen = set()
+                gold_answers = []
+                for a in raw_answers:
+                    text = (a.get("answer", "") if isinstance(a, dict) else str(a)).strip()
+                    if text and text not in seen:
+                        gold_answers.append(text)
+                        seen.add(text)
+            else:
+                fallback = str(item.get("answer", "")).strip()
+                gold_answers = [fallback] if fallback else []
+
+            # gold_docs: unique titles from supporting_facts [[title, sent_idx], ...]
+            raw_sf = item.get("supporting_facts", [])
+            seen_titles = set()
+            gold_docs = []
+            for sf in raw_sf:
+                title = (sf[0] if isinstance(sf, (list, tuple)) and sf else "").strip()
+                if title and title not in seen_titles:
+                    gold_docs.append(title)
+                    seen_titles.add(title)
+
+        questions.append({
+            "question":    question,
+            "gold_answers": gold_answers,
+            "gold_docs":    gold_docs,
+        })
+
+    if not questions:
+        raise ValueError(
+            f"No valid questions found in '{json_path}'. "
+            "Check that items have a 'question' field."
+        )
+
+    return questions
+
 # ════════════════════════════════════════════════════════════════════════════
 #  DATASET LOADING HELPER
 # ════════════════════════════════════════════════════════════════════════════
@@ -380,6 +510,20 @@ app = FastAPI(title="HippoRAG", lifespan=lifespan)
 templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 
 
+#
+#   Pydantic model
+#
+
+class EvaluateRequest(BaseModel):
+    """
+    Body for POST /api/evaluate.
+
+    json_filename : str
+        Bare filename of a JSON eval file in DATA_DIR (e.g. "musique_eval.json").
+        If empty, the bundled QUESTIONS from eval_dataset.py are used instead.
+    """
+    json_filename: str = ""
+
 class QueryRequest(BaseModel):
     question: str
 
@@ -565,7 +709,7 @@ def query(body: QueryRequest, request: Request):
 # ════════════════════════════════════════════════════════════════════════════
 
 @app.post("/api/evaluate")
-def evaluate():
+def evaluate(body: EvaluateRequest = None):
     """
     Run the full evaluation pipeline over the bundled multi-hop test dataset.
  
@@ -586,8 +730,20 @@ def evaluate():
     em_total      = 0.0
     f1_total      = 0.0
     results       = []
+
+    questions = []
+
+    # ── Resolve question source ──────────────────────────────────────────────
+    # Use the bundled QUESTIONS unless the caller supplied a json_filename.
+    if body and body.json_filename.strip():
+        try:
+            questions = load_questions_from_json_file(body.json_filename.strip())
+        except (FileNotFoundError, ValueError) as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
+    else:
+        questions = QUESTIONS
  
-    for item in QUESTIONS:
+    for item in questions:
         question     = item["question"]
         gold_docs    = item["gold_docs"]
         gold_answers = item["gold_answers"]
@@ -625,7 +781,7 @@ def evaluate():
             **recalls,
         })
  
-    n         = len(QUESTIONS)
+    n         = len(questions)
     aggregate = {f"Recall@{k}": round(recall_totals[k] / n, 4) for k in recall_ks}
     aggregate["ExactMatch"] = round(em_total / n, 4)
     aggregate["F1"]         = round(f1_total / n, 4)
@@ -635,6 +791,30 @@ def evaluate():
         extra={"request_id": request_id},
     )
     return {"aggregate": aggregate, "results": results, "request_id": request_id}
+
+
+@app.get("/api/eval/files")
+def list_eval_files():
+    """
+    Scan DATA_DIR for .json files and return their names and sizes.
+    Called by evaluate.html to populate the eval file picker dropdown.
+    Same folder as /api/data/files — both scan DATA_DIR.
+    """
+    files = []
+    try:
+        for entry in sorted(os.scandir(DATA_DIR), key=lambda e: e.name):
+            if entry.is_file() and entry.name.endswith(".json"):
+                size_kb = round(entry.stat().st_size / 1024, 1)
+                files.append({"filename": entry.name, "size_kb": size_kb})
+    except FileNotFoundError:
+        pass
+
+    return {"data_dir": str(DATA_DIR), "files": files}
+
+
+
+
+
 
 #
 #       Train and Load

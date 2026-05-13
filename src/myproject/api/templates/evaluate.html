@@ -4,93 +4,572 @@
   <meta charset="UTF-8">
   <title>HippoRAG — Evaluate</title>
   <style>
-    body { font-family: sans-serif; max-width: 900px; margin: 60px auto; padding: 0 20px; }
-    h1 { color: #333; }
-    nav a { margin-right: 16px; color: #555; text-decoration: none; }
-    nav a:hover { text-decoration: underline; }
-    button { padding: 10px 24px; font-size: 16px; background: #4a90e2; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    button:disabled { background: #aaa; }
-    #spinner { display: none; margin-top: 12px; color: #888; }
-    #error { color: #c0392b; margin-top: 12px; font-weight: bold; }
-    #results { display: none; margin-top: 24px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
-    th { background: #f0f4ff; }
-    .q-block { background: #f9f9f9; border-left: 4px solid #4a90e2; padding: 12px 16px; margin-bottom: 12px; border-radius: 2px; }
-    .q-block strong { display: block; margin-bottom: 4px; }
-    .passage-item { font-size: 13px; color: #555; margin-top: 4px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fa;
+      color: #2c3e50;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      line-height: 1.55;
+    }
+
+    nav {
+      margin-bottom: 32px;
+      border-bottom: 1px solid #dce1e7;
+      padding-bottom: 12px;
+    }
+    nav a {
+      margin-right: 20px;
+      color: #5a6a7e;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    nav a:hover { color: #4a90e2; }
+    nav a.active {
+      color: #4a90e2;
+      border-bottom: 2px solid #4a90e2;
+      padding-bottom: 12px;
+    }
+
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { color: #7f8c8d; font-size: 14px; margin-bottom: 32px; }
+
+    /* ── Cards ───────────────────────────────────────────────────────────── */
+    .card {
+      background: #fff;
+      border: 1px solid #dce1e7;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .card-config  .card-title::before { background: #4a90e2; }
+    .card-results .card-title::before { background: #27ae60; }
+
+    /* ── Form elements ───────────────────────────────────────────────────── */
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 14px;
+      border: 1px solid #c9d2db;
+      border-radius: 5px;
+      background: #fff;
+      color: #2c3e50;
+      margin-bottom: 16px;
+      appearance: none;
+    }
+    select:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
+    }
+    select:disabled { background: #f0f2f5; color: #888; }
+
+    /* ── File picker row ─────────────────────────────────────────────────── */
+    .file-picker-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .file-picker-row select {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    .file-picker-row .btn-ghost {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────────────────── */
+    button {
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: #4a90e2; color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: #357abd; }
+    .btn-ghost {
+      background: none;
+      border: 1px solid #c9d2db;
+      color: #5a6a7e;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .btn-ghost:hover:not(:disabled) { background: #f0f4ff; border-color: #4a90e2; }
+
+    /* ── Helper / hint text ──────────────────────────────────────────────── */
+    .help-text {
+      font-size: 12px;
+      color: #7f8c8d;
+      margin-top: -10px;
+      margin-bottom: 14px;
+    }
+    .data-dir-hint {
+      font-size: 11px;
+      color: #95a5a6;
+      font-family: "Courier New", monospace;
+      margin-top: 4px;
+      margin-bottom: 14px;
+      word-break: break-all;
+    }
+
+    /* ── Divider ─────────────────────────────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid #eef0f3; margin: 16px 0; }
+
+    /* ── Callouts ────────────────────────────────────────────────────────── */
+    .callout {
+      padding: 10px 14px;
+      border-radius: 5px;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+    .callout-error { background: #fde8e8; color: #922b21; border-left: 4px solid #e74c3c; }
+    .callout-info  { background: #eaf2f8; color: #1a5276; border-left: 4px solid #2980b9; }
+
+    /* ── Spinner ─────────────────────────────────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid #bbb;
+      border-top-color: #4a90e2;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Progress bar ────────────────────────────────────────────────────── */
+    #progress-wrapper {
+      display: none;
+      margin-top: 16px;
+    }
+    #progress-label {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    #progress-bar-track {
+      width: 100%;
+      height: 8px;
+      background: #e0e6ed;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    #progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #4a90e2;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    /* ── Results ─────────────────────────────────────────────────────────── */
+    #results { display: none; }
+
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th {
+      background: #f0f4ff;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 2px solid #dce1e7;
+    }
+    td { padding: 8px 12px; border-bottom: 1px solid #eef0f3; }
+    tr:last-child td { border-bottom: none; }
+
+    /* ── Per-question blocks ─────────────────────────────────────────────── */
+    .q-block {
+      background: #f9f9f9;
+      border-left: 4px solid #4a90e2;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      border-radius: 2px;
+      font-size: 13px;
+    }
+    .q-block .q-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #2c3e50;
+    }
+    .q-meta { margin-top: 6px; color: #555; }
+    .q-meta span { margin-right: 16px; }
+    .q-meta .score-good  { color: #1e8449; font-weight: 600; }
+    .q-meta .score-bad   { color: #922b21; font-weight: 600; }
+    .passage-item {
+      font-size: 12px;
+      color: #666;
+      margin-top: 3px;
+      padding-left: 8px;
+      border-left: 2px solid #dce1e7;
+    }
+    .passages-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a5568;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
+
   <nav>
     <a href="/">Query</a>
-    <a href="/evaluate">Evaluate</a>
-    <a href="/train">Train</a>
+    <a href="/evaluate" class="active">Evaluate</a>
+    <a href="/train">Train &amp; Load</a>
   </nav>
+
   <h1>Evaluation</h1>
-  <p>Runs the full evaluation pipeline against the multi-hop test dataset.</p>
+  <p class="subtitle">
+    Run the full evaluation pipeline against a question dataset and review
+    per-question EM, F1, and Recall scores.
+  </p>
 
-  <button id="run-btn" onclick="runEval()">Run Evaluation</button>
-  <div id="spinner">Running evaluation, please wait...</div>
-  <div id="error"></div>
 
-  <div id="results">
-    <h2>Aggregate Scores</h2>
-    <table id="agg-table"><thead><tr><th>Metric</th><th>Score</th></tr></thead><tbody></tbody></table>
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL 1 — Configuration
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="card card-config">
+    <div class="card-title">Dataset</div>
 
-    <h2 style="margin-top:32px;">Per-Question Results</h2>
-    <div id="per-question"></div>
+    <!-- Dataset selector -->
+    <label for="eval-dataset-select">Evaluation questions source</label>
+    <select id="eval-dataset-select" onchange="onEvalDatasetChange()">
+      <option value="bundled">Built-in eval dataset (bundled questions)</option>
+      <option value="json_file">JSON file — select from data/ directory</option>
+    </select>
+
+    <!-- JSON file picker — hidden until "JSON file" is chosen -->
+    <div id="eval-json-wrapper" style="display:none;">
+      <label for="eval-file-select">Dataset file (from data/ directory)</label>
+
+      <div class="file-picker-row">
+        <select id="eval-file-select" disabled>
+          <option value="">— scanning data/ directory ... —</option>
+        </select>
+        <button class="btn-ghost" onclick="refreshEvalFiles()" id="eval-refresh-btn"
+                title="Re-scan data/ for .json files">
+          ↻ Refresh
+        </button>
+      </div>
+
+      <div class="data-dir-hint" id="eval-data-dir-hint">data directory: (loading ...)</div>
+
+      <p class="help-text" style="margin-top: 6px;">
+        Place your <code>.json</code> question files in the <code>data/</code> folder,
+        then click <strong>↻ Refresh</strong>.
+        <br><br>
+        Two formats are supported:
+        <br>
+        &nbsp;&nbsp;① Native:&nbsp;
+          <code>[{"question": "...", "gold_answers": [...], "gold_docs": [...]}]</code>
+        <br>
+        &nbsp;&nbsp;② MuSiQue / HotpotQA:&nbsp;
+          <code>[{"question": "...", "answer": "...", "supporting_facts": [...]}]</code>
+      </p>
+
+      <div id="eval-no-files-msg" class="callout callout-info"
+           style="display:none; margin-top:0;">
+        No <code>.json</code> files found in the data/ directory.
+        Add files there and click <strong>↻ Refresh</strong>.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Run button -->
+    <button id="run-btn" class="btn-primary" onclick="runEval()">
+      Run Evaluation
+    </button>
+
+    <div id="eval-error" class="callout callout-error"></div>
+
+    <!-- Progress bar — shown while eval is running -->
+    <div id="progress-wrapper">
+      <div id="progress-label">Running evaluation...</div>
+      <div id="progress-bar-track">
+        <div id="progress-bar-fill"></div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    async function runEval() {
-      const btn = document.getElementById("run-btn");
-      const spinner = document.getElementById("spinner");
-      const errorDiv = document.getElementById("error");
-      const results = document.getElementById("results");
 
-      errorDiv.textContent = "";
-      results.style.display = "none";
-      btn.disabled = true;
-      spinner.style.display = "block";
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL 2 — Results
+       Hidden until a run completes successfully.
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <div id="results">
+
+    <!-- Aggregate scores -->
+    <div class="card card-results">
+      <div class="card-title">Aggregate Scores</div>
+      <table id="agg-table">
+        <thead>
+          <tr><th>Metric</th><th>Score</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Per-question results -->
+    <div class="card card-results">
+      <div class="card-title">Per-Question Results</div>
+      <div id="per-question"></div>
+    </div>
+
+  </div>
+
+
+  <script>
+    // ════════════════════════════════════════════════════════════════════════
+    //  UTILITIES
+    // ════════════════════════════════════════════════════════════════════════
+
+    function showCallout(id, message) {
+      const el = document.getElementById(id);
+      el.textContent = message;
+      el.style.display = "block";
+    }
+    function hideCallout(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    /** Escape HTML to prevent XSS when injecting dynamic content. */
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /** Colour a numeric score: green if ≥ 0.5, red if < 0.5. */
+    function scoreClass(val) {
+      return parseFloat(val) >= 0.5 ? "score-good" : "score-bad";
+    }
+
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  DATASET SELECTOR
+    // ════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Show/hide the JSON file picker when the dataset selector changes.
+     * On first switch to "json_file", auto-scan the data/ directory.
+     */
+    function onEvalDatasetChange() {
+      const val        = document.getElementById("eval-dataset-select").value;
+      const jsonWrapper = document.getElementById("eval-json-wrapper");
+
+      jsonWrapper.style.display = (val === "json_file") ? "block" : "none";
+
+      if (val === "json_file") {
+        const select = document.getElementById("eval-file-select");
+        // Only auto-scan if the dropdown is still in its initial placeholder state
+        if (select.options.length === 1 && select.options[0].value === "") {
+          refreshEvalFiles();
+        }
+      }
+    }
+
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  FILE PICKER
+    // ════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Call GET /api/eval/files and populate the file dropdown.
+     * Mirrors the refreshDataFiles() function in train.html exactly.
+     */
+    async function refreshEvalFiles() {
+      const select     = document.getElementById("eval-file-select");
+      const hintEl     = document.getElementById("eval-data-dir-hint");
+      const noFilesEl  = document.getElementById("eval-no-files-msg");
+      const refreshBtn = document.getElementById("eval-refresh-btn");
+
+      select.disabled      = true;
+      refreshBtn.disabled  = true;
+      select.innerHTML     = '<option value="">— scanning ... —</option>';
+      noFilesEl.style.display = "none";
 
       try {
-        const res = await fetch("/api/evaluate", { method: "POST" });
+        const res  = await fetch("/api/eval/files");
+        const data = await res.json();
+
+        hintEl.textContent = `data directory: ${data.data_dir || "(unknown)"}`;
+
+        const files = data.files || [];
+
+        if (files.length === 0) {
+          select.innerHTML        = '<option value="">— no .json files in data/ —</option>';
+          noFilesEl.style.display = "block";
+        } else {
+          select.innerHTML = files.map(f =>
+            `<option value="${escHtml(f.filename)}">`
+            + `${escHtml(f.filename)}`
+            + (f.size_kb ? ` (${f.size_kb} KB)` : "")
+            + `</option>`
+          ).join("");
+          noFilesEl.style.display = "none";
+        }
+
+      } catch (e) {
+        select.innerHTML   = '<option value="">— error scanning data/ —</option>';
+        hintEl.textContent = "Could not reach server: " + e;
+      } finally {
+        select.disabled     = false;
+        refreshBtn.disabled = false;
+      }
+    }
+
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  RUN EVALUATION
+    // ════════════════════════════════════════════════════════════════════════
+
+    async function runEval() {
+      const btn             = document.getElementById("run-btn");
+      const progressWrapper = document.getElementById("progress-wrapper");
+      const progressLabel   = document.getElementById("progress-label");
+      const progressFill    = document.getElementById("progress-bar-fill");
+      const resultsDiv      = document.getElementById("results");
+      const dataset         = document.getElementById("eval-dataset-select").value;
+
+      hideCallout("eval-error");
+      resultsDiv.style.display = "none";
+      btn.disabled             = true;
+
+      // ── Resolve json_filename ────────────────────────────────────────────
+      let jsonFilename = "";
+      if (dataset === "json_file") {
+        const select = document.getElementById("eval-file-select");
+        jsonFilename = select.value;
+        if (!jsonFilename) {
+          showCallout("eval-error",
+            "Please select a JSON file from the dropdown. "
+            + "If none appear, click ↻ Refresh or add files to the data/ folder.");
+          btn.disabled = false;
+          return;
+        }
+      }
+
+      // ── Show indeterminate progress ──────────────────────────────────────
+      // The eval endpoint returns one JSON blob when complete, so we can't
+      // track per-question progress from here. We animate the bar to ~90%
+      // while waiting, then snap to 100% on success.
+      progressWrapper.style.display = "block";
+      progressFill.style.width      = "0%";
+      progressLabel.textContent     = "Running evaluation, please wait...";
+
+      // Animate to 85% over ~8 seconds to give visual feedback
+      let fakeProgress = 0;
+      const ticker = setInterval(() => {
+        if (fakeProgress < 85) {
+          fakeProgress += 1;
+          progressFill.style.width = fakeProgress + "%";
+        }
+      }, 100);
+
+      try {
+        const res = await fetch("/api/evaluate", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ json_filename: jsonFilename }),
+        });
+
         const data = await res.json();
 
         if (!res.ok) {
-          errorDiv.textContent = data.detail || "An error occurred.";
+          showCallout("eval-error", data.detail || "An error occurred.");
           return;
         }
 
+        // ── Snap progress to 100% ────────────────────────────────────────
+        clearInterval(ticker);
+        progressFill.style.width  = "100%";
+        progressLabel.textContent = "Evaluation complete.";
+
+        // ── Render aggregate table ───────────────────────────────────────
         const aggBody = document.querySelector("#agg-table tbody");
         aggBody.innerHTML = "";
         Object.entries(data.aggregate).forEach(([k, v]) => {
-          aggBody.innerHTML += `<tr><td>${k}</td><td>${v}</td></tr>`;
+          aggBody.innerHTML +=
+            `<tr><td><strong>${escHtml(k)}</strong></td>`
+            + `<td class="${scoreClass(v)}">${v}</td></tr>`;
         });
 
+        // ── Render per-question blocks ───────────────────────────────────
         const pq = document.getElementById("per-question");
         pq.innerHTML = "";
+
         data.results.forEach((r, i) => {
-          const passages = (r.passages || []).map(p => `<div class="passage-item">• ${p}</div>`).join("");
+          const passages = (r.passages || [])
+            .map(p => `<div class="passage-item">${escHtml(p)}</div>`)
+            .join("");
+
           pq.innerHTML += `
             <div class="q-block">
-              <strong>Q${i+1}: ${r.question}</strong>
-              <div><b>Answer:</b> ${r.answer}</div>
-              <div><b>EM:</b> ${r.em} &nbsp; <b>F1:</b> ${r.f1} &nbsp; <b>Recall@1:</b> ${r["Recall@1"]} &nbsp; <b>Recall@2:</b> ${r["Recall@2"]} &nbsp; <b>Recall@5:</b> ${r["Recall@5"]}</div>
-              <div style="margin-top:6px"><b>Retrieved Passages:</b>${passages}</div>
+              <div class="q-title">Q${i + 1}: ${escHtml(r.question)}</div>
+              <div><strong>Answer:</strong> ${escHtml(r.answer)}</div>
+              <div class="q-meta">
+                <span>EM: <span class="${scoreClass(r.em)}">${r.em}</span></span>
+                <span>F1: <span class="${scoreClass(r.f1)}">${r.f1}</span></span>
+                <span>R@1: <span class="${scoreClass(r["Recall@1"])}">${r["Recall@1"]}</span></span>
+                <span>R@2: <span class="${scoreClass(r["Recall@2"])}">${r["Recall@2"]}</span></span>
+                <span>R@5: <span class="${scoreClass(r["Recall@5"])}">${r["Recall@5"]}</span></span>
+              </div>
+              <div class="passages-label">Retrieved passages:</div>
+              ${passages}
             </div>`;
         });
 
-        results.style.display = "block";
+        resultsDiv.style.display = "block";
 
       } catch (e) {
-        errorDiv.textContent = "The language model is currently unavailable. Please try again later.";
+        showCallout("eval-error",
+          "The language model is currently unavailable. Please try again later.");
       } finally {
+        clearInterval(ticker);
         btn.disabled = false;
-        spinner.style.display = "none";
+        // Hide progress bar after a short delay so the 100% state is visible
+        setTimeout(() => { progressWrapper.style.display = "none"; }, 1200);
       }
     }
   </script>
+
 </body>
 </html>
