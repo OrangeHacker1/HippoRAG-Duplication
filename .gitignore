@@ -5,8 +5,9 @@ Official-HippoRAG-Repo/
 .venv/
 **/.venv/
 
-# Ignore template files
-cs6263_template/
+# Environment secrets
+.env
+
 
 # Python
 __pycache__/
@@ -22,8 +23,8 @@ build/
 dist/
 
 # Data and models (must be downloaded, never committed)
-/data/
-models/
+#data/
+#models/
 
 # Generated artifacts
 regenerated/

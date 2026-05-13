@@ -5,6 +5,7 @@ from myproject.kg.graph_store import KnowledgeGraph
 from myproject.kg.embeddings import EmbeddingEngine
 from myproject.config.config_loader import load_config
 
+import time
 
 class KGBuilder:
     def __init__(self, progress_callback=None):
@@ -24,6 +25,14 @@ class KGBuilder:
             self.progress_callback(message)
 
     def build(self, docs):
+        
+        
+        
+        max_docs = self.config["kg"].get("max_docs", None)
+        if max_docs is not None:
+            docs = docs[:max_docs]
+              
+        
         node_texts = []
 
         self._log(f"Starting build for {len(docs)} documents...")
@@ -31,13 +40,29 @@ class KGBuilder:
         for idx, doc in enumerate(docs):
             self._log(f"Processing document {idx + 1}/{len(docs)}")
 
-            triples = self.llm.extract_triples(doc)
+            # Truncate document to avoid exceeding context window
+            max_chars = self.config["llm"].get("max_prompt_chars", None)
+            if max_chars is not None:
+                doc_for_llm = doc[:max_chars]
+            else:
+                doc_for_llm = doc
+
+            try:
+                triples = self.llm.extract_triples(doc_for_llm)
+                self._log(f"Extracted {len(triples)} triples")
+            except Exception as e:
+                self._log(f"WARNING: Skipping document {idx + 1} due to error: {e}")
+                continue
+
+            #triples = self.llm.extract_triples(doc_for_llm)
 
             self._log(f"Extracted {len(triples)} triples")
 
             for s, r, o in triples:
                 self.kg.add_triple(s, r, o, doc)
                 node_texts.extend([s, o])
+            
+            time.sleep(self.config["llm"].get("request_delay_seconds", 0.0))
 
         self._log("Starting embedding generation...")
 

@@ -4,8 +4,11 @@
 
 llm:
   temperature: 0.0
-  max_tokens: 512
-  retries: 3
+  max_tokens: 1024
+  retries: 1
+  request_delay_seconds: 0.5
+  timeout: 18
+  max_prompt_chars: 1000  # truncate documents before sending to LLM
 
 
 #
@@ -25,7 +28,9 @@ logging:
 kg:
   save_path: myproject/kg/graph.pkl
   similarity_threshold: 0.75
-  max_passages: 1000
+  max_passages: 10000
+  # The maximum amount of docs. This is not implimented.
+  max_docs: 10000
   # Directory where saved KG models are stored.
   # Inside Docker this MUST match the volume mount in docker-compose.yml (/app/models).
   # Outside Docker (local dev) this resolves relative to the project root.

@@ -2,19 +2,25 @@
 <!--
   train.html — HippoRAG Training & Model Management UI
   ======================================================
-  This page has three purposes:
-    1. Show the current KG status (is one loaded? how big?).
-    2. Trigger a fresh KG build from a chosen dataset, with live log streaming.
-    3. Load a previously saved KG from the Docker volume (for grader / quick-start).
+  Three panels:
+    1. Current KG status   — polls GET /api/kg/status on load
+    2. Train a new KG      — pick dataset, trigger build, watch SSE log
+    3. Load a saved KG     — list saved models, hot-load one in seconds
 
-  Navigation mirrors the existing Query and Evaluate pages so the app feels
-  like a single coherent tool.
+  New in this version
+  -------------------
+  The "JSON file" dataset option no longer shows a free-text path input.
+  Instead it calls GET /api/data/files to discover what .json files exist
+  inside the container's data/ directory and renders them in a dropdown.
+  The user picks a file; the server resolves the full path internally.
+  No path traversal is possible because the client only sends a bare filename.
 
   API calls made by this page:
-    GET  /api/kg/status   — polling on page load to show current state
-    GET  /api/kg/list     — fetch saved models for the Load dropdown
-    POST /api/train       — SSE stream; triggers a KG build
-    POST /api/kg/load     — hot-loads a saved KG into the running server
+    GET  /api/kg/status    — panel 1 status badge
+    GET  /api/kg/list      — panel 3 saved models table
+    GET  /api/data/files   — panel 2 json file dropdown (on demand)
+    POST /api/train        — SSE stream; triggers a KG build
+    POST /api/kg/load      — hot-loads a saved KG
 -->
 <html lang="en">
 <head>
@@ -34,7 +40,7 @@
       line-height: 1.55;
     }
 
-    /* ── Navigation (matches query/evaluate pages) ───────────────────────── */
+    /* ── Navigation ──────────────────────────────────────────────────────── */
     nav {
       margin-bottom: 32px;
       border-bottom: 1px solid #dce1e7;
@@ -48,13 +54,16 @@
       font-weight: 500;
     }
     nav a:hover { color: #4a90e2; }
-    /* Highlight the current page link */
-    nav a.active { color: #4a90e2; border-bottom: 2px solid #4a90e2; padding-bottom: 12px; }
+    nav a.active {
+      color: #4a90e2;
+      border-bottom: 2px solid #4a90e2;
+      padding-bottom: 12px;
+    }
 
     h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
     .subtitle { color: #7f8c8d; font-size: 14px; margin-bottom: 32px; }
 
-    /* ── Section cards ───────────────────────────────────────────────────── */
+    /* ── Cards ───────────────────────────────────────────────────────────── */
     .card {
       background: #fff;
       border: 1px solid #dce1e7;
@@ -70,18 +79,16 @@
       align-items: center;
       gap: 8px;
     }
-    /* Coloured dot before each card title so sections are visually distinct */
     .card-title::before {
       content: "";
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .card-status .card-title::before  { background: #27ae60; }
-    .card-train  .card-title::before  { background: #4a90e2; }
-    .card-load   .card-title::before  { background: #e67e22; }
+    .card-status .card-title::before { background: #27ae60; }
+    .card-train  .card-title::before { background: #4a90e2; }
+    .card-load   .card-title::before { background: #e67e22; }
 
     /* ── Status badge ────────────────────────────────────────────────────── */
     #status-badge {
@@ -95,12 +102,7 @@
     .badge-loaded   { background: #d4efdf; color: #1e8449; }
     .badge-unloaded { background: #fdebd0; color: #a04000; }
     .badge-checking { background: #eaf2f8; color: #2e86c1; }
-
-    #status-detail {
-      font-size: 13px;
-      color: #555;
-      margin-top: 4px;
-    }
+    #status-detail  { font-size: 13px; color: #555; margin-top: 4px; }
 
     /* ── Form elements ───────────────────────────────────────────────────── */
     label {
@@ -125,8 +127,9 @@
     select:focus, input[type="text"]:focus {
       outline: none;
       border-color: #4a90e2;
-      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+      box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
     }
+    select:disabled { background: #f0f2f5; color: #888; }
 
     textarea {
       width: 100%;
@@ -143,7 +146,7 @@
     textarea:focus {
       outline: none;
       border-color: #4a90e2;
-      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+      box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
     }
 
     /* ── Buttons ─────────────────────────────────────────────────────────── */
@@ -157,23 +160,43 @@
       transition: background 0.15s, opacity 0.15s;
     }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .btn-primary   { background: #4a90e2; color: #fff; }
-    .btn-primary:hover:not(:disabled)   { background: #357abd; }
-
+    .btn-primary  { background: #4a90e2; color: #fff; }
+    .btn-primary:hover:not(:disabled)  { background: #357abd; }
     .btn-secondary { background: #e67e22; color: #fff; }
     .btn-secondary:hover:not(:disabled) { background: #ca6f1e; }
-
+    .btn-ghost {
+      background: none;
+      border: 1px solid #c9d2db;
+      color: #5a6a7e;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .btn-ghost:hover:not(:disabled) { background: #f0f4ff; border-color: #4a90e2; }
     .btn-sm { padding: 6px 14px; font-size: 13px; }
 
-    /* ── SSE log box ─────────────────────────────────────────────────────── */
+    /* ── JSON file picker row ────────────────────────────────────────────── */
     /*
-      The log box streams lines from the server during a KG build.
-      It auto-scrolls to the bottom as new lines arrive.
-      Font is monospace so timestamps and paths align cleanly.
+      The file picker shows a dropdown of .json files discovered in DATA_DIR,
+      plus a Refresh button to re-scan on demand.  The data_dir path is shown
+      below as a read-only hint so the user knows where to put their files.
     */
-    #train-log-wrapper { display: none; margin-top: 16px; }
+    .file-picker-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .file-picker-row select {
+      flex: 1;
+      margin-bottom: 0;  /* row handles spacing */
+    }
+    .file-picker-row .btn-ghost {
+      flex-shrink: 0;
+      margin-top: 1px;   /* optical alignment with select */
+    }
 
+    /* ── SSE log box ─────────────────────────────────────────────────────── */
+    #train-log-wrapper { display: none; margin-top: 16px; }
     #train-log {
       background: #1a2332;
       color: #a8d8a8;
@@ -189,33 +212,37 @@
     .log-error { color: #f1948a; }
     .log-done  { color: #f9e79f; font-weight: bold; }
 
-    /* ── Info / error callouts ───────────────────────────────────────────── */
+    /* ── Callouts ────────────────────────────────────────────────────────── */
     .callout {
       padding: 10px 14px;
       border-radius: 5px;
       font-size: 13px;
       margin-top: 12px;
-      display: none;   /* shown via JS */
+      display: none;
     }
     .callout-success { background: #d4efdf; color: #1a5a32; border-left: 4px solid #27ae60; }
     .callout-error   { background: #fde8e8; color: #922b21; border-left: 4px solid #e74c3c; }
     .callout-info    { background: #eaf2f8; color: #1a5276; border-left: 4px solid #2980b9; }
 
-    /* ── Inline helper text ──────────────────────────────────────────────── */
+    /* ── Helper text ─────────────────────────────────────────────────────── */
     .help-text {
       font-size: 12px;
       color: #7f8c8d;
       margin-top: -10px;
       margin-bottom: 14px;
     }
-
-    /* ── Saved model table ───────────────────────────────────────────────── */
-    #models-table-wrapper { margin-top: 12px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
+    .data-dir-hint {
+      font-size: 11px;
+      color: #95a5a6;
+      font-family: "Courier New", monospace;
+      margin-top: 4px;
+      margin-bottom: 14px;
+      word-break: break-all;
     }
+
+    /* ── Saved models table ──────────────────────────────────────────────── */
+    #models-table-wrapper { margin-top: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th {
       background: #f0f4ff;
       text-align: left;
@@ -229,8 +256,7 @@
     /* ── Spinner ─────────────────────────────────────────────────────────── */
     .spinner {
       display: inline-block;
-      width: 14px;
-      height: 14px;
+      width: 14px; height: 14px;
       border: 2px solid #bbb;
       border-top-color: #4a90e2;
       border-radius: 50%;
@@ -240,13 +266,13 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Divider between dataset picker and custom input ─────────────────── */
+    /* ── Divider ─────────────────────────────────────────────────────────── */
     .divider { border: none; border-top: 1px solid #eef0f3; margin: 16px 0; }
   </style>
 </head>
 <body>
 
-  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <!-- ── Navigation ──────────────────────────────────────────────────────── -->
   <nav>
     <a href="/">Query</a>
     <a href="/evaluate">Evaluate</a>
@@ -260,11 +286,11 @@
     <code>kg_data</code> Docker volume.
   </p>
 
-  <!-- ══════════════════════════════════════════════════════════════════════
+
+  <!-- ════════════════════════════════════════════════════════════════════════
        PANEL 1 — Current KG Status
-       Fetched on page load from GET /api/kg/status.
-       Shows whether a KG is currently in memory and its basic graph stats.
-  ════════════════════════════════════════════════════════════════════════ -->
+       Fetched automatically on page load from GET /api/kg/status.
+  ══════════════════════════════════════════════════════════════════════════ -->
   <div class="card card-status">
     <div class="card-title">Current Knowledge Graph Status</div>
 
@@ -273,36 +299,36 @@
     </div>
     <div id="status-detail"></div>
 
-    <!-- Refresh button — re-polls /api/kg/status without reloading the page -->
     <button class="btn-primary btn-sm" style="margin-top:14px;" onclick="fetchStatus()">
       Refresh Status
     </button>
   </div>
 
 
-  <!-- ══════════════════════════════════════════════════════════════════════
+  <!-- ════════════════════════════════════════════════════════════════════════
        PANEL 2 — Train a New KG
-       Lets the user pick a dataset (bundled or custom pasted text) and
-       trigger a build. Progress streams back via SSE (Server-Sent Events).
-  ════════════════════════════════════════════════════════════════════════ -->
+       Three sub-modes controlled by the dataset <select>:
+         eval_corpus — no extra input needed
+         custom      — textarea for pasted documents
+         json_file   — dropdown of files scanned from data/ directory
+  ══════════════════════════════════════════════════════════════════════════ -->
   <div class="card card-train">
     <div class="card-title">Train a New Knowledge Graph</div>
 
-    <!-- Dataset picker -->
+    <!-- ── Dataset selector ─────────────────────────────────────────────── -->
     <label for="dataset-select">Dataset</label>
     <select id="dataset-select" onchange="onDatasetChange()">
       <!--
-        eval_corpus  → uses the bundled 10-doc corpus from data/eval_dataset.py
-                        (scientists: Curie, Einstein, Newton)
-        custom       → user pastes raw documents into the textarea below
-        json_selcetion       → use a path to a json file.
+        eval_corpus — bundled 10-doc corpus from data/eval_dataset.py
+        custom      — user pastes raw documents into the textarea below
+        json_file   — file selected from a dropdown scanned from data/
       -->
       <option value="eval_corpus">Built-in eval corpus (10 docs — scientists)</option>
       <option value="custom">Custom — paste your own documents</option>
-      <option value="json_file">JSON file on container filesystem</option>
+      <option value="json_file">JSON file — select from data/ directory</option>
     </select>
 
-    <!-- Custom document input — shown only when "custom" is selected -->
+    <!-- ── Custom document textarea (shown only for "custom") ───────────── -->
     <div id="custom-docs-wrapper" style="display:none;">
       <label for="custom-docs">
         Documents (one document per line; blank lines are ignored)
@@ -315,53 +341,76 @@ She won the Nobel Prize in Physics in 1903.
 Albert Einstein published the special theory of relativity in 1905."></textarea>
       <p class="help-text">
         Each non-blank line is treated as one document (one passage).
-        The KG builder will extract triples from each passage via the LLM.
+        The KG builder extracts triples from each passage via the LLM.
       </p>
     </div>
 
-    <!-- JSON file input — shown only when "json_file" is selected -->
-    <div id="json-path-wrapper" style="display:none;">
-    <label for="json-path-input">
-        JSON dataset path
-    </label>
+    <!-- ── JSON file picker (shown only for "json_file") ────────────────── -->
+    <!--
+      When the user selects "JSON file", the page calls GET /api/data/files
+      to discover what .json files exist in the container's data/ folder.
+      The results populate the dropdown below.  The Refresh button re-scans
+      without requiring a page reload.
 
-    <input
-        type="text"
-        id="json-path-input"
-        placeholder="/app/data/musique_corpus.json"
-    >
+      Security: the user picks only a filename from this dropdown.
+      The browser sends json_filename (bare name) to POST /api/train.
+      The server resolves DATA_DIR / json_filename and verifies containment
+      before reading — no path traversal is possible.
+    -->
+    <div id="json-file-wrapper" style="display:none;">
+      <label for="json-file-select">Dataset file (from data/ directory)</label>
 
-    <p class="help-text">
-        Enter the absolute path to a JSON file that already exists inside
-        the Docker container.
+      <!-- Row: dropdown + Refresh button side by side -->
+      <div class="file-picker-row">
+        <select id="json-file-select" disabled>
+          <option value="">— scanning data/ directory ... —</option>
+        </select>
+        <button class="btn-ghost" onclick="refreshDataFiles()" id="refresh-btn"
+                title="Re-scan data/ for new .json files">
+          ↻ Refresh
+        </button>
+      </div>
 
-        Supported formats:
+      <!-- Read-only hint showing where DATA_DIR is inside the container -->
+      <div class="data-dir-hint" id="data-dir-hint">
+        data directory: (loading ...)
+      </div>
+
+      <p class="help-text" style="margin-top:6px;">
+        Place your <code>.json</code> dataset files in the <code>data/</code>
+        folder at the project root, then click <strong>↻ Refresh</strong> to
+        see them here.
         <br><br>
+        Two formats are supported:
+        <br>
+        &nbsp;&nbsp;① Array of strings:&nbsp;
+          <code>["doc one", "doc two", ...]</code>
+        <br>
+        &nbsp;&nbsp;② Array of objects:&nbsp;
+          <code>[{"title": "...", "text": "..."}, ...]</code>
+      </p>
 
-        1. Array of strings:
-        <code>["doc1", "doc2"]</code>
-
-        <br><br>
-
-        2. Array of objects:
-        <code>[{"title":"...","text":"..."}]</code>
-    </p>
-</div>
-
+      <!-- Shown when data/ is empty -->
+      <div id="no-files-msg" class="callout callout-info" style="display:none; margin-top:0;">
+        No <code>.json</code> files found in the data/ directory.
+        Add files there and click <strong>↻ Refresh</strong>.
+      </div>
+    </div>
 
     <hr class="divider">
 
-    <!-- Save-as name -->
+    <!-- ── Save-as slug ──────────────────────────────────────────────────── -->
     <label for="save-as-name">Save model as</label>
     <input type="text" id="save-as-name" value="latest"
            placeholder="e.g. eval_corpus, musique_50, my_dataset">
     <p class="help-text">
       This becomes the folder name inside the <code>kg_data</code> Docker volume.
       Use a simple slug (letters, numbers, underscores, hyphens).
-      The model named <code>latest</code> is the default loaded by the grader shortcut.
+      <code>latest</code> is loaded automatically on the next
+      <code>docker compose up</code>.
     </p>
 
-    <!-- Build button + status callouts -->
+    <!-- ── Build button + callouts ───────────────────────────────────────── -->
     <button id="train-btn" class="btn-primary" onclick="startTraining()">
       Build Knowledge Graph
     </button>
@@ -369,10 +418,10 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     <div id="train-callout-error"   class="callout callout-error"></div>
     <div id="train-callout-success" class="callout callout-success"></div>
 
+    <!-- ── SSE log box ───────────────────────────────────────────────────── -->
     <!--
-      SSE log box — hidden until a build starts.
-      Lines arrive from the server one at a time via the SSE stream.
-      The browser appends each line and auto-scrolls to the bottom.
+      Hidden until a build starts.  Lines stream from the server one at a
+      time via the SSE response and are appended here in real time.
     -->
     <div id="train-log-wrapper">
       <label style="margin-top:4px; margin-bottom:6px; display:block;">
@@ -383,20 +432,18 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
   </div>
 
 
-  <!-- ══════════════════════════════════════════════════════════════════════
+  <!-- ════════════════════════════════════════════════════════════════════════
        PANEL 3 — Load a Saved KG
        Lists all saved models from the kg_data volume and lets the user
-       hot-load one into the running server without restarting.
+       hot-load one without restarting the server.
 
-       GRADER WORKFLOW:
-         1. Pre-train and save a model (e.g. "eval_corpus") before submission.
-         2. After `docker compose up`, open this page.
-         3. Select "eval_corpus" and click Load — the KG is live in seconds.
-         4. /api/query now works without waiting for a full rebuild.
-
-       Alternatively: set `active_model: eval_corpus` in config.yaml and
-       the app will load it automatically on startup with no manual step.
-  ════════════════════════════════════════════════════════════════════════ -->
+       Grader workflow:
+         1. Pre-train and save a model before submission.
+         2. docker compose up  →  open this page
+         3. Click "Load" next to the model name  →  KG live in seconds.
+         4. /api/query now works.
+         Alternatively: set active_model in config.yaml for zero manual steps.
+  ══════════════════════════════════════════════════════════════════════════ -->
   <div class="card card-load">
     <div class="card-title">Load a Saved Knowledge Graph</div>
 
@@ -406,11 +453,10 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       Loading hot-swaps the active KG without restarting the server.
     </p>
 
-    <!-- Config tip box -->
-    <div class="callout callout-info" id="config-tip" style="display:block; margin-bottom:16px;">
-      <strong>Tip for graders:</strong> To skip this manual step, set
+    <div class="callout callout-info" style="display:block; margin-bottom:16px;">
+      <strong>Tip for graders:</strong> Set
       <code>active_model: &lt;name&gt;</code> in <code>config/config.yaml</code>
-      and the app will load the model automatically on startup.
+      and the app loads the model automatically on every startup.
     </div>
 
     <!-- Saved models table — populated by fetchSavedModels() on page load -->
@@ -430,21 +476,17 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="models-tbody">
-          <!-- Rows injected by renderModelsTable() -->
-        </tbody>
+        <tbody id="models-tbody"></tbody>
       </table>
-
       <p id="no-models-msg" style="display:none; font-size:13px; color:#888; margin-top:8px;">
         No saved models found. Build one using the panel above.
       </p>
     </div>
 
-    <!-- Callouts for load results -->
-    <div id="load-callout-error"   class="callout callout-error"  ></div>
+    <div id="load-callout-error"   class="callout callout-error"></div>
     <div id="load-callout-success" class="callout callout-success"></div>
 
-    <!-- Manual load by name (fallback if table isn't showing a model) -->
+    <!-- Manual load by name (fallback for when the table is empty) -->
     <hr class="divider">
     <label for="load-name-input" style="margin-top:4px;">
       Or load by name manually
@@ -454,50 +496,59 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
         <input type="text" id="load-name-input" placeholder="e.g. eval_corpus"
                style="margin-bottom:0;">
       </div>
-      <button class="btn-secondary" onclick="loadModelByName(
-          document.getElementById('load-name-input').value
-      )">Load</button>
+      <button class="btn-secondary"
+              onclick="loadModelByName(document.getElementById('load-name-input').value)">
+        Load
+      </button>
     </div>
   </div>
 
 
-  <!-- ── JavaScript ─────────────────────────────────────────────────────── -->
+  <!-- ── JavaScript ──────────────────────────────────────────────────────── -->
   <script>
-    // ── Utilities ──────────────────────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  UTILITIES
+    // ════════════════════════════════════════════════════════════════════════
 
-    /** Show a callout element with a message. */
     function showCallout(id, message) {
       const el = document.getElementById(id);
       el.textContent = message;
       el.style.display = "block";
     }
-
-    /** Hide a callout. */
     function hideCallout(id) {
-      const el = document.getElementById(id);
-      el.style.display = "none";
+      document.getElementById(id).style.display = "none";
     }
 
     /**
      * Append a line to the SSE log box and auto-scroll to the bottom.
-     * Accepts an optional CSS class for colour-coding (log-error, log-done).
+     * cssClass is optional — use "log-error" or "log-done" for colour.
      */
     function appendLog(text, cssClass) {
-      const log = document.getElementById("train-log");
+      const log  = document.getElementById("train-log");
       const line = document.createElement("div");
       if (cssClass) line.className = cssClass;
       line.textContent = text;
       log.appendChild(line);
-      // Auto-scroll to newest line
       log.scrollTop = log.scrollHeight;
     }
 
+    /** Simple HTML escaping to prevent XSS in dynamically injected content. */
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
 
-    // ── Panel 1: Status ────────────────────────────────────────────────────
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  PANEL 1: KG STATUS
+    // ════════════════════════════════════════════════════════════════════════
 
     /**
-     * Poll GET /api/kg/status and update the status badge + detail line.
-     * Called on page load and when the user clicks "Refresh Status".
+     * Call GET /api/kg/status and update the badge + detail line.
+     * Called on page load and when "Refresh Status" is clicked.
      */
     async function fetchStatus() {
       const badge  = document.getElementById("status-badge");
@@ -531,93 +582,144 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     }
 
 
-    // ── Panel 2: Train ─────────────────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  PANEL 2: TRAIN
+    // ════════════════════════════════════════════════════════════════════════
 
-    /** Show/hide the custom document textarea based on dataset selection. */
+    /**
+     * Show/hide sub-inputs when the dataset selector changes.
+     *
+     *  eval_corpus → nothing extra needed
+     *  custom      → show the textarea
+     *  json_file   → show the file picker dropdown; scan data/ if not loaded yet
+     */
     function onDatasetChange() {
-  const val = document.getElementById("dataset-select").value;
+      const val          = document.getElementById("dataset-select").value;
+      const customWrapper = document.getElementById("custom-docs-wrapper");
+      const jsonWrapper   = document.getElementById("json-file-wrapper");
 
-  const customWrapper =
-    document.getElementById("custom-docs-wrapper");
+      customWrapper.style.display = (val === "custom")    ? "block" : "none";
+      jsonWrapper.style.display   = (val === "json_file") ? "block" : "none";
 
-  const jsonWrapper =
-    document.getElementById("json-path-wrapper");
+      // Scan the data directory the first time the user switches to json_file.
+      // Subsequent switches reuse the cached results unless Refresh is clicked.
+      if (val === "json_file") {
+        const select = document.getElementById("json-file-select");
+        // Only auto-scan if the dropdown is still in its placeholder state
+        if (select.options.length === 1 && select.options[0].value === "") {
+          refreshDataFiles();
+        }
+      }
+    }
 
-  // Show textarea only for custom documents
-  customWrapper.style.display =
-    (val === "custom") ? "block" : "none";
+    /**
+     * Call GET /api/data/files to discover .json files in the data/ directory
+     * and populate the file picker dropdown.
+     *
+     * Triggered automatically when the user first selects "JSON file", and
+     * again whenever they click the ↻ Refresh button.
+     *
+     * Why a server-side scan?
+     *   The browser has no access to the container filesystem.  The server
+     *   scans DATA_DIR and returns filenames + sizes.  The client never
+     *   constructs a path — it only sends back the bare filename.
+     */
+    async function refreshDataFiles() {
+      const select    = document.getElementById("json-file-select");
+      const hintEl    = document.getElementById("data-dir-hint");
+      const noFilesEl = document.getElementById("no-files-msg");
+      const refreshBtn = document.getElementById("refresh-btn");
 
-  // Show JSON path input only for json_file
-  jsonWrapper.style.display =
-    (val === "json_file") ? "block" : "none";
-}
+      // Disable controls during the fetch
+      select.disabled = true;
+      refreshBtn.disabled = true;
+      select.innerHTML = '<option value="">— scanning ... —</option>';
+      noFilesEl.style.display = "none";
+
+      try {
+        const res  = await fetch("/api/data/files");
+        const data = await res.json();
+
+        // Update the read-only data directory hint
+        hintEl.textContent = `data directory: ${data.data_dir || "(unknown)"}`;
+
+        const files = data.files || [];
+
+        if (files.length === 0) {
+          // No .json files found — show the empty-state callout
+          select.innerHTML = '<option value="">— no .json files in data/ —</option>';
+          noFilesEl.style.display = "block";
+        } else {
+          // Populate dropdown: one option per file, value = bare filename
+          // The label shows the filename and its size so the user can judge
+          // whether to use the full file or a subset.
+          select.innerHTML = files.map(f =>
+            `<option value="${escHtml(f.filename)}">`
+            + `${escHtml(f.filename)}`
+            + (f.size_kb ? ` (${f.size_kb} KB)` : "")
+            + `</option>`
+          ).join("");
+          noFilesEl.style.display = "none";
+        }
+
+      } catch (e) {
+        select.innerHTML = '<option value="">— error scanning data/ —</option>';
+        hintEl.textContent = "Could not reach server: " + e;
+      } finally {
+        select.disabled  = false;
+        refreshBtn.disabled = false;
+      }
+    }
 
     /**
      * Start a KG build.
      *
-     * Uses EventSource (SSE) to stream progress lines from POST /api/train.
-     * The server sends JSON objects:
-     *   { "type": "log",   "message": "..." }   → append to log box
-     *   { "type": "done",  "message": "...", node_count, edge_count } → build finished
-     *   { "type": "error", "message": "..." }   → build failed
+     * Reads the dataset selector and builds the correct request body for each
+     * mode, then opens an SSE stream from POST /api/train and appends each
+     * progress line to the log box in real time.
      *
-     * NOTE: EventSource only supports GET natively. For POST + SSE we use
-     * fetch() with a ReadableStream reader instead, which is universally
-     * supported in modern browsers.
+     * Why fetch() + ReadableStream instead of EventSource?
+     *   EventSource only supports GET.  POST + SSE requires fetch() with the
+     *   response body consumed as a ReadableStream.  This is universally
+     *   supported in modern browsers and works identically.
      */
     async function startTraining() {
-      const btn       = document.getElementById("train-btn");
-      const dataset   = document.getElementById("dataset-select").value;
-      const saveAs    = document.getElementById("save-as-name").value.trim() || "latest";
+      const btn        = document.getElementById("train-btn");
+      const dataset    = document.getElementById("dataset-select").value;
+      const saveAs     = document.getElementById("save-as-name").value.trim() || "latest";
       const logWrapper = document.getElementById("train-log-wrapper");
-      const logBox    = document.getElementById("train-log");
+      const logBox     = document.getElementById("train-log");
 
       hideCallout("train-callout-error");
       hideCallout("train-callout-success");
 
-    // ── Dataset-specific inputs ─────────────────────────────
+      // ── Build dataset-specific fields ────────────────────────────────────
 
-    let documents = [];
-    let jsonPath = "";
+      let documents    = [];
+      let jsonFilename = "";
 
-    // Custom pasted docs
-    if (dataset === "custom") {
+      if (dataset === "custom") {
+        const raw = document.getElementById("custom-docs").value;
+        documents = raw.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+        if (documents.length === 0) {
+          showCallout("train-callout-error",
+            "Please paste at least one document before building.");
+          return;
+        }
+      }
 
-    const raw =
-        document.getElementById("custom-docs").value;
+      if (dataset === "json_file") {
+        const select = document.getElementById("json-file-select");
+        jsonFilename = select.value;
+        if (!jsonFilename) {
+          showCallout("train-callout-error",
+            "Please select a JSON file from the dropdown. "
+            + "If none appear, click ↻ Refresh or add files to the data/ folder.");
+          return;
+        }
+      }
 
-    documents = raw
-        .split("\n")
-        .map(l => l.trim())
-        .filter(l => l.length > 0);
-
-    if (documents.length === 0) {
-        showCallout(
-        "train-callout-error",
-        "Please paste at least one document before building."
-        );
-        return;
-    }
-    }
-
-    // JSON dataset file
-    if (dataset === "json_file") {
-
-    jsonPath =
-        document.getElementById("json-path-input")
-        .value
-        .trim();
-
-    if (!jsonPath) {
-        showCallout(
-        "train-callout-error",
-        "Please provide a JSON dataset path."
-        );
-        return;
-    }
-    }
-
-      // Show and clear the log box
+      // ── Show and clear the log box ───────────────────────────────────────
       logWrapper.style.display = "block";
       logBox.innerHTML = "";
       btn.disabled = true;
@@ -625,25 +727,28 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
 
       try {
         const response = await fetch("/api/train", {
-          method: "POST",
+          method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            dataset_name: dataset,
-            documents:    documents,
-            json_path: jsonPath,
-            save_as:      saveAs,
+          body:    JSON.stringify({
+            dataset_name:  dataset,
+            documents:     documents,
+            json_filename: jsonFilename,  // bare filename — server resolves path
+            save_as:       saveAs,
           }),
         });
 
         if (!response.ok) {
-          // Non-200 means the server rejected the request before streaming started
+          // Server rejected the request before streaming started (4xx/5xx)
           const err = await response.json();
           appendLog("Error: " + (err.detail || "Unknown error"), "log-error");
           showCallout("train-callout-error", err.detail || "Build request failed.");
           return;
         }
 
-        // Stream the SSE response body line by line
+        // ── Consume the SSE stream ───────────────────────────────────────────
+        // The server sends newline-delimited JSON objects of the form:
+        //   data: {"type": "log"|"done"|"error", "message": "..."}\n\n
+        // We accumulate chunks in a buffer, split on \n\n, parse each event.
         const reader  = response.body.getReader();
         const decoder = new TextDecoder();
         let   buffer  = "";
@@ -652,15 +757,11 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
           const { value, done } = await reader.read();
           if (done) break;
 
-          // Accumulate chunks; SSE messages end with "\n\n"
           buffer += decoder.decode(value, { stream: true });
           const events = buffer.split("\n\n");
-
-          // The last element may be a partial message — keep it in the buffer
-          buffer = events.pop();
+          buffer = events.pop();  // last element may be a partial message
 
           for (const event of events) {
-            // Each SSE event looks like: "data: {...}\n"
             const dataLine = event.split("\n").find(l => l.startsWith("data: "));
             if (!dataLine) continue;
 
@@ -677,10 +778,8 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
             } else if (parsed.type === "done") {
               appendLog(parsed.message, "log-done");
               showCallout("train-callout-success", parsed.message);
-              // Refresh status badge to reflect the newly loaded KG
-              await fetchStatus();
-              // Refresh the saved models table
-              await fetchSavedModels();
+              await fetchStatus();        // update the status badge
+              await fetchSavedModels();   // refresh the load table
             } else if (parsed.type === "error") {
               appendLog("ERROR: " + parsed.message, "log-error");
               showCallout("train-callout-error", "Build failed: " + parsed.message);
@@ -697,31 +796,32 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     }
 
 
-    // ── Panel 3: Load ──────────────────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  PANEL 3: LOAD
+    // ════════════════════════════════════════════════════════════════════════
 
     /**
-     * Fetch the list of saved KGs from GET /api/kg/list and render the table.
-     * Called on page load and after a successful build.
+     * Call GET /api/kg/list and render the saved models table.
+     * Called on page load and after every successful build.
      */
     async function fetchSavedModels() {
-      const loadingEl   = document.getElementById("models-loading");
+      const loadingEl    = document.getElementById("models-loading");
       const tableWrapper = document.getElementById("models-table-wrapper");
-      const noModelsMsg = document.getElementById("no-models-msg");
+      const noModelsMsg  = document.getElementById("no-models-msg");
 
-      loadingEl.style.display  = "flex";
-      loadingEl.style.gap      = "6px";
+      loadingEl.style.display    = "flex";
+      loadingEl.style.gap        = "6px";
       tableWrapper.style.display = "none";
 
       try {
-        const res   = await fetch("/api/kg/list");
-        const data  = await res.json();
+        const res    = await fetch("/api/kg/list");
+        const data   = await res.json();
         const models = data.models || [];
 
-        loadingEl.style.display = "none";
+        loadingEl.style.display    = "none";
         tableWrapper.style.display = "block";
 
         if (models.length === 0) {
-          // No saved models yet — show the empty-state message
           document.getElementById("models-table").style.display = "none";
           noModelsMsg.style.display = "block";
         } else {
@@ -735,25 +835,18 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       }
     }
 
-    /**
-     * Render a row per saved model in the models table.
-     * Each row has a "Load" button that calls loadModelByName().
-     */
+    /** Render one table row per saved model. */
     function renderModelsTable(models) {
       const tbody = document.getElementById("models-tbody");
       tbody.innerHTML = "";
 
       models.forEach(m => {
-        const tr = document.createElement("tr");
-
-        // Format the timestamp nicely if it looks like an ISO string
         let savedAt = m.saved_at || "unknown";
         if (savedAt && savedAt !== "unknown") {
-          try {
-            savedAt = new Date(savedAt).toLocaleString();
-          } catch { /* keep raw */ }
+          try { savedAt = new Date(savedAt).toLocaleString(); } catch { /**/ }
         }
 
+        const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${escHtml(m.name)}</strong></td>
           <td style="color:#777; font-size:12px;">${escHtml(savedAt)}</td>
@@ -773,7 +866,7 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
 
     /**
      * POST /api/kg/load with the given model name.
-     * On success, hot-swaps the active KG without a server restart.
+     * Hot-swaps the global rag instance without a server restart.
      */
     async function loadModelByName(name) {
       name = (name || "").trim();
@@ -785,15 +878,14 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       hideCallout("load-callout-error");
       hideCallout("load-callout-success");
 
-      // Disable all Load buttons while the request is in flight
       const allLoadBtns = document.querySelectorAll(".btn-secondary");
       allLoadBtns.forEach(b => { b.disabled = true; });
 
       try {
         const res  = await fetch("/api/kg/load", {
-          method: "POST",
+          method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name }),
+          body:    JSON.stringify({ name }),
         });
         const data = await res.json();
 
@@ -805,9 +897,7 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
 
         showCallout("load-callout-success",
           `✓ Loaded '${data.name}': ${data.node_count} nodes, ${data.edge_count} edges.`);
-
-        // Refresh the status badge so it shows the new model
-        await fetchStatus();
+        await fetchStatus();  // refresh the status badge
 
       } catch (e) {
         showCallout("load-callout-error", "Network error: " + e);
@@ -816,27 +906,19 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       }
     }
 
-    /** Escape HTML special characters to prevent XSS in table cells. */
-    function escHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
 
-
-    // ── Page initialisation ─────────────────────────────────────────────────
+    // ════════════════════════════════════════════════════════════════════════
+    //  PAGE INITIALISATION
+    // ════════════════════════════════════════════════════════════════════════
 
     /**
-     * On page load:
-     *  1. Fetch the current KG status (Panel 1).
-     *  2. Fetch saved models (Panel 3).
+     * On page load, fire both fetches in parallel so neither blocks the other.
+     * The json_file scan is deferred until the user actually selects that mode.
      */
     (async function init() {
       await Promise.all([
-        fetchStatus(),
-        fetchSavedModels(),
+        fetchStatus(),       // Panel 1 — KG status badge
+        fetchSavedModels(),  // Panel 3 — saved models table
       ]);
     })();
   </script>

@@ -98,7 +98,7 @@ from pydantic import BaseModel
 from myproject.api.logger import get_logger
 from myproject.retrieval.retriever import HippoRAG
 from myproject.eval.metrics import recall_at_k, exact_match, f1_score
-from myproject.data.eval_dataset import QUESTIONS, CORPUS
+from data.eval_dataset import QUESTIONS, CORPUS
 
 # ── New imports to add at the top of src/myproject/api/app.py ──────────────
 
@@ -106,6 +106,14 @@ from myproject.kg.persistence import save_kg, load_kg, list_saved_kgs
 from myproject.kg.builder import KGBuilder       # triggers the actual build
 from myproject.config.config_loader import load_config  # reads config.yaml
 #from myproject.data.eval_dataset import CORPUS   # the bundled document list
+
+
+# DATA FILE
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parents[3]
+DATA_DIR = BASE_DIR / "data"
+MODEL_DIR = Path("/app/models")
 
 # ---------------------------------------------------------------------------
 logger = get_logger(__name__)
@@ -173,6 +181,15 @@ def load_docs_from_json_file(json_path: str) -> list[str]:
         If the file cannot be parsed as JSON, is not a list, or contains
         entries in an unrecognised format.
     """
+    json_path = Path(json_path)
+
+    if not json_path.is_absolute():
+        json_path = DATA_DIR / json_path
+    #safe_name = Path(json_path).name
+    #json_path = DATA_DIR / safe_name
+    # Clean Path
+    #json_path = DATA_DIR / json_path
+
     # ── Step 1: verify the file exists ──────────────────────────────────────
     # Give an explicit FileNotFoundError rather than letting open() raise a
     # confusing OSError with a long traceback.
@@ -390,13 +407,35 @@ class TrainRequest(BaseModel):
     """
     dataset_name: str = "eval_corpus"
     documents: list[str] = []
-    json_path: str = ""
+    json_filename: str = ""
     save_as: str = "latest"
  
  
 class LoadRequest(BaseModel):
     """Body for POST /api/kg/load."""
     name: str  # model slug, e.g. "eval_corpus"
+
+
+
+#
+#   File loader
+#
+@app.get("/api/data/files")
+def list_data_files():
+    """
+    Scan DATA_DIR for .json files and return their names and sizes.
+    Called by train.html's refreshDataFiles() to populate the file picker dropdown.
+    """
+    files = []
+    try:
+        for entry in sorted(os.scandir(DATA_DIR), key=lambda e: e.name):
+            if entry.is_file() and entry.name.endswith(".json"):
+                size_kb = round(entry.stat().st_size / 1024, 1)
+                files.append({"filename": entry.name, "size_kb": size_kb})
+    except FileNotFoundError:
+        pass  # DATA_DIR doesn't exist yet — return empty list gracefully
+
+    return {"data_dir": str(DATA_DIR), "files": files}
 
 
 
@@ -741,7 +780,7 @@ async def train(body: TrainRequest, request: Request):
     dataset_name values handled here:
         "eval_corpus" — bundled corpus, no extra fields needed
         "custom"      — body.documents must be a non-empty list of strings
-        "json_file"   — body.json_path must point to a readable JSON file;
+        "json_file"   — body.json_filename must point to a readable JSON file;
                         format is auto-detected (see load_docs_from_json_file)    
  
     Implementation notes
@@ -787,7 +826,7 @@ async def train(body: TrainRequest, request: Request):
         #   Format B: [{"title": "...", "text": "...", "idx": N}, ...]
         # It raises FileNotFoundError or ValueError with a clear message on
         # any problem, which we catch and turn into a 422 for the client.
-        json_path = body.json_path.strip()
+        json_path = body.json_filename.strip()
         if not json_path:
             raise HTTPException(
                 status_code=422,
@@ -809,7 +848,7 @@ async def train(body: TrainRequest, request: Request):
         raise HTTPException(
             status_code=422,
             detail=f"Unknown dataset_name: {body.dataset_name!r}. "
-                   "Use 'eval_corpus' or 'custom'.",
+                   "Use 'eval_corpus', 'json_file', or 'custom'.",
         )
  
     save_name = body.save_as.strip() or kg_cfg.get("auto_save_name", "latest")
@@ -988,3 +1027,160 @@ def kg_load(body: LoadRequest):
     }
 
 
+
+
+"""
+import uuid
+import requests as http_requests
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
+
+from api.logger import get_logger
+from retrieval.retriever import HippoRAG
+from eval.metrics import recall_at_k, exact_match, f1_score
+from data.eval_dataset import QUESTIONS
+
+logger = get_logger(__name__)
+
+rag: HippoRAG | None = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global rag
+    try:
+        rag = HippoRAG()
+        logger.info("HippoRAG loaded successfully.")
+    except Exception as e:
+        logger.warning(f"Could not load HippoRAG on startup: {e}. Build the KG first.")
+    yield
+
+
+app = FastAPI(title="HippoRAG", lifespan=lifespan)
+templates = Jinja2Templates(directory="api/templates")
+
+
+class QueryRequest(BaseModel):
+    question: str
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.post("/api/query")
+def query(body: QueryRequest, request: Request):
+    request_id = str(uuid.uuid4())
+    log = logger.getChild("query")
+
+    if not body.question.strip():
+        logger.info("Empty query rejected.", extra={"request_id": request_id})
+        raise HTTPException(status_code=422, detail="Query must not be empty.")
+
+    if rag is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Knowledge graph not loaded. Run python run_build_kg.py first."
+        )
+
+    logger.info(f"Query received: {body.question}", extra={"request_id": request_id})
+
+    try:
+        passages = rag.retrieve(body.question)
+        context = "\n".join(passages)
+        answer = rag.llm.generate(
+            f"Answer using context:\n\n{context}\n\nQuestion:\n{body.question}"
+        )
+        logger.info(f"Query answered successfully.", extra={"request_id": request_id})
+        return {"answer": answer, "passages": passages, "request_id": request_id}
+
+    except http_requests.exceptions.ConnectionError:
+        logger.error("LLM unreachable.", extra={"request_id": request_id})
+        raise HTTPException(
+            status_code=503,
+            detail="The language model is currently unavailable. Please try again later."
+        )
+    except http_requests.exceptions.ConnectTimeout:
+        logger.error("LLM connection timed out.", extra={"request_id": request_id})
+        raise HTTPException(
+            status_code=503,
+            detail="The language model is currently unavailable. Please try again later."
+        )
+
+
+@app.get("/evaluate", response_class=HTMLResponse)
+def evaluate_page(request: Request):
+    return templates.TemplateResponse("evaluate.html", {"request": request})
+
+
+@app.post("/api/evaluate")
+def evaluate():
+    request_id = str(uuid.uuid4())
+
+    if rag is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Knowledge graph not loaded. Run python run_build_kg.py first."
+        )
+
+    logger.info("Evaluation started.", extra={"request_id": request_id})
+
+    recall_ks = [1, 2, 5]
+    recall_totals = {k: 0.0 for k in recall_ks}
+    em_total = 0.0
+    f1_total = 0.0
+    results = []
+
+    for item in QUESTIONS:
+        question = item["question"]
+        gold_docs = item["gold_docs"]
+        gold_answers = item["gold_answers"]
+
+        try:
+            passages = rag.retrieve(question)
+            context = "\n".join(passages)
+            answer = rag.llm.generate(
+                f"Answer using context:\n\n{context}\n\nQuestion:\n{question}"
+            )
+        except Exception as e:
+            logger.error(f"Eval query failed: {e}", extra={"request_id": request_id})
+            continue
+
+        em = exact_match(answer, gold_answers)
+        f1 = f1_score(answer, gold_answers)
+        em_total += em
+        f1_total += f1
+
+        recalls = {}
+        for k in recall_ks:
+            r = recall_at_k(passages, gold_docs, k)
+            recall_totals[k] += r
+            recalls[f"Recall@{k}"] = round(r, 4)
+
+        results.append({
+            "question": question,
+            "answer": answer,
+            "passages": passages,
+            "em": round(em, 4),
+            "f1": round(f1, 4),
+            **recalls,
+        })
+
+    n = len(QUESTIONS)
+    aggregate = {f"Recall@{k}": round(recall_totals[k] / n, 4) for k in recall_ks}
+    aggregate["ExactMatch"] = round(em_total / n, 4)
+    aggregate["F1"] = round(f1_total / n, 4)
+
+    logger.info(f"Evaluation complete: {aggregate}", extra={"request_id": request_id})
+    return {"aggregate": aggregate, "results": results, "request_id": request_id}
+    """
