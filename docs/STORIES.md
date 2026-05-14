@@ -154,6 +154,8 @@
 7. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
 8. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
 
+**Expected end state:** see `docs/assets/stories/us_04_expected.png`.
+
 ---
 
 ## US-05 [ERROR PATH]: Missing API key surfaces a clear server error
@@ -181,7 +183,7 @@
 8. Confirm no Python stack trace appears anywhere in the UI.
 9. Compare to `docs/assets/stories/us_03_expected.png`.
 
-**Expected end state:** see `docs/assets/stories/us_03_expected.png`.
+**Expected end state:** see `docs/assets/stories/us_05_expected.png`.
 
 ---
 
@@ -236,7 +238,7 @@
 5. Confirm a results table appears with rows for: `Recall@1`, `Recall@2`, `Recall@5`, `ExactMatch`, `F1`.
 6. Confirm all values are numeric and between 0.0 and 1.0.
 
-**Reference screenshot:** `docs/assets/stories/us_04_expected.png`
+**Reference screenshot:** `docs/assets/stories/us_07_expected.png`
 
 ---
 
@@ -328,3 +330,4 @@
 9. Confirm all values are numeric and between 0.0 and 1.0.
 10. Confirm a checkpoint file (e.g. `eval_checkpoint.json`) appears in `data/` during the run.
 
+**Reference screenshot:** `docs/assets/stories/us_10_expected.png`
