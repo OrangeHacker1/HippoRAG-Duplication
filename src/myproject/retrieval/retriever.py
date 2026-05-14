@@ -95,6 +95,17 @@ class HippoRAG:
             self.embedder.encode(self.entity_nodes) if self.entity_nodes else []
         )
 
+        self.passage_nodes = [
+            n for n, d in self.kg.graph.nodes(data=True)
+            if d.get("type") == "passage"
+        ]
+        self.passage_texts = [
+            self.kg.graph.nodes[n].get("text", "") for n in self.passage_nodes
+        ]
+        self.passage_embeddings = (
+            self.embedder.encode(self.passage_texts) if self.passage_texts else []
+        )
+
     def _match_query_entities(self, entities, threshold=0.75):
         if not entities or not self.entity_nodes:
             return []
@@ -114,6 +125,25 @@ class HippoRAG:
         return matched
 
     def retrieve(self, query):
+        mode  = self.config["retrieval"].get("mode", "hipporag")
+        top_k = self.config["retrieval"]["top_k"]
+
+        if mode == "dense":
+            return self._retrieve_dense(query, top_k)
+        return self._retrieve_hipporag(query, top_k)
+
+    def _retrieve_dense(self, query, top_k):
+        if not self.passage_texts:
+            return []
+        query_emb = self.embedder.encode([query])[0]
+        scored = [
+            (self.embedder.similarity(query_emb, pe), text)
+            for pe, text in zip(self.passage_embeddings, self.passage_texts)
+        ]
+        scored.sort(key=lambda x: x[0], reverse=True)
+        return [text for _, text in scored[:top_k]]
+
+    def _retrieve_hipporag(self, query, top_k):
         # Step 1: triple matching
         triples = self.matcher.match(query)
 
@@ -138,7 +168,7 @@ class HippoRAG:
 
         passages = []
         for node, _ in ranked:
-            if len(passages) >= self.config["retrieval"]["top_k"]:
+            if len(passages) >= top_k:
                 break
             node_data = self.kg.graph.nodes[node]
             if node_data.get("type") == "passage":

@@ -521,8 +521,15 @@ class EvaluateRequest(BaseModel):
     json_filename : str
         Bare filename of a JSON eval file in DATA_DIR (e.g. "musique_eval.json").
         If empty, the bundled QUESTIONS from eval_dataset.py are used instead.
+    limit : int | None
+        Max number of questions to evaluate. None = all.
+    checkpoint_file : str
+        Bare filename to write incremental results into DATA_DIR after each
+        question. Defaults to "eval_checkpoint.json". Set to "" to disable.
     """
     json_filename: str = ""
+    limit: int | None = None
+    checkpoint_file: str = "eval_checkpoint.json"
 
 class QueryRequest(BaseModel):
     question: str
@@ -742,12 +749,28 @@ def evaluate(body: EvaluateRequest = None):
             raise HTTPException(status_code=422, detail=str(exc))
     else:
         questions = QUESTIONS
- 
-    for item in questions:
+
+    limit = body.limit if body else None
+    if limit:
+        questions = questions[:limit]
+
+    checkpoint_path = None
+    if body and body.checkpoint_file.strip():
+        checkpoint_path = DATA_DIR / body.checkpoint_file.strip()
+
+    total = len(questions)
+    if total == 0:
+        raise HTTPException(status_code=400, detail="No questions to evaluate.")
+
+    logger.info(f"Evaluating {total} questions.", extra={"request_id": request_id})
+
+    for i, item in enumerate(questions, start=1):
         question     = item["question"]
         gold_docs    = item["gold_docs"]
         gold_answers = item["gold_answers"]
- 
+
+        logger.info(f"Question {i}/{total}", extra={"request_id": request_id})
+
         try:
             passages = rag.retrieve(question)
             context  = "\n".join(passages)
@@ -760,32 +783,51 @@ def evaluate(body: EvaluateRequest = None):
                 extra={"request_id": request_id},
             )
             continue
- 
+
         em        = exact_match(answer, gold_answers)
         f1        = f1_score(answer, gold_answers)
         em_total += em
         f1_total += f1
- 
+
         recalls = {}
         for k in recall_ks:
             r = recall_at_k(passages, gold_docs, k)
             recall_totals[k] += r
             recalls[f"Recall@{k}"] = round(r, 4)
- 
-        results.append({
+
+        result = {
             "question": question,
             "answer":   answer,
             "passages": passages,
             "em":       round(em, 4),
             "f1":       round(f1, 4),
             **recalls,
-        })
- 
-    n         = len(questions)
+        }
+        results.append(result)
+
+        if checkpoint_path:
+            done = len(results)
+            running_agg = {f"Recall@{k}": round(recall_totals[k] / done, 4) for k in recall_ks}
+            running_agg["ExactMatch"] = round(em_total / done, 4)
+            running_agg["F1"]         = round(f1_total / done, 4)
+            checkpoint = {
+                "progress": f"{i}/{total}",
+                "aggregate": running_agg,
+                "results": results,
+                "request_id": request_id,
+            }
+            try:
+                checkpoint_path.write_text(json.dumps(checkpoint, indent=2))
+            except Exception as exc:
+                logger.warning(f"Checkpoint write failed: {exc}", extra={"request_id": request_id})
+
+    n         = len(results)
+    if n == 0:
+        raise HTTPException(status_code=500, detail="All eval queries failed.")
     aggregate = {f"Recall@{k}": round(recall_totals[k] / n, 4) for k in recall_ks}
     aggregate["ExactMatch"] = round(em_total / n, 4)
     aggregate["F1"]         = round(f1_total / n, 4)
- 
+
     logger.info(
         f"Evaluation complete: {aggregate}",
         extra={"request_id": request_id},

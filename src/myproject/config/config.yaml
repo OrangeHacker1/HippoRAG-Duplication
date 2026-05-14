@@ -15,6 +15,9 @@ llm:
 # Retrieval
 #
 retrieval:
+  # "hipporag" — full pipeline: triple matching + PPR graph walk (default)
+  # "dense"    — baseline: embed query, return top-k passages by cosine similarity
+  mode: "hipporag"
   top_k: 5
   ppr_alpha: 0.85
   max_iter: 30
@@ -34,7 +37,7 @@ kg:
   # Directory where saved KG models are stored.
   # Inside Docker this MUST match the volume mount in docker-compose.yml (/app/models).
   # Outside Docker (local dev) this resolves relative to the project root.
-  models_dir: /app/models
+  models_dir: ./data
 
   # Name of the KG to load automatically on startup.
   # Set to the slug you used when saving, e.g. "eval_corpus".
