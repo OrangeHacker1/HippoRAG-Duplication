@@ -100,13 +100,18 @@ from myproject.retrieval.retriever import HippoRAG
 from myproject.eval.metrics import recall_at_k, exact_match, f1_score
 from data.eval_dataset import QUESTIONS, CORPUS
 
+
 # ── New imports to add at the top of src/myproject/api/app.py ──────────────
 
 from myproject.kg.persistence import save_kg, load_kg, list_saved_kgs
 from myproject.kg.builder import KGBuilder       # triggers the actual build
 from myproject.config.config_loader import load_config  # reads config.yaml
-#from myproject.data.eval_dataset import CORPUS   # the bundled document list
-
+ 
+# --- AFTER (add these four lines immediately below) ---
+from myproject.GraphRAG.builder     import GraphRAGBuilder
+from myproject.GraphRAG.persistence import (
+     save_graphrag, load_graphrag, graphrag_exists, list_graphrag_models
+ )
 
 # DATA FILE
 from pathlib import Path
@@ -122,6 +127,7 @@ logger = get_logger(__name__)
 # Global RAG instance.  Set during lifespan startup and hot-swapped by
 # /api/train and /api/kg/load.  None means no KG is loaded yet.
 rag: HippoRAG | None = None
+graphrag_state: dict | None = None   # loaded GraphRAG index; None = not loaded
 
 
 # ====================
@@ -514,6 +520,13 @@ templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 #   Pydantic model
 #
 
+class GraphRAGTrainRequest(BaseModel):
+    """Body for POST /api/graphrag/train."""
+    dataset_name:  str       = "eval_corpus"
+    documents:     list[str] = []
+    json_filename: str       = ""
+    save_as:       str       = "latest"
+
 class EvaluateRequest(BaseModel):
     """
     Body for POST /api/evaluate.
@@ -521,15 +534,8 @@ class EvaluateRequest(BaseModel):
     json_filename : str
         Bare filename of a JSON eval file in DATA_DIR (e.g. "musique_eval.json").
         If empty, the bundled QUESTIONS from eval_dataset.py are used instead.
-    limit : int | None
-        Max number of questions to evaluate. None = all.
-    checkpoint_file : str
-        Bare filename to write incremental results into DATA_DIR after each
-        question. Defaults to "eval_checkpoint.json". Set to "" to disable.
     """
     json_filename: str = ""
-    limit: int | None = None
-    checkpoint_file: str = "eval_checkpoint.json"
 
 class QueryRequest(BaseModel):
     question: str
@@ -749,28 +755,12 @@ def evaluate(body: EvaluateRequest = None):
             raise HTTPException(status_code=422, detail=str(exc))
     else:
         questions = QUESTIONS
-
-    limit = body.limit if body else None
-    if limit:
-        questions = questions[:limit]
-
-    checkpoint_path = None
-    if body and body.checkpoint_file.strip():
-        checkpoint_path = DATA_DIR / body.checkpoint_file.strip()
-
-    total = len(questions)
-    if total == 0:
-        raise HTTPException(status_code=400, detail="No questions to evaluate.")
-
-    logger.info(f"Evaluating {total} questions.", extra={"request_id": request_id})
-
-    for i, item in enumerate(questions, start=1):
+ 
+    for item in questions:
         question     = item["question"]
         gold_docs    = item["gold_docs"]
         gold_answers = item["gold_answers"]
-
-        logger.info(f"Question {i}/{total}", extra={"request_id": request_id})
-
+ 
         try:
             passages = rag.retrieve(question)
             context  = "\n".join(passages)
@@ -783,51 +773,32 @@ def evaluate(body: EvaluateRequest = None):
                 extra={"request_id": request_id},
             )
             continue
-
+ 
         em        = exact_match(answer, gold_answers)
         f1        = f1_score(answer, gold_answers)
         em_total += em
         f1_total += f1
-
+ 
         recalls = {}
         for k in recall_ks:
             r = recall_at_k(passages, gold_docs, k)
             recall_totals[k] += r
             recalls[f"Recall@{k}"] = round(r, 4)
-
-        result = {
+ 
+        results.append({
             "question": question,
             "answer":   answer,
             "passages": passages,
             "em":       round(em, 4),
             "f1":       round(f1, 4),
             **recalls,
-        }
-        results.append(result)
-
-        if checkpoint_path:
-            done = len(results)
-            running_agg = {f"Recall@{k}": round(recall_totals[k] / done, 4) for k in recall_ks}
-            running_agg["ExactMatch"] = round(em_total / done, 4)
-            running_agg["F1"]         = round(f1_total / done, 4)
-            checkpoint = {
-                "progress": f"{i}/{total}",
-                "aggregate": running_agg,
-                "results": results,
-                "request_id": request_id,
-            }
-            try:
-                checkpoint_path.write_text(json.dumps(checkpoint, indent=2))
-            except Exception as exc:
-                logger.warning(f"Checkpoint write failed: {exc}", extra={"request_id": request_id})
-
-    n         = len(results)
-    if n == 0:
-        raise HTTPException(status_code=500, detail="All eval queries failed.")
+        })
+ 
+    n         = len(questions)
     aggregate = {f"Recall@{k}": round(recall_totals[k] / n, 4) for k in recall_ks}
     aggregate["ExactMatch"] = round(em_total / n, 4)
     aggregate["F1"]         = round(f1_total / n, 4)
-
+ 
     logger.info(
         f"Evaluation complete: {aggregate}",
         extra={"request_id": request_id},
@@ -1193,6 +1164,226 @@ async def train(body: TrainRequest, request: Request):
         },
     )
 
+
+
+# ════════════════════════════════════════════════════════════════════════════
+#  GRAPHRAG STATUS  —  GET /api/graphrag/status
+# ════════════════════════════════════════════════════════════════════════════
+ 
+@app.get("/api/graphrag/status")
+def graphrag_status():
+    """
+    Report whether a GraphRAG index is currently loaded and its basic stats.
+ 
+    Response schema:
+        {
+            "loaded":           bool,
+            "node_count":       int | null,
+            "edge_count":       int | null,
+            "community_count":  int | null,
+            "summary_count":    int | null,
+            "active_model":     str | null
+        }
+    """
+    if graphrag_state is None:
+        return {
+            "loaded":          False,
+            "node_count":      None,
+            "edge_count":      None,
+            "community_count": None,
+            "summary_count":   None,
+            "active_model":    None,
+        }
+ 
+    graph_wrapper = graphrag_state.get("graph")
+    return {
+        "loaded":          True,
+        "node_count":      graph_wrapper.node_count() if graph_wrapper else None,
+        "edge_count":      graph_wrapper.edge_count() if graph_wrapper else None,
+        "community_count": len(graphrag_state.get("communities", [])),
+        "summary_count":   len(graphrag_state.get("summaries",   {})),
+        "active_model":    graphrag_state.get("_active_model_name", "unknown"),
+    }
+ 
+ 
+# ════════════════════════════════════════════════════════════════════════════
+#  GRAPHRAG TRAIN  —  POST /api/graphrag/train   (SSE streaming)
+# ════════════════════════════════════════════════════════════════════════════
+ 
+class GraphRAGTrainRequest(BaseModel):
+    """Body for POST /api/graphrag/train."""
+    dataset_name:  str       = "eval_corpus"
+    documents:     list[str] = []
+    json_filename: str       = ""
+    save_as:       str       = "latest"
+ 
+ 
+@app.post("/api/graphrag/train")
+async def graphrag_train(body: GraphRAGTrainRequest, request: Request):
+    """
+    Build a GraphRAG index and stream progress back to the browser via SSE.
+ 
+    This endpoint is structurally identical to POST /api/train (HippoRAG).
+    The key differences are:
+ 
+      - Uses GraphRAGBuilder instead of KGBuilder.
+      - Saves base.pkl (via GraphRAG.persistence.save_graphrag) instead of graph.pkl.
+      - Both files can coexist in the same model directory so the same
+        corpus can be indexed by both methods simultaneously.
+ 
+    SSE message format (identical to /api/train):
+        data: {"type": "log"|"done"|"error", "message": "..."}\n\n
+ 
+    Dataset inputs supported:
+        "eval_corpus" — bundled 10-doc corpus
+        "custom"      — body.documents list
+        "json_file"   — body.json_filename scanned from DATA_DIR
+    """
+    global graphrag_state
+ 
+    request_id = str(uuid.uuid4())
+    cfg        = load_config()
+    kg_cfg     = cfg.get("kg", {})
+    models_dir = kg_cfg.get("models_dir", "/app/models")
+ 
+    os.makedirs(models_dir, exist_ok=True)
+ 
+    # ── Resolve document list (same logic as /api/train) ─────────────────────
+    if body.dataset_name == "eval_corpus":
+        docs = list(CORPUS)
+ 
+    elif body.dataset_name == "custom":
+        docs = [d.strip() for d in body.documents if d.strip()]
+        if not docs:
+            raise HTTPException(
+                status_code=422,
+                detail="No documents provided for custom dataset.",
+            )
+ 
+    elif body.dataset_name == "json_file":
+        json_path = body.json_filename.strip()
+        if not json_path:
+            raise HTTPException(
+                status_code=422,
+                detail="json_filename is required when dataset_name is 'json_file'.",
+            )
+        try:
+            docs = load_docs_from_json_file(json_path)
+        except FileNotFoundError as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
+ 
+    else:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unknown dataset_name: {body.dataset_name!r}. "
+                   "Use 'eval_corpus', 'json_file', or 'custom'.",
+        )
+ 
+    save_name = body.save_as.strip() or kg_cfg.get("auto_save_name", "latest")
+ 
+    # ── SSE generator ────────────────────────────────────────────────────────
+    async def event_stream():
+        def _emit(type_: str, message: str, **extra) -> str:
+            payload = json.dumps({"type": type_, "message": message, **extra})
+            return f"data: {payload}\\n\\n"
+ 
+        yield _emit(
+            "log",
+            f"[{request_id}] Starting GraphRAG build: "
+            f"dataset=\'{body.dataset_name}\', docs={len(docs)}, save_as=\'{save_name}\'",
+        )
+        yield _emit(
+            "log",
+            f"Save target: {models_dir}/{save_name}/base.pkl  (Docker volume kg_data)",
+        )
+        yield _emit(
+            "log",
+            "GraphRAG pipeline: entity extraction → graph construction → "
+            "community detection → community summarisation",
+        )
+ 
+        try:
+            loop      = asyncio.get_event_loop()
+            log_queue: queue.Queue = queue.Queue()
+ 
+            def _progress(msg: str):
+                log_queue.put(msg)
+ 
+            def _build():
+                builder = GraphRAGBuilder(progress_callback=_progress)
+                return builder.build(docs)
+ 
+            yield _emit("log", "Initialising GraphRAGBuilder ...")
+ 
+            future = loop.run_in_executor(None, _build)
+ 
+            # Drain the queue while the build runs
+            while not future.done():
+                await asyncio.sleep(0.3)
+                while not log_queue.empty():
+                    yield _emit("log", log_queue.get_nowait())
+ 
+            # Drain any remaining messages
+            while not log_queue.empty():
+                yield _emit("log", log_queue.get_nowait())
+ 
+            new_state = await future
+ 
+            # Save to volume as base.pkl
+            yield _emit("log", f"Build complete. Saving GraphRAG model as \'{save_name}\' ...")
+            save_graphrag(
+                state      = new_state,
+                name       = save_name,
+                models_dir = models_dir,
+                metadata   = {
+                    "doc_count":      len(docs),
+                    "dataset":        body.dataset_name,
+                    "graphrag_built": True,
+                },
+            )
+            yield _emit("log", f"Saved → {models_dir}/{save_name}/base.pkl")
+ 
+            # Hot-swap the global graphrag_state
+            global graphrag_state
+            graphrag_state = new_state
+            graphrag_state["_active_model_name"] = save_name
+ 
+            graph_wrapper = new_state["graph"]
+            community_count = len(new_state.get("communities", []))
+            summary_count   = len(new_state.get("summaries",   {}))
+ 
+            yield _emit(
+                "done",
+                f"✓ GraphRAG \'{save_name}\' is live: "
+                f"{graph_wrapper.node_count()} nodes, "
+                f"{graph_wrapper.edge_count()} edges, "
+                f"{community_count} communities, "
+                f"{summary_count} summaries.",
+                node_count      = graph_wrapper.node_count(),
+                edge_count      = graph_wrapper.edge_count(),
+                community_count = community_count,
+                summary_count   = summary_count,
+                model_name      = save_name,
+            )
+ 
+        except Exception as exc:
+            logger.error(
+                f"GraphRAG build failed: {exc}",
+                extra={"request_id": request_id},
+            )
+            yield _emit("error", f"GraphRAG build failed: {exc}")
+ 
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control":     "no-cache",
+            "X-Accel-Buffering": "no",
+        },
+    )
+ 
 
 # ════════════════════════════════════════════════════════════════════════════
 #  KG LOAD  —  POST /api/kg/load

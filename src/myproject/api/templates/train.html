@@ -2,25 +2,29 @@
 <!--
   train.html — HippoRAG Training & Model Management UI
   ======================================================
-  Three panels:
+  Four panels:
     1. Current KG status   — polls GET /api/kg/status on load
     2. Train a new KG      — pick dataset, trigger build, watch SSE log
-    3. Load a saved KG     — list saved models, hot-load one in seconds
+    3. Train GraphRAG      — NEW: builds base.pkl community index via SSE
+    4. Load a saved KG     — list saved models, hot-load one in seconds
 
-  New in this version
-  -------------------
-  The "JSON file" dataset option no longer shows a free-text path input.
-  Instead it calls GET /api/data/files to discover what .json files exist
-  inside the container's data/ directory and renders them in a dropdown.
-  The user picks a file; the server resolves the full path internally.
-  No path traversal is possible because the client only sends a bare filename.
+  GraphRAG panel additions
+  ------------------------
+  Panel 3 is new.  It calls POST /api/graphrag/train with the same SSE
+  streaming contract as POST /api/train.  Both produce progress lines via
+  "log" events and a final "done" or "error" event.
+
+  The GraphRAG index is saved as base.pkl in the same model directory as
+  HippoRAG's graph.pkl (e.g. /app/models/latest/base.pkl).
 
   API calls made by this page:
-    GET  /api/kg/status    — panel 1 status badge
-    GET  /api/kg/list      — panel 3 saved models table
-    GET  /api/data/files   — panel 2 json file dropdown (on demand)
-    POST /api/train        — SSE stream; triggers a KG build
-    POST /api/kg/load      — hot-loads a saved KG
+    GET  /api/kg/status       — panel 1 status badge
+    GET  /api/graphrag/status — panel 3 GraphRAG status badge
+    GET  /api/kg/list         — panel 4 saved models table
+    GET  /api/data/files      — panels 2+3 json file dropdown (on demand)
+    POST /api/train           — SSE stream; triggers a HippoRAG KG build
+    POST /api/graphrag/train  — SSE stream; triggers a GraphRAG build
+    POST /api/kg/load         — hot-loads a saved HippoRAG KG
 -->
 <html lang="en">
 <head>
@@ -86,12 +90,13 @@
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .card-status .card-title::before { background: #27ae60; }
-    .card-train  .card-title::before { background: #4a90e2; }
-    .card-load   .card-title::before { background: #e67e22; }
+    .card-status   .card-title::before { background: #27ae60; }
+    .card-train    .card-title::before { background: #4a90e2; }
+    .card-graphrag .card-title::before { background: #8e44ad; }  /* purple for GraphRAG */
+    .card-load     .card-title::before { background: #e67e22; }
 
     /* ── Status badge ────────────────────────────────────────────────────── */
-    #status-badge {
+    .status-badge {
       display: inline-block;
       padding: 4px 12px;
       border-radius: 20px;
@@ -99,10 +104,14 @@
       font-weight: 600;
       margin-bottom: 12px;
     }
+    /* kept for backward compat with existing id references */
+    #status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px;
+                    font-size: 13px; font-weight: 600; margin-bottom: 12px; }
     .badge-loaded   { background: #d4efdf; color: #1e8449; }
     .badge-unloaded { background: #fdebd0; color: #a04000; }
     .badge-checking { background: #eaf2f8; color: #2e86c1; }
-    #status-detail  { font-size: 13px; color: #555; margin-top: 4px; }
+    #status-detail          { font-size: 13px; color: #555; margin-top: 4px; }
+    #graphrag-status-detail { font-size: 13px; color: #555; margin-top: 4px; }
 
     /* ── Form elements ───────────────────────────────────────────────────── */
     label {
@@ -160,8 +169,10 @@
       transition: background 0.15s, opacity 0.15s;
     }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary  { background: #4a90e2; color: #fff; }
-    .btn-primary:hover:not(:disabled)  { background: #357abd; }
+    .btn-primary   { background: #4a90e2; color: #fff; }
+    .btn-primary:hover:not(:disabled)   { background: #357abd; }
+    .btn-graphrag  { background: #8e44ad; color: #fff; }
+    .btn-graphrag:hover:not(:disabled)  { background: #6c3483; }
     .btn-secondary { background: #e67e22; color: #fff; }
     .btn-secondary:hover:not(:disabled) { background: #ca6f1e; }
     .btn-ghost {
@@ -175,29 +186,18 @@
     .btn-sm { padding: 6px 14px; font-size: 13px; }
 
     /* ── JSON file picker row ────────────────────────────────────────────── */
-    /*
-      The file picker shows a dropdown of .json files discovered in DATA_DIR,
-      plus a Refresh button to re-scan on demand.  The data_dir path is shown
-      below as a read-only hint so the user knows where to put their files.
-    */
     .file-picker-row {
       display: flex;
       gap: 8px;
       align-items: flex-start;
       margin-bottom: 4px;
     }
-    .file-picker-row select {
-      flex: 1;
-      margin-bottom: 0;  /* row handles spacing */
-    }
-    .file-picker-row .btn-ghost {
-      flex-shrink: 0;
-      margin-top: 1px;   /* optical alignment with select */
-    }
+    .file-picker-row select { flex: 1; margin-bottom: 0; }
+    .file-picker-row .btn-ghost { flex-shrink: 0; margin-top: 1px; }
 
     /* ── SSE log box ─────────────────────────────────────────────────────── */
-    #train-log-wrapper { display: none; margin-top: 16px; }
-    #train-log {
+    .train-log-wrapper { display: none; margin-top: 16px; }
+    .train-log {
       background: #1a2332;
       color: #a8d8a8;
       font-family: "Courier New", monospace;
@@ -209,6 +209,9 @@
       white-space: pre-wrap;
       word-break: break-all;
     }
+    /* GraphRAG log uses a slightly different accent colour */
+    #graphrag-train-log { color: #d7b4f3; }
+
     .log-error { color: #f1948a; }
     .log-done  { color: #f9e79f; font-weight: bold; }
 
@@ -223,6 +226,7 @@
     .callout-success { background: #d4efdf; color: #1a5a32; border-left: 4px solid #27ae60; }
     .callout-error   { background: #fde8e8; color: #922b21; border-left: 4px solid #e74c3c; }
     .callout-info    { background: #eaf2f8; color: #1a5276; border-left: 4px solid #2980b9; }
+    .callout-graphrag { background: #f5eef8; color: #4a235a; border-left: 4px solid #8e44ad; display: block; }
 
     /* ── Helper text ─────────────────────────────────────────────────────── */
     .help-text {
@@ -268,6 +272,21 @@
 
     /* ── Divider ─────────────────────────────────────────────────────────── */
     .divider { border: none; border-top: 1px solid #eef0f3; margin: 16px 0; }
+
+    /* ── GraphRAG feature pill ───────────────────────────────────────────── */
+    .feature-pill {
+      display: inline-block;
+      background: #f5eef8;
+      color: #6c3483;
+      border: 1px solid #d2b4de;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 9px;
+      margin-left: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.02em;
+    }
   </style>
 </head>
 <body>
@@ -281,7 +300,8 @@
 
   <h1>Train &amp; Load</h1>
   <p class="subtitle">
-    Build a new knowledge graph from a dataset, or load a previously saved one.
+    Build a HippoRAG knowledge graph or a GraphRAG community index from a dataset,
+    or load a previously saved model.
     Saved models persist across <code>docker compose down/up</code> via the
     <code>kg_data</code> Docker volume.
   </p>
@@ -289,7 +309,6 @@
 
   <!-- ════════════════════════════════════════════════════════════════════════
        PANEL 1 — Current KG Status
-       Fetched automatically on page load from GET /api/kg/status.
   ══════════════════════════════════════════════════════════════════════════ -->
   <div class="card card-status">
     <div class="card-title">Current Knowledge Graph Status</div>
@@ -306,29 +325,21 @@
 
 
   <!-- ════════════════════════════════════════════════════════════════════════
-       PANEL 2 — Train a New KG
-       Three sub-modes controlled by the dataset <select>:
-         eval_corpus — no extra input needed
-         custom      — textarea for pasted documents
-         json_file   — dropdown of files scanned from data/ directory
+       PANEL 2 — Train a New HippoRAG KG
+       (Unchanged from original — all existing logic preserved)
   ══════════════════════════════════════════════════════════════════════════ -->
   <div class="card card-train">
-    <div class="card-title">Train a New Knowledge Graph</div>
+    <div class="card-title">Train a New Knowledge Graph <span style="font-size:12px; font-weight:400; color:#7f8c8d;">(HippoRAG)</span></div>
 
     <!-- ── Dataset selector ─────────────────────────────────────────────── -->
     <label for="dataset-select">Dataset</label>
     <select id="dataset-select" onchange="onDatasetChange()">
-      <!--
-        eval_corpus — bundled 10-doc corpus from data/eval_dataset.py
-        custom      — user pastes raw documents into the textarea below
-        json_file   — file selected from a dropdown scanned from data/
-      -->
       <option value="eval_corpus">Built-in eval corpus (10 docs — scientists)</option>
       <option value="custom">Custom — paste your own documents</option>
       <option value="json_file">JSON file — select from data/ directory</option>
     </select>
 
-    <!-- ── Custom document textarea (shown only for "custom") ───────────── -->
+    <!-- ── Custom document textarea ─────────────────────────────────────── -->
     <div id="custom-docs-wrapper" style="display:none;">
       <label for="custom-docs">
         Documents (one document per line; blank lines are ignored)
@@ -345,22 +356,9 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       </p>
     </div>
 
-    <!-- ── JSON file picker (shown only for "json_file") ────────────────── -->
-    <!--
-      When the user selects "JSON file", the page calls GET /api/data/files
-      to discover what .json files exist in the container's data/ folder.
-      The results populate the dropdown below.  The Refresh button re-scans
-      without requiring a page reload.
-
-      Security: the user picks only a filename from this dropdown.
-      The browser sends json_filename (bare name) to POST /api/train.
-      The server resolves DATA_DIR / json_filename and verifies containment
-      before reading — no path traversal is possible.
-    -->
+    <!-- ── JSON file picker ──────────────────────────────────────────────── -->
     <div id="json-file-wrapper" style="display:none;">
       <label for="json-file-select">Dataset file (from data/ directory)</label>
-
-      <!-- Row: dropdown + Refresh button side by side -->
       <div class="file-picker-row">
         <select id="json-file-select" disabled>
           <option value="">— scanning data/ directory ... —</option>
@@ -370,30 +368,17 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
           ↻ Refresh
         </button>
       </div>
-
-      <!-- Read-only hint showing where DATA_DIR is inside the container -->
-      <div class="data-dir-hint" id="data-dir-hint">
-        data directory: (loading ...)
-      </div>
-
+      <div class="data-dir-hint" id="data-dir-hint">data directory: (loading ...)</div>
       <p class="help-text" style="margin-top:6px;">
         Place your <code>.json</code> dataset files in the <code>data/</code>
-        folder at the project root, then click <strong>↻ Refresh</strong> to
-        see them here.
+        folder at the project root, then click <strong>↻ Refresh</strong>.
         <br><br>
         Two formats are supported:
-        <br>
-        &nbsp;&nbsp;① Array of strings:&nbsp;
-          <code>["doc one", "doc two", ...]</code>
-        <br>
-        &nbsp;&nbsp;② Array of objects:&nbsp;
-          <code>[{"title": "...", "text": "..."}, ...]</code>
+        <br>&nbsp;&nbsp;① Array of strings:&nbsp;<code>["doc one", "doc two", ...]</code>
+        <br>&nbsp;&nbsp;② Array of objects:&nbsp;<code>[{"title": "...", "text": "..."}, ...]</code>
       </p>
-
-      <!-- Shown when data/ is empty -->
       <div id="no-files-msg" class="callout callout-info" style="display:none; margin-top:0;">
-        No <code>.json</code> files found in the data/ directory.
-        Add files there and click <strong>↻ Refresh</strong>.
+        No <code>.json</code> files found. Add files to <code>data/</code> and click ↻ Refresh.
       </div>
     </div>
 
@@ -404,10 +389,8 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     <input type="text" id="save-as-name" value="latest"
            placeholder="e.g. eval_corpus, musique_50, my_dataset">
     <p class="help-text">
-      This becomes the folder name inside the <code>kg_data</code> Docker volume.
-      Use a simple slug (letters, numbers, underscores, hyphens).
-      <code>latest</code> is loaded automatically on the next
-      <code>docker compose up</code>.
+      Slug name for the folder inside the <code>kg_data</code> Docker volume.
+      Use <code>latest</code> to auto-load on the next <code>docker compose up</code>.
     </p>
 
     <!-- ── Build button + callouts ───────────────────────────────────────── -->
@@ -419,30 +402,143 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     <div id="train-callout-success" class="callout callout-success"></div>
 
     <!-- ── SSE log box ───────────────────────────────────────────────────── -->
-    <!--
-      Hidden until a build starts.  Lines stream from the server one at a
-      time via the SSE response and are appended here in real time.
-    -->
-    <div id="train-log-wrapper">
-      <label style="margin-top:4px; margin-bottom:6px; display:block;">
-        Build log
-      </label>
-      <div id="train-log"></div>
+    <div id="train-log-wrapper" class="train-log-wrapper">
+      <label style="margin-top:4px; margin-bottom:6px; display:block;">Build log</label>
+      <div id="train-log" class="train-log"></div>
     </div>
   </div>
 
 
   <!-- ════════════════════════════════════════════════════════════════════════
-       PANEL 3 — Load a Saved KG
-       Lists all saved models from the kg_data volume and lets the user
-       hot-load one without restarting the server.
+       PANEL 3 — Train GraphRAG  (NEW)
+       -----------------------------------------------------------------------
+       GraphRAG builds a community-based index:
+         1. Entity + relationship extraction via LLM (one call per doc)
+         2. Undirected co-occurrence graph construction
+         3. Community detection (Leiden → Louvain → connected-components)
+         4. LLM summary for each community
 
-       Grader workflow:
-         1. Pre-train and save a model before submission.
-         2. docker compose up  →  open this page
-         3. Click "Load" next to the model name  →  KG live in seconds.
-         4. /api/query now works.
-         Alternatively: set active_model in config.yaml for zero manual steps.
+       The result is saved as base.pkl alongside HippoRAG's graph.pkl in the
+       same model directory, so both indices can coexist for comparison.
+
+       This panel is structurally identical to Panel 2 but calls
+       POST /api/graphrag/train instead of POST /api/train.
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="card card-graphrag">
+    <div class="card-title">
+      Train GraphRAG Community Index
+      <span class="feature-pill">NEW</span>
+    </div>
+
+    <!-- What is GraphRAG callout -->
+    <div class="callout callout-graphrag" style="margin-bottom:18px;">
+      <strong>What is GraphRAG?</strong>
+      Unlike HippoRAG's triple-extraction + PPR approach, GraphRAG builds a
+      community index: entities are extracted from each passage, grouped into
+      thematic clusters by a community-detection algorithm (Leiden/Louvain),
+      and each cluster is summarised by the LLM. At query time, the most
+      relevant community summaries are retrieved instead of raw passages.
+      The index is saved as <code>base.pkl</code> alongside
+      <code>graph.pkl</code> in the same model directory.
+    </div>
+
+    <!-- GraphRAG status mini-badge (independent of HippoRAG status) -->
+    <div id="graphrag-status-badge" class="status-badge badge-checking">
+      <span class="spinner"></span> Checking ...
+    </div>
+    <div id="graphrag-status-detail"></div>
+    <div style="margin-bottom: 16px;"></div>
+
+    <!-- ── Dataset selector ─────────────────────────────────────────────── -->
+    <label for="gr-dataset-select">Dataset</label>
+    <select id="gr-dataset-select" onchange="onGRDatasetChange()">
+      <option value="eval_corpus">Built-in eval corpus (10 docs — scientists)</option>
+      <option value="custom">Custom — paste your own documents</option>
+      <option value="json_file">JSON file — select from data/ directory</option>
+    </select>
+
+    <!-- ── Custom document textarea ─────────────────────────────────────── -->
+    <div id="gr-custom-docs-wrapper" style="display:none;">
+      <label for="gr-custom-docs">
+        Documents (one document per line; blank lines are ignored)
+      </label>
+      <textarea id="gr-custom-docs" rows="8"
+        placeholder="Paste your documents here, one per line.&#10;Each non-blank line becomes one passage."></textarea>
+      <p class="help-text">
+        Each non-blank line is treated as one document.
+        GraphRAG extracts entities and relationships from each passage via the LLM,
+        then builds a community graph and generates one summary per community.
+      </p>
+    </div>
+
+    <!-- ── JSON file picker ──────────────────────────────────────────────── -->
+    <!--
+      Uses the same GET /api/data/files endpoint as the HippoRAG panel above.
+      The file picker is independent (separate select element) so both panels
+      can have different files selected simultaneously.
+    -->
+    <div id="gr-json-file-wrapper" style="display:none;">
+      <label for="gr-json-file-select">Dataset file (from data/ directory)</label>
+      <div class="file-picker-row">
+        <select id="gr-json-file-select" disabled>
+          <option value="">— scanning data/ directory ... —</option>
+        </select>
+        <button class="btn-ghost" onclick="refreshGRDataFiles()" id="gr-refresh-btn"
+                title="Re-scan data/ for new .json files">
+          ↻ Refresh
+        </button>
+      </div>
+      <div class="data-dir-hint" id="gr-data-dir-hint">data directory: (loading ...)</div>
+      <p class="help-text" style="margin-top:6px;">
+        Same <code>data/</code> directory as the HippoRAG panel above.
+        Two formats supported:
+        <br>&nbsp;&nbsp;① <code>["passage one", "passage two", ...]</code>
+        <br>&nbsp;&nbsp;② <code>[{"title": "...", "text": "..."}, ...]</code>
+      </p>
+      <div id="gr-no-files-msg" class="callout callout-info" style="display:none; margin-top:0;">
+        No <code>.json</code> files found. Add files to <code>data/</code> and click ↻ Refresh.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Save-as slug ──────────────────────────────────────────────────── -->
+    <!--
+      Using the same slug as the HippoRAG build places base.pkl alongside
+      graph.pkl in the same folder — this is the RECOMMENDED workflow because
+      the evaluate page can then compare both methods from a single model name.
+
+      Example:
+        HippoRAG build → save as "eval_corpus" → /app/models/eval_corpus/graph.pkl
+        GraphRAG build → save as "eval_corpus" → /app/models/eval_corpus/base.pkl
+    -->
+    <label for="gr-save-as-name">Save model as</label>
+    <input type="text" id="gr-save-as-name" value="latest"
+           placeholder="e.g. eval_corpus, musique_50, my_dataset">
+    <p class="help-text">
+      Use the <strong>same slug as your HippoRAG build</strong> to store both
+      indices (<code>graph.pkl</code> + <code>base.pkl</code>) in the same
+      folder. This enables side-by-side comparison in the Evaluate page.
+    </p>
+
+    <!-- ── Build button + callouts ───────────────────────────────────────── -->
+    <button id="gr-train-btn" class="btn-graphrag" onclick="startGraphRAGTraining()">
+      Build GraphRAG Index
+    </button>
+
+    <div id="gr-train-callout-error"   class="callout callout-error"></div>
+    <div id="gr-train-callout-success" class="callout callout-success"></div>
+
+    <!-- ── SSE log box ───────────────────────────────────────────────────── -->
+    <div id="graphrag-train-log-wrapper" class="train-log-wrapper">
+      <label style="margin-top:4px; margin-bottom:6px; display:block;">GraphRAG build log</label>
+      <div id="graphrag-train-log" class="train-log"></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       PANEL 4 — Load a Saved KG  (was Panel 3 — unchanged except panel number)
   ══════════════════════════════════════════════════════════════════════════ -->
   <div class="card card-load">
     <div class="card-title">Load a Saved Knowledge Graph</div>
@@ -459,7 +555,6 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       and the app loads the model automatically on every startup.
     </div>
 
-    <!-- Saved models table — populated by fetchSavedModels() on page load -->
     <div id="models-loading" style="color:#888; font-size:13px;">
       <span class="spinner"></span> Fetching saved models ...
     </div>
@@ -479,14 +574,13 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
         <tbody id="models-tbody"></tbody>
       </table>
       <p id="no-models-msg" style="display:none; font-size:13px; color:#888; margin-top:8px;">
-        No saved models found. Build one using the panel above.
+        No saved models found. Build one using the panels above.
       </p>
     </div>
 
     <div id="load-callout-error"   class="callout callout-error"></div>
     <div id="load-callout-success" class="callout callout-success"></div>
 
-    <!-- Manual load by name (fallback for when the table is empty) -->
     <hr class="divider">
     <label for="load-name-input" style="margin-top:4px;">
       Or load by name manually
@@ -520,11 +614,13 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     }
 
     /**
-     * Append a line to the SSE log box and auto-scroll to the bottom.
-     * cssClass is optional — use "log-error" or "log-done" for colour.
+     * Append a line to an SSE log box and auto-scroll to the bottom.
+     * @param {string} logId   - DOM id of the log <div>
+     * @param {string} text    - Text content of the log line
+     * @param {string} cssClass - Optional CSS class ("log-error" | "log-done")
      */
-    function appendLog(text, cssClass) {
-      const log  = document.getElementById("train-log");
+    function appendLog(logId, text, cssClass) {
+      const log  = document.getElementById(logId);
       const line = document.createElement("div");
       if (cssClass) line.className = cssClass;
       line.textContent = text;
@@ -532,24 +628,112 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       log.scrollTop = log.scrollHeight;
     }
 
-    /** Simple HTML escaping to prevent XSS in dynamically injected content. */
     function escHtml(str) {
       return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    /**
+     * Generic SSE consumer.
+     *
+     * Opens a POST /... SSE stream and pipes log/done/error events to the
+     * specified log box and callout elements.  Used by both HippoRAG and
+     * GraphRAG build handlers — no code duplication.
+     *
+     * @param {object} opts
+     *   endpoint       - POST URL (e.g. "/api/train" or "/api/graphrag/train")
+     *   body           - JSON-serialisable request body
+     *   logWrapperId   - id of the wrapper div that contains the log box
+     *   logBoxId       - id of the log <div> to append lines to
+     *   btnId          - id of the build button (disabled during build)
+     *   errorCalloutId - id of the error callout div
+     *   successCalloutId - id of the success callout div
+     *   onDone         - optional async callback called on "done" event
+     */
+    async function consumeSSE(opts) {
+      const {
+        endpoint, body,
+        logWrapperId, logBoxId, btnId,
+        errorCalloutId, successCalloutId,
+        onDone,
+      } = opts;
+
+      hideCallout(errorCalloutId);
+      hideCallout(successCalloutId);
+
+      const btn        = document.getElementById(btnId);
+      const logWrapper = document.getElementById(logWrapperId);
+      const logBox     = document.getElementById(logBoxId);
+
+      logWrapper.style.display = "block";
+      logBox.innerHTML = "";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(endpoint, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+          const err = await response.json();
+          appendLog(logBoxId, "Error: " + (err.detail || "Unknown error"), "log-error");
+          showCallout(errorCalloutId, err.detail || "Build request failed.");
+          return;
+        }
+
+        const reader  = response.body.getReader();
+        const decoder = new TextDecoder();
+        let   buffer  = "";
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const events = buffer.split("\n\n");
+          buffer = events.pop();
+
+          for (const event of events) {
+            const dataLine = event.split("\n").find(l => l.startsWith("data: "));
+            if (!dataLine) continue;
+
+            let parsed;
+            try {
+              parsed = JSON.parse(dataLine.slice("data: ".length));
+            } catch {
+              appendLog(logBoxId, "[unparseable] " + dataLine);
+              continue;
+            }
+
+            if (parsed.type === "log") {
+              appendLog(logBoxId, parsed.message);
+            } else if (parsed.type === "done") {
+              appendLog(logBoxId, parsed.message, "log-done");
+              showCallout(successCalloutId, parsed.message);
+              if (onDone) await onDone(parsed);
+            } else if (parsed.type === "error") {
+              appendLog(logBoxId, "ERROR: " + parsed.message, "log-error");
+              showCallout(errorCalloutId, "Build failed: " + parsed.message);
+            }
+          }
+        }
+
+      } catch (e) {
+        appendLog(logBoxId, "Network error: " + e, "log-error");
+        showCallout(errorCalloutId, "Network error: " + e);
+      } finally {
+        btn.disabled = false;
+      }
     }
 
 
     // ════════════════════════════════════════════════════════════════════════
-    //  PANEL 1: KG STATUS
+    //  PANEL 1: HIPPORAG KG STATUS
     // ════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Call GET /api/kg/status and update the badge + detail line.
-     * Called on page load and when "Refresh Status" is clicked.
-     */
     async function fetchStatus() {
       const badge  = document.getElementById("status-badge");
       const detail = document.getElementById("status-detail");
@@ -572,7 +756,7 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
           badge.className   = "badge-unloaded";
           badge.textContent = "⚠ No knowledge graph loaded";
           detail.textContent =
-            "Use the Train panel to build one, or the Load panel to load a saved model.";
+            "Use the HippoRAG Train panel to build one, or the Load panel to load a saved model.";
         }
       } catch (e) {
         badge.className   = "badge-unloaded";
@@ -583,54 +767,31 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
 
 
     // ════════════════════════════════════════════════════════════════════════
-    //  PANEL 2: TRAIN
+    //  PANEL 2: HIPPORAG TRAIN
     // ════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Show/hide sub-inputs when the dataset selector changes.
-     *
-     *  eval_corpus → nothing extra needed
-     *  custom      → show the textarea
-     *  json_file   → show the file picker dropdown; scan data/ if not loaded yet
-     */
     function onDatasetChange() {
-      const val          = document.getElementById("dataset-select").value;
+      const val           = document.getElementById("dataset-select").value;
       const customWrapper = document.getElementById("custom-docs-wrapper");
       const jsonWrapper   = document.getElementById("json-file-wrapper");
 
       customWrapper.style.display = (val === "custom")    ? "block" : "none";
       jsonWrapper.style.display   = (val === "json_file") ? "block" : "none";
 
-      // Scan the data directory the first time the user switches to json_file.
-      // Subsequent switches reuse the cached results unless Refresh is clicked.
       if (val === "json_file") {
         const select = document.getElementById("json-file-select");
-        // Only auto-scan if the dropdown is still in its placeholder state
         if (select.options.length === 1 && select.options[0].value === "") {
           refreshDataFiles();
         }
       }
     }
 
-    /**
-     * Call GET /api/data/files to discover .json files in the data/ directory
-     * and populate the file picker dropdown.
-     *
-     * Triggered automatically when the user first selects "JSON file", and
-     * again whenever they click the ↻ Refresh button.
-     *
-     * Why a server-side scan?
-     *   The browser has no access to the container filesystem.  The server
-     *   scans DATA_DIR and returns filenames + sizes.  The client never
-     *   constructs a path — it only sends back the bare filename.
-     */
     async function refreshDataFiles() {
-      const select    = document.getElementById("json-file-select");
-      const hintEl    = document.getElementById("data-dir-hint");
-      const noFilesEl = document.getElementById("no-files-msg");
+      const select     = document.getElementById("json-file-select");
+      const hintEl     = document.getElementById("data-dir-hint");
+      const noFilesEl  = document.getElementById("no-files-msg");
       const refreshBtn = document.getElementById("refresh-btn");
 
-      // Disable controls during the fetch
       select.disabled = true;
       refreshBtn.disabled = true;
       select.innerHTML = '<option value="">— scanning ... —</option>';
@@ -640,60 +801,32 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
         const res  = await fetch("/api/data/files");
         const data = await res.json();
 
-        // Update the read-only data directory hint
         hintEl.textContent = `data directory: ${data.data_dir || "(unknown)"}`;
 
         const files = data.files || [];
-
         if (files.length === 0) {
-          // No .json files found — show the empty-state callout
           select.innerHTML = '<option value="">— no .json files in data/ —</option>';
           noFilesEl.style.display = "block";
         } else {
-          // Populate dropdown: one option per file, value = bare filename
-          // The label shows the filename and its size so the user can judge
-          // whether to use the full file or a subset.
           select.innerHTML = files.map(f =>
             `<option value="${escHtml(f.filename)}">`
             + `${escHtml(f.filename)}`
             + (f.size_kb ? ` (${f.size_kb} KB)` : "")
             + `</option>`
           ).join("");
-          noFilesEl.style.display = "none";
         }
-
       } catch (e) {
         select.innerHTML = '<option value="">— error scanning data/ —</option>';
         hintEl.textContent = "Could not reach server: " + e;
       } finally {
-        select.disabled  = false;
+        select.disabled     = false;
         refreshBtn.disabled = false;
       }
     }
 
-    /**
-     * Start a KG build.
-     *
-     * Reads the dataset selector and builds the correct request body for each
-     * mode, then opens an SSE stream from POST /api/train and appends each
-     * progress line to the log box in real time.
-     *
-     * Why fetch() + ReadableStream instead of EventSource?
-     *   EventSource only supports GET.  POST + SSE requires fetch() with the
-     *   response body consumed as a ReadableStream.  This is universally
-     *   supported in modern browsers and works identically.
-     */
     async function startTraining() {
-      const btn        = document.getElementById("train-btn");
       const dataset    = document.getElementById("dataset-select").value;
       const saveAs     = document.getElementById("save-as-name").value.trim() || "latest";
-      const logWrapper = document.getElementById("train-log-wrapper");
-      const logBox     = document.getElementById("train-log");
-
-      hideCallout("train-callout-error");
-      hideCallout("train-callout-success");
-
-      // ── Build dataset-specific fields ────────────────────────────────────
 
       let documents    = [];
       let jsonFilename = "";
@@ -702,8 +835,7 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
         const raw = document.getElementById("custom-docs").value;
         documents = raw.split("\n").map(l => l.trim()).filter(l => l.length > 0);
         if (documents.length === 0) {
-          showCallout("train-callout-error",
-            "Please paste at least one document before building.");
+          showCallout("train-callout-error", "Please paste at least one document before building.");
           return;
         }
       }
@@ -719,91 +851,191 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
         }
       }
 
-      // ── Show and clear the log box ───────────────────────────────────────
-      logWrapper.style.display = "block";
-      logBox.innerHTML = "";
-      btn.disabled = true;
-      appendLog("Sending build request to server ...");
-
-      try {
-        const response = await fetch("/api/train", {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({
-            dataset_name:  dataset,
-            documents:     documents,
-            json_filename: jsonFilename,  // bare filename — server resolves path
-            save_as:       saveAs,
-          }),
-        });
-
-        if (!response.ok) {
-          // Server rejected the request before streaming started (4xx/5xx)
-          const err = await response.json();
-          appendLog("Error: " + (err.detail || "Unknown error"), "log-error");
-          showCallout("train-callout-error", err.detail || "Build request failed.");
-          return;
-        }
-
-        // ── Consume the SSE stream ───────────────────────────────────────────
-        // The server sends newline-delimited JSON objects of the form:
-        //   data: {"type": "log"|"done"|"error", "message": "..."}\n\n
-        // We accumulate chunks in a buffer, split on \n\n, parse each event.
-        const reader  = response.body.getReader();
-        const decoder = new TextDecoder();
-        let   buffer  = "";
-
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-          const events = buffer.split("\n\n");
-          buffer = events.pop();  // last element may be a partial message
-
-          for (const event of events) {
-            const dataLine = event.split("\n").find(l => l.startsWith("data: "));
-            if (!dataLine) continue;
-
-            let parsed;
-            try {
-              parsed = JSON.parse(dataLine.slice("data: ".length));
-            } catch {
-              appendLog("[unparseable] " + dataLine);
-              continue;
-            }
-
-            if (parsed.type === "log") {
-              appendLog(parsed.message);
-            } else if (parsed.type === "done") {
-              appendLog(parsed.message, "log-done");
-              showCallout("train-callout-success", parsed.message);
-              await fetchStatus();        // update the status badge
-              await fetchSavedModels();   // refresh the load table
-            } else if (parsed.type === "error") {
-              appendLog("ERROR: " + parsed.message, "log-error");
-              showCallout("train-callout-error", "Build failed: " + parsed.message);
-            }
-          }
-        }
-
-      } catch (e) {
-        appendLog("Network error: " + e, "log-error");
-        showCallout("train-callout-error", "Network error: " + e);
-      } finally {
-        btn.disabled = false;
-      }
+      await consumeSSE({
+        endpoint:         "/api/train",
+        body:             { dataset_name: dataset, documents, json_filename: jsonFilename, save_as: saveAs },
+        logWrapperId:     "train-log-wrapper",
+        logBoxId:         "train-log",
+        btnId:            "train-btn",
+        errorCalloutId:   "train-callout-error",
+        successCalloutId: "train-callout-success",
+        onDone: async () => {
+          await fetchStatus();
+          await fetchSavedModels();
+        },
+      });
     }
 
 
     // ════════════════════════════════════════════════════════════════════════
-    //  PANEL 3: LOAD
+    //  PANEL 3: GRAPHRAG TRAIN  (NEW)
     // ════════════════════════════════════════════════════════════════════════
 
     /**
-     * Call GET /api/kg/list and render the saved models table.
-     * Called on page load and after every successful build.
+     * Fetch and display the current GraphRAG index status.
+     * Called on page load (alongside fetchStatus) and after a successful build.
      */
+    async function fetchGraphRAGStatus() {
+      const badge  = document.getElementById("graphrag-status-badge");
+      const detail = document.getElementById("graphrag-status-detail");
+
+      badge.className = "status-badge badge-checking";
+      badge.innerHTML = '<span class="spinner"></span> Checking ...';
+      detail.textContent = "";
+
+      try {
+        const res  = await fetch("/api/graphrag/status");
+        const data = await res.json();
+
+        if (data.loaded) {
+          badge.className   = "status-badge badge-loaded";
+          badge.textContent = "✓ GraphRAG index loaded";
+          detail.textContent =
+            `Model: ${data.active_model || "unknown"} · ` +
+            `${data.node_count} nodes · ${data.edge_count} edges · ` +
+            `${data.community_count} communities · ${data.summary_count} summaries`;
+        } else {
+          badge.className   = "status-badge badge-unloaded";
+          badge.textContent = "⚠ No GraphRAG index loaded";
+          detail.textContent =
+            "Build one using the form below.";
+        }
+      } catch (e) {
+        badge.className   = "status-badge badge-unloaded";
+        badge.textContent = "⚠ Could not reach server";
+        detail.textContent = String(e);
+      }
+    }
+
+    /**
+     * Show/hide sub-inputs when the GraphRAG dataset selector changes.
+     * Mirrors onDatasetChange() exactly but operates on the gr-* elements.
+     */
+    function onGRDatasetChange() {
+      const val           = document.getElementById("gr-dataset-select").value;
+      const customWrapper = document.getElementById("gr-custom-docs-wrapper");
+      const jsonWrapper   = document.getElementById("gr-json-file-wrapper");
+
+      customWrapper.style.display = (val === "custom")    ? "block" : "none";
+      jsonWrapper.style.display   = (val === "json_file") ? "block" : "none";
+
+      if (val === "json_file") {
+        const select = document.getElementById("gr-json-file-select");
+        if (select.options.length === 1 && select.options[0].value === "") {
+          refreshGRDataFiles();
+        }
+      }
+    }
+
+    /**
+     * Scan GET /api/data/files for the GraphRAG file picker.
+     * Same endpoint as refreshDataFiles() but populates the gr-* elements.
+     */
+    async function refreshGRDataFiles() {
+      const select     = document.getElementById("gr-json-file-select");
+      const hintEl     = document.getElementById("gr-data-dir-hint");
+      const noFilesEl  = document.getElementById("gr-no-files-msg");
+      const refreshBtn = document.getElementById("gr-refresh-btn");
+
+      select.disabled     = true;
+      refreshBtn.disabled = true;
+      select.innerHTML    = '<option value="">— scanning ... —</option>';
+      noFilesEl.style.display = "none";
+
+      try {
+        const res  = await fetch("/api/data/files");
+        const data = await res.json();
+
+        hintEl.textContent = `data directory: ${data.data_dir || "(unknown)"}`;
+
+        const files = data.files || [];
+        if (files.length === 0) {
+          select.innerHTML        = '<option value="">— no .json files in data/ —</option>';
+          noFilesEl.style.display = "block";
+        } else {
+          select.innerHTML = files.map(f =>
+            `<option value="${escHtml(f.filename)}">`
+            + `${escHtml(f.filename)}`
+            + (f.size_kb ? ` (${f.size_kb} KB)` : "")
+            + `</option>`
+          ).join("");
+        }
+      } catch (e) {
+        select.innerHTML   = '<option value="">— error scanning data/ —</option>';
+        hintEl.textContent = "Could not reach server: " + e;
+      } finally {
+        select.disabled     = false;
+        refreshBtn.disabled = false;
+      }
+    }
+
+    /**
+     * Start a GraphRAG build.
+     *
+     * Reads the gr-* form elements, validates input, then calls the shared
+     * consumeSSE() helper with POST /api/graphrag/train.
+     *
+     * Why use consumeSSE() instead of copy-pasting startTraining()?
+     *   consumeSSE() encapsulates the entire SSE streaming loop (fetch, read,
+     *   parse, append-to-log, show callouts) so both build panels share exactly
+     *   one copy of that ~50-line loop.  The only differences are:
+     *     - endpoint URL  (/api/graphrag/train vs /api/train)
+     *     - which DOM elements to target (gr-* vs non-prefixed)
+     *     - the onDone callback (refresh GraphRAG status + models table)
+     */
+    async function startGraphRAGTraining() {
+      const dataset    = document.getElementById("gr-dataset-select").value;
+      const saveAs     = document.getElementById("gr-save-as-name").value.trim() || "latest";
+
+      let documents    = [];
+      let jsonFilename = "";
+
+      if (dataset === "custom") {
+        const raw = document.getElementById("gr-custom-docs").value;
+        documents = raw.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+        if (documents.length === 0) {
+          showCallout("gr-train-callout-error",
+            "Please paste at least one document before building.");
+          return;
+        }
+      }
+
+      if (dataset === "json_file") {
+        const select = document.getElementById("gr-json-file-select");
+        jsonFilename = select.value;
+        if (!jsonFilename) {
+          showCallout("gr-train-callout-error",
+            "Please select a JSON file. "
+            + "If none appear, click ↻ Refresh or add files to the data/ folder.");
+          return;
+        }
+      }
+
+      await consumeSSE({
+        endpoint:         "/api/graphrag/train",
+        body:             {
+          dataset_name:  dataset,
+          documents:     documents,
+          json_filename: jsonFilename,
+          save_as:       saveAs,
+        },
+        logWrapperId:     "graphrag-train-log-wrapper",
+        logBoxId:         "graphrag-train-log",
+        btnId:            "gr-train-btn",
+        errorCalloutId:   "gr-train-callout-error",
+        successCalloutId: "gr-train-callout-success",
+        onDone: async () => {
+          await fetchGraphRAGStatus();   // refresh GraphRAG status badge
+          await fetchSavedModels();      // refresh load-panel table
+        },
+      });
+    }
+
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  PANEL 4: LOAD  (unchanged from original Panel 3)
+    // ════════════════════════════════════════════════════════════════════════
+
     async function fetchSavedModels() {
       const loadingEl    = document.getElementById("models-loading");
       const tableWrapper = document.getElementById("models-table-wrapper");
@@ -829,13 +1061,11 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
           noModelsMsg.style.display = "none";
           renderModelsTable(models);
         }
-
       } catch (e) {
         loadingEl.innerHTML = "⚠ Could not fetch saved models: " + e;
       }
     }
 
-    /** Render one table row per saved model. */
     function renderModelsTable(models) {
       const tbody = document.getElementById("models-tbody");
       tbody.innerHTML = "";
@@ -864,10 +1094,6 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
       });
     }
 
-    /**
-     * POST /api/kg/load with the given model name.
-     * Hot-swaps the global rag instance without a server restart.
-     */
     async function loadModelByName(name) {
       name = (name || "").trim();
       if (!name) {
@@ -897,7 +1123,7 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
 
         showCallout("load-callout-success",
           `✓ Loaded '${data.name}': ${data.node_count} nodes, ${data.edge_count} edges.`);
-        await fetchStatus();  // refresh the status badge
+        await fetchStatus();
 
       } catch (e) {
         showCallout("load-callout-error", "Network error: " + e);
@@ -912,13 +1138,14 @@ Albert Einstein published the special theory of relativity in 1905."></textarea>
     // ════════════════════════════════════════════════════════════════════════
 
     /**
-     * On page load, fire both fetches in parallel so neither blocks the other.
-     * The json_file scan is deferred until the user actually selects that mode.
+     * On page load, fire all three fetches in parallel.
+     * The json_file scans are deferred until the user selects that dataset mode.
      */
     (async function init() {
       await Promise.all([
-        fetchStatus(),       // Panel 1 — KG status badge
-        fetchSavedModels(),  // Panel 3 — saved models table
+        fetchStatus(),          // Panel 1 — HippoRAG KG status badge
+        fetchGraphRAGStatus(),  // Panel 3 — GraphRAG status badge  (NEW)
+        fetchSavedModels(),     // Panel 4 — saved models table
       ]);
     })();
   </script>
