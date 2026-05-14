@@ -121,6 +121,4 @@ LOG_LEVEL (default INFO), MAX_CONTEXT_TOKENS (default 4000).
 
 ## 7. Model and Prompt Selection
 
-[Justify your choice of model and prompting strategy. Why this model, why this
-prompt structure, what alternatives you considered, and what known failure
-modes you mitigate. This section directly informs the model card.]
+For this project, we used an API calling method. We did this under the assumption it would be easier and would allow for more plug and play freedom, as you could test training with a larger model and switching to a smaller one. This would take time, so we did not add this to the story, but we made this with the plan of further improvement. Our prompts were genaric and designed to help train an optimal HippoRAG and have the LLM respond with grounded answers using the top K answers found within the RAG. This project runs into issues when the LLM does not respond. We used the 90B instruction model to do our assingment, but we ended up having to scrap several models due to the LLM stopping after about 6 hours of prompting. We did plan to set up local LLMs, but the 90B model started working again so we ended up continuing with the provided model, as this would hopefully help with consistency and repproducability.    
