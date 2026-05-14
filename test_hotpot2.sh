@@ -2,7 +2,7 @@
 # Samantha's test script for hotpot2 — HippoRAG vs Dense baseline
 # Usage: ./test_hotpot2.sh
 
-LIMIT=50   # change to 500 for full overnight run
+LIMIT=10   # change to 500 for full overnight run
 
 echo "=== Loading hotpot2 model ==="
 curl -s -X POST http://localhost:8080/api/kg/load \

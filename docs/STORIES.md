@@ -150,7 +150,7 @@
 
 ### Manual Steps
 
-1. Open a browser and navigate to `http://localhost:8000/evaluate`.
+1. Open a browser and navigate to `http://localhost:8080/evaluate`.
 2. Confirm the page loads with a **"Run Evaluation"** button.
 3. Click **"Run Evaluation"**.
 4. Wait for the results to appear (may take up to 60 seconds).
@@ -185,4 +185,31 @@
 8. Restore the original `TEACHER_BASE_URL` in `.env` and restart the system.
 
 **Reference screenshot:** `docs/assets/stories/us_06_expected.png`
+
+---
+
+## US-07: Run Evaluation Against a Custom JSON Dataset
+
+**As a** researcher,
+**I want to** upload a JSON question file and run the evaluation pipeline against it,
+**So that** I can benchmark the system on standard multi-hop datasets like HotpotQA or MuSiQue.
+
+### Acceptance Criteria
+
+- **Given** the knowledge graph is loaded and a valid JSON eval file exists in the `data/` directory,
+- **When** the user navigates to the Evaluate page, selects the file, and clicks **"Run Evaluation"**,
+- **Then** the system returns per-question EM, F1, and Recall@k scores plus aggregate metrics.
+
+### Manual Steps
+
+1. Confirm the app is running at `http://localhost:8080`.
+2. Place a valid eval JSON file (e.g. `hotpotqa.json`) in the `data/` directory.
+3. Navigate to `http://localhost:8080/evaluate`.
+4. In the eval file picker dropdown, select `hotpotqa.json`.
+5. Optionally set a question limit (e.g. 50) to keep the run short.
+6. Click **"Run Evaluation"**.
+7. Confirm a progress indicator is visible while evaluation runs.
+8. Confirm the results table appears with rows for `Recall@1`, `Recall@2`, `Recall@5`, `ExactMatch`, and `F1`.
+9. Confirm all values are numeric and between 0.0 and 1.0.
+10. Confirm a checkpoint file (e.g. `eval_checkpoint.json`) appears in `data/` during the run.
 
