@@ -181,7 +181,7 @@
 6. Observe the error message: "The model service is not configured. Contact the operator."
 7. In dev tools Network tab, confirm the response status is 503.
 8. Confirm no Python stack trace appears anywhere in the UI.
-9. Compare to `docs/assets/stories/us_03_expected.png`.
+9. Compare to `docs/assets/stories/us_05_expected.png`.
 
 **Expected end state:** `docs/assets/stories/us_05_expected.png`
 
