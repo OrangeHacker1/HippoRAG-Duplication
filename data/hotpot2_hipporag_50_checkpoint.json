@@ -1,0 +1,813 @@
+{
+  "progress": "50/50",
+  "aggregate": {
+    "Recall@1": 0.0,
+    "Recall@2": 0.0,
+    "Recall@5": 0.0,
+    "ExactMatch": 0.7,
+    "F1": 0.2548
+  },
+  "results": [
+    {
+      "question": "what is one of the stars of  The Newcomers known for",
+      "answer": "One of the stars of The Newcomers, Chris Evans, is known for his superhero roles, including playing Steve Rogers / Captain America in the Marvel Cinematic Universe and Johnny Storm / Human Torch in \"Fantastic Four\".",
+      "passages": [
+        "The Newcomers (film): The Newcomers is a 2000 American family drama film directed by James Allen Bradley and starring Christopher McCoy, Kate Bosworth, Paul Dano and Chris Evans. Christopher McCoy plays Sam Docherty, a boy who moves to Vermont with his family, hoping to make a fresh start away from the city. It was filmed in Vermont, and released by Artist View Entertainment and MTI Home Video.",
+        "Something Wicked This Way Comes (film): Something Wicked This Way Comes is a 1983 American horror fantasy film directed by Jack Clayton and produced by Walt Disney Productions from a screenplay written by Ray Bradbury, based on his novel of the same name. The novel's title was taken directly from a line in Act IV of William Shakespeare's \"Macbeth\": \"By the pricking of my thumbs / Something wicked this way comes.\" The film stars Jason Robards, Jonathan Pryce, Diane Ladd, and Pam Grier. It was shot in Vermont and at the Walt Disney Studios in Burbank, California. The film had a troubled production \u2013 Clayton fell out with Bradbury over an uncredited script rewrite, and after test screenings of the director's cut failed to meet the studio's expectations, Disney sidelined Clayton, fired the original editor, and scrapped the original score, spending some $5 million and many months re-shooting, re-editing and re-scoring the film, before its eventual release.",
+        "Chris Evans (actor): Christopher Robert Evans (born June 13, 1981) is an American actor and filmmaker. Evans is known for his superhero roles as the Marvel Comics characters Steve Rogers / Captain America in the Marvel Cinematic Universe and Johnny Storm / Human Torch in \"Fantastic Four\" and .",
+        "Don Terry: Don Terry (born Donald Prescott Loker, 8 August 1902 \u2013 6 October 1988) was an American film actor, best known for his lead appearances in B films and serials in the 1930s and early 1940s. His best known role is probably playing the recurring character of Naval Commander Don Winslow in Universal Pictures serials of the early 1940s, including \"Don Winslow of the Navy\" (1942) and \"Don Winslow of the Coast Guard\" (1943).",
+        "Mike Cahill (director): Mike Cahill (born July 5, 1979) is an American film director and screenwriter."
+      ],
+      "em": 0.0,
+      "f1": 0.2,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "The fictional private detective that appears in \"The Adventure of the Seven Clocks\" what written by whom?",
+      "answer": "The fictional private detective that appears in \"The Adventure of the Seven Clocks\" is Sherlock Holmes, and the story was written by Adrian Conan Doyle and John Dickson Carr.",
+      "passages": [
+        "Sherlock Holmes: Sherlock Holmes ( ) is a fictional private detective created by British author Sir Arthur Conan Doyle. Known as a \"consulting detective\" in the stories, Holmes is known for his proficiency with observation, forensic science, and logical reasoning that borders on the fantastic, which he employs when investigating cases for a wide variety of clients, including Scotland Yard.",
+        "The Adventure of the Seven Clocks: \"The Adventure of the Seven Clocks\" is a Sherlock Holmes story by Adrian Conan Doyle and John Dickson Carr. The story was published in the 1954 collection, \"The Exploits of Sherlock Holmes\".",
+        "Hazell (TV series): Hazell is a British television series that ran from 1978\u20131979, about a fictional private detective named James Hazell.",
+        "Pepe Carvalho: Pepe Carvalho is a fictional private detective, the protagonist of a series of novels written by Manuel V\u00e1zquez Montalb\u00e1n.",
+        "Viktor Schauberger: Viktor Schauberger (30 June 1885 in Holzschlag, Upper Austria \u2013 25 September 1958 in Linz, Austria) was an Austrian forest caretaker, naturalist, pseudoscientistref>Ronald Engert: \"Die Forellenturbine als Prinzip der kostenlosen Energiegewinnung. Freie Energie durch Implosion\".</ref>, philosopher, inventor and biomimicry experimenter."
+      ],
+      "em": 0.0,
+      "f1": 0.1212,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "The Distribution of Industry act was passed by a man who was prime minister when?",
+      "answer": "The Distribution of Industry Act was passed by the Labour government of Clement Attlee, who was Prime Minister of the United Kingdom from 1945 to 1951. Specifically, the Act was passed in 1950, during Attlee's tenure as Prime Minister.",
+      "passages": [
+        "Clement Attlee: Clement Richard Attlee, 1st Earl Attlee, {'1': \", '2': \", '3': \", '4': \"} (3 January 1883 \u2013 8 October 1967) was a British Labour politician who served as Prime Minister of the United Kingdom from 1945 to 1951 and Leader of the Labour Party from 1935 to 1955. In 1940, Attlee took Labour into the wartime coalition government and served under Winston Churchill, becoming the first person to hold the office of Deputy Prime Minister of the United Kingdom. He went on to lead the Labour Party to an unexpected landslide victory at the 1945 general election; forming the first Labour majority government, and a mandate to implement its postwar reforms. The 12.0% national swing from the Conservatives to Labour was unprecedented at that time and remains the largest ever achieved by any party at a general election in British electoral history. He was re-elected with a narrow majority at the 1950 general election. In the following year, Attlee called a snap general election, hoping to increase his parliamentary majority. However, he was narrowly defeated by the Conservatives under the leadership of Winston Churchill; despite winning the most votes of any political party in any general election in British political history until the Conservative Party's fourth consecutive victory in 1992. Attlee remains the longest-ever serving Leader of the Labour Party.",
+        "Distribution of Industry Act 1950: The Distribution of Industry Act 1950 was an Act of Parliament passed in the United Kingdom by the Labour government of Clement Attlee. It strengthened the powers of the Board of Trade in the Development Areas, making \u201cfurther provision for the acquisition of land, creation of easements and carrying out of work in development areas.\u201d It also authorized \u201cthe Board of Trade \u201cto make grants, in exceptional cases in connection with the establishment in, or transfer to, development areas of industrial undertakings, and to make grants or loans to housing associations for the provision of dwellings in development areas.\u201d In addition, the Act also provided for payments towards the cost of removal and resettlement of key workers and their dependants.",
+        "Prime Minister of Northern Ireland: The Prime Minister of Northern Ireland was the head of the Government of Northern Ireland between 1921 and 1972. No such office was provided for in the Government of Ireland Act 1920, however the Lord Lieutenant, as with Governors-General in other Westminster Systems such as in Canada, chose to appoint someone to head the executive even though no such post existed in statute law. The office-holder assumed the title \"Prime Minister\" to draw parallels with the Prime Minister of the United Kingdom. On the advice of the new Prime Minister, the Lord Lieutenant then created the \"Department of the Prime Minister\". The office of Prime Minister of Northern Ireland was abolished in 1972, along with the contemporary government, when direct rule of Northern Ireland was transferred to London.",
+        "Supriya Sahu: Supriya Sahu (Hindi: \u0938\u0941\u092a\u094d\u0930\u093f\u092f\u093e \u0938\u093e\u0939\u0942) is a senior Indian bureaucrat from 1991 batch of Indian Administrative Service. Recently, she was selected by Prasar Bharati, India's public service broadcaster, to be the Director General of state broadcaster Doordarshan. Currently, Supriya is posted as Director General Doordarshan. This is after almost two years that state broadcaster will get a full-time Director General. Supriya Sahu's appointment as head of Doordarshan was cleared by the Appointments Committee of the Cabinet headed by the Prime Minister Narendra Modi.",
+        "Gujarat Legislative Assembly election, 2012: The 2012 Gujarat legislative assembly elections were held in the Indian state of Gujarat in December 2012 for all 182 members of the Gujarat Legislative Assembly. Incumbent Chief Minister Narendra Modi of Bharatiya Janta Party (BJP), in power since 2002, was running for his fourth term. The leader of the opposition was Shaktisinh Gohil of the Indian National Congress (INC)."
+      ],
+      "em": 1.0,
+      "f1": 0.1429,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Sparking the Marian civil war, who helped the recently abdicated queen to escape her imprisonment?",
+      "answer": "The text does not explicitly state who helped the recently abdicated queen, Mary, Queen of Scots, to escape her imprisonment in Loch Leven Castle. It only mentions that she escaped in early May 1568, heading west to the country of the Hamiltons, who were among her remaining supporters.",
+      "passages": [
+        "Battle of Carberry Hill: The Battle of Carberry Hill took place on 15 June 1567, near Musselburgh, East Lothian, a few miles east of Edinburgh, Scotland. A number of Scottish lords objected to the rule of Mary, Queen of Scots after she had married the Earl of Bothwell, who was widely believed to have murdered her previous husband Lord Darnley. The Lords were intent to avenge Darnley's death. However, Bothwell escaped from the stand-off at Carberry while Queen Mary surrendered. Mary abdicated, escaped from prison, and was defeated at the battle of Langside. She went to exile in England while her supporters continued a civil war in Scotland.",
+        "Battle of Langside: The Battle of Langside, fought on 13 May 1568, was one of the most unusual contests in Scottish history, bearing a superficial resemblance to a grand family quarrel, in which a woman fought her brother who was defending the rights of her infant son. In 1567, Mary, Queen of Scots' short period of personal rule ended in recrimination, intrigue and disaster when, after her capture at Carberry Hill, she was forced to abdicate in favour of James VI, her infant son. Mary was imprisoned in Loch Leven Castle, while her Protestant half-brother, James Stewart, Earl of Moray was appointed Regent on behalf of his nephew. In early May 1568 Mary escaped, heading west to the country of the Hamiltons, high among her remaining supporters, and the safety of Dumbarton Castle with the determination to restore her rights as queen. Mary was defeated and went into exile and captivity in England. The battle can be regarded as the start of the Marian civil war.",
+        "Merv: Merv (Turkmen: Merw , \"\u041c\u0435\u0440\u0432\", \u0645\u0631\u0648; Persian: \u0645\u0631\u0648\u200e \u200e , \"Marv\"), formerly Achaemenid Satrapy of Margiana, and later Alexandria (Margiana) (\u1f08\u03bb\u03b5\u03be\u03ac\u03bd\u03b4\u03c1\u03b5\u03b9\u03b1) and Antiochia in Margiana (Greek: \u1f08\u03bd\u03c4\u03b9\u03cc\u03c7\u03b5\u03b9\u03b1 \u03c4\u1fc6\u03c2 \u039c\u03b1\u03c1\u03b3\u03b9\u03b1\u03bd\u1fc6\u03c2 ), was a major oasis-city in Central Asia, on the historical Silk Road, located near today's Mary in Turkmenistan.",
+        "Marian civil war: The Marian civil war in Scotland (1568\u20131573) was a period of conflict which followed the abdication of Mary, Queen of Scots, and her escape from Loch Leven Castle in May 1568. Those who ruled in the name of her infant son James VI fought against the supporters of the Queen, who was exiled in England. Edinburgh Castle, which was garrisoned in her name, became the focus of the conflict and surrendered only after an English intervention in May 1573. The conflict in 1570 was called an \"intestine war in the bowels of this commonwealth\", and the period was called soon after an \"intestine war driven by questions against authority.\"",
+        "Battle of Craibstone: The Battle of Craibstone was fought on 20 November 1571 between Clan Gordon and the Clan Forbes on an area that has now been constructed over, found in central Aberdeen, Scotland. It was part of the Marian civil war in which the Clan Forbes supported the King and Clan Gordon supported the Queen."
+      ],
+      "em": 0.0,
+      "f1": 0.0392,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "In which county is the town in which Raymond Robertsen was born ?",
+      "answer": "The text does not mention the county in which Hammerfest, the town where Raymond Robertsen was born, is located. It only mentions that Hammerfest is the birthplace of Raymond Robertsen, and that it is in Norway, but does not provide information about the specific county.",
+      "passages": [
+        "McIntosh County Seat War: The McIntosh County Seat War was a dispute in Oklahoma over the location of the McIntosh County seat that took place between 1907 and 1909. Following a pair of elections that resulted in the town of Checotah being designated as the new county seat, the people of Eufaula refused to hand over the county records. As a result, a group of heavily armed men from Chectotah attempted to seize the records, but were forced to surrender during the gunbattle that ensued. One year later, after another close election, Eufaula became the permanent county seat.",
+        "Raymond Robertsen: Raymond Robertsen (born 12 September 1974 in Hammerfest) is a Norwegian politician for the Conservative Party.",
+        "Raymond, Washington: Raymond is a city in Pacific County, Washington, United States. The population was 2,975 at the 2000 census and decreased 3.1% to 2,882 at the 2010 census. The town's economy has traditionally been based on logging and fishing, together with a limited amount of tourism. But recently the town of Raymond has seen an influx of marijuana manufacturing and agricultural jobs after the passing of Initiative 502 in November 2012, which legalized the recreational use of marijuana. Raymond has embraced all aspects of this lucrative, newly-emerging industry by welcoming many new start-up businesses including commercial marijuana grow operations, marijuana-infused goods manufacturing, as well as retail marijuana stores.",
+        "Fort Madison, Iowa: Fort Madison is a city and a county seat of Lee County, Iowa, United States along with Keokuk. Of Iowa's 99 counties, Lee County is the only one with two county seats. The population was 11,051 at the 2010 census. Located along the Mississippi River in the state's southeast corner, it lies between small bluffs along one of the widest portions of the river.",
+        "Keokuk, Iowa: Keokuk is a city and a county seat of Lee County, Iowa, United States, along with Fort Madison. It is also the most southerly city in Iowa. The population was 10,780 at the 2010 census. The city is named after the Sauk chief Keokuk, who is thought to be buried in Rand Park. It is located in the extreme southeast corner of Iowa where the Des Moines River meets with the Mississippi. It is located at the junction of U.S. Routes 61, 136 and 218. Just across the rivers are the towns of Hamilton and Warsaw, Illinois, and Alexandria, Missouri."
+      ],
+      "em": 0.0,
+      "f1": 0.0426,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What screenplay was worked on by both Edward Carfagno and Miklos Rozsa?",
+      "answer": "The screenplay that was worked on by both Edward Carfagno and Miklos Rozsa was \"Julius Caesar\" (1953). Edward Carfagno was the art director and Miklos Rozsa composed the original music score for the film.",
+      "passages": [
+        "Julius Caesar (1953 film): Julius Caesar is a 1953 epic Metro-Goldwyn-Mayer film adaptation of the play by Shakespeare, directed by Joseph L. Mankiewicz, who also wrote the uncredited screenplay, and produced by John Houseman. The original music score is by Mikl\u00f3s R\u00f3zsa. The film stars Marlon Brando as Mark Antony, James Mason as Brutus, John Gielgud as Cassius, Louis Calhern as Julius Caesar, Edmond O'Brien as Casca, Greer Garson as Calpurnia, and Deborah Kerr as Portia.",
+        "Edward Carfagno: Edward Carfagno (November 28, 1907 \u2013 December 28, 1996) was an art director who established himself in the 1950s with his Oscar-winning work on such films as Vincente Minnelli's \"The Bad and the Beautiful\" (1952), Joseph Mankiewicz's \"Julius Caesar\" (1953) and William Wyler's \"Ben-Hur\" (1959). Carfagno went on to work consistently on a variety of films, including five collaborations with Clint Eastwood including \"Tightrope\" (1984) and \"Heartbreak Ridge\" (1987).",
+        "The Jane Austen Book Club (film): The Jane Austen Book Club is a 2007 American romantic drama film written and directed by Robin Swicord. The screenplay, adapted from the 2004 novel of the same name by Karen Joy Fowler, focuses on a book club formed specifically to discuss the six novels written by Jane Austen. As they delve into Austen's literature, the club members find themselves dealing with life experiences that parallel the themes of the books they are reading.",
+        "Storm Over the Nile: Storm Over the Nile is a 1955 film adaptation of the novel \"The Four Feathers\", directed by Terence Young and Zoltan Korda. The film not only extensively used footage of the action scenes from the 1939 film version stretched into CinemaScope, but is a shot-for-shot, almost line-for-line remake of the earlier film, which was also directed by Korda. Several pieces of music by the original composer Miklos Rozsa were also utilised. It featured Anthony Steel, Laurence Harvey, James Robertson Justice, Mary Ure, Ian Carmichael, Michael Hordern and Christopher Lee. The film was shot on location in the Sudan.",
+        "McIntosh County Seat War: The McIntosh County Seat War was a dispute in Oklahoma over the location of the McIntosh County seat that took place between 1907 and 1909. Following a pair of elections that resulted in the town of Checotah being designated as the new county seat, the people of Eufaula refused to hand over the county records. As a result, a group of heavily armed men from Chectotah attempted to seize the records, but were forced to surrender during the gunbattle that ensued. One year later, after another close election, Eufaula became the permanent county seat."
+      ],
+      "em": 1.0,
+      "f1": 0.1111,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which Walt Disney film was produced first, The Apple Dumpling Gang or Something Wicked This Way Comes?",
+      "answer": "The Apple Dumpling Gang was produced first. It was released in 1975, while Something Wicked This Way Comes was released in 1983, eight years later.",
+      "passages": [
+        "The Apple Dumpling Gang Rides Again: The Apple Dumpling Gang Rides Again is a 1979 American comedy-western film produced by Walt Disney Productions and a sequel to \"The Apple Dumpling Gang\" (1975), starring the comedy duo of Tim Conway and Don Knotts reprising their respective roles as Amos and Theodore. The film also stars Tim Matheson, Harry Morgan, and Kenneth Mars. Ruth Buzzi appears in a small cameo as a wild farsighted woman. Robert Totten, who directed installments of \"Gunsmoke\", also had a small part in the film.",
+        "Something Wicked This Way Comes (film): Something Wicked This Way Comes is a 1983 American horror fantasy film directed by Jack Clayton and produced by Walt Disney Productions from a screenplay written by Ray Bradbury, based on his novel of the same name. The novel's title was taken directly from a line in Act IV of William Shakespeare's \"Macbeth\": \"By the pricking of my thumbs / Something wicked this way comes.\" The film stars Jason Robards, Jonathan Pryce, Diane Ladd, and Pam Grier. It was shot in Vermont and at the Walt Disney Studios in Burbank, California. The film had a troubled production \u2013 Clayton fell out with Bradbury over an uncredited script rewrite, and after test screenings of the director's cut failed to meet the studio's expectations, Disney sidelined Clayton, fired the original editor, and scrapped the original score, spending some $5 million and many months re-shooting, re-editing and re-scoring the film, before its eventual release.",
+        "Gun Shy (TV series): Gun Shy is an American sitcom that was shown on CBS from March 15 to April 19, 1983. The series, produced by Walt Disney Productions, was based on its popular comedy-western films: \"The Apple Dumpling Gang\" and \"The Apple Dumpling Gang Rides Again\".",
+        "The Apple Dumpling Gang (film): The Apple Dumpling Gang is a 1975 American comedy-western film produced by Walt Disney Productions about a slick gambler named Russell Donovan (Bill Bixby) who is duped into taking care of a group of orphans who eventually strike gold during the California Gold Rush.",
+        "Buddy Baker (composer): Norman Dale \"Buddy\" Baker (January 4, 1918 \u2013 July 26, 2002) was an American composer who, together with Paul J. Smith, scored many Disney films, such as \"The Apple Dumpling Gang\" in 1975, \"The Apple Dumpling Gang Rides Again\" in 1979, \"The Shaggy D.A.\" in 1976, \"The Many Adventures of Winnie the Pooh\" in 1977, and \"The Fox and the Hound\" in 1981."
+      ],
+      "em": 1.0,
+      "f1": 0.2759,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Bethpage State Parkway begins with an interchange at which Long Island-based limited access highway?",
+      "answer": "The Bethpage State Parkway begins with a trumpet interchange at the Southern State Parkway.",
+      "passages": [
+        "Alabama State Route 255: Research Park Boulevard (State Route 255 or SR-255) runs from I-565 to Bob Wade Lane on the north and west sides of Huntsville in Madison County, Alabama. Much of the route is a limited access highway, with the entire route planned to be limited access. Plans call for the road to be extended to create a near-complete bypass around Huntsville.",
+        "Bethpage State Parkway: The Bethpage State Parkway is a 2.49 mi parkway in Nassau County on Long Island, New York, in the United States. It begins at a trumpet interchange with the Southern State Parkway in the village of North Massapequa and serves Boundary Avenue, NY 24, and Central Avenue before terminating at a traffic circle with Plainview Road and a local park road in Bethpage State Park. The parkway is designated as New York State Route 907E (NY 907E), an unsigned reference route. It is also ceremoniously designated as the Philip B. Healey Memorial Parkway for Assemblyman Philip B. Healey (1921\u20131996).",
+        "Sunken Meadow State Parkway: The Sunken Meadow State Parkway (also known as the Sunken Meadow) is a 6.19 mi long parkway in Suffolk County, Long Island, New York. Located entirely within the town of Smithtown, the parkway begins at a cloverleaf interchange with the Northern State Parkway (exits\u00a044\u201345) and the northern terminus of the Sagtikos State Parkway. The parkway, which continues north, is a northern spur of the Sagtikos, which opened in September 1952. The northern end of the parkway is at the toll barrier in exit\u00a0SM5 in the Kings Park section of Smithtown. From there, the road continues north through Sunken Meadow State Park to a roundabout at the Long Island Sound. The parkway comprises the northern half of New York State Route\u00a0908K (NY\u00a0908K, an unsigned reference route), with the Sagtikos State Parkway forming the southern portion. Commercial vehicles are, like on most parkways, prohibited from using the Sunken Meadow, except for a portion north of NY\u00a025A in Kings Park.",
+        "Sagtikos State Parkway: The Sagtikos State Parkway, also known as the Sagtikos or Sagtikos Parkway, known colloquially as \"the Sag\" is a 5.14 mi north\u2013south limited-access parkway in Suffolk County on Long Island, New York, in the United States. It begins at an interchange with the Southern and Heckscher state parkways in the hamlet of West Islip and goes north to a large cloverleaf interchange with the Northern State Parkway in the town of Smithtown, where the Sagtikos ends and the road becomes the Sunken Meadow State Parkway. The parkway comprises the southern half of New York State Route\u00a0908K (NY\u00a0908K), an unsigned reference route, with the Sunken Meadow State Parkway forming the northern portion. Commercial vehicles are prohibited from using the Sagtikos State Parkway, a restriction that applies to most parkways in the state.",
+        "Heckscher State Parkway: The Heckscher State Parkway (formerly known as the Heckscher Spur) is an 8.24 mi parkway on Long Island, New York, in the United States. The parkway, located entirely within the Suffolk County town of Islip, begins at the south end of the Sagtikos State Parkway in West Islip, from where it continues west as the Southern State Parkway. It proceeds east as a six-lane parkway through Brentwood and Central Islip, loosely paralleling New York State Route\u00a027 (NY\u00a027). At Islip Terrace, the Heckscher Parkway turns southward, crossing NY\u00a027 before ending at the toll barrier for Heckscher State Park in Great River. The parkway comprises the eastern portion of New York State Route\u00a0908M (NY\u00a0908M), an unsigned reference route, with the Southern State Parkway occupying the western section. In order to avoid confusion, the highway is signed as an extension of the Southern State Parkway west of the NY\u00a027 interchange (exit 44)."
+      ],
+      "em": 1.0,
+      "f1": 0.3529,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Are Colocasia and Coronilla both flowering plants?",
+      "answer": "Yes, according to the text, both Colocasia and Coronilla are genera of flowering plants.",
+      "passages": [
+        "Coronilla: The genus Coronilla contains about 20 species of flowering plants native to Europe and North Africa.",
+        "Colocasia: Colocasia is a genus of flowering plants in the family Araceae, native to southeastern Asia and the Indian subcontinent. Some species are widely cultivated and naturalized in other tropical and subtropical regions. Common names include tarul, karkala ko ganu, elephant-ear, taro, cocoyam, dasheen, chembu, champadhumpa, shavige gadde, and eddoe. Elephant-ear and cocoyam are also used for some other large-leaved genera in the Araceae, notably \"Xanthosoma\" and \"Caladium\". The generic name is derived from the ancient Greek word \"kolokasion\", which in the Greek botanist Dioscorides (1st century AD) meant the edible roots of both \"Colocasia esculenta\" and \"Nelumbo nucifera\". It is thought that the edible roots of \"Colocasia esculenta\" have been cultivated in Asia for more than ten thousand years. The species \"Colocasia esculenta\" is an invasive species in wetlands along the American Gulf coast, where it threatens to displace native wetland plants.",
+        "Xanthosoma: Xanthosoma is a genus of flowering plants in the arum family, Araceae. The genus is native to tropical America but widely cultivated and naturalized in other tropical regions. Several are grown for their starchy corms, an important food staple of tropical regions, known variously as \"malanga\", \"otoy\", \"otoe\", cocoyam (or new cocoyam), \"tannia\", \"tannier\", \"yaut\u00eda\", \"macabo\", \"ocumo\", \"macal\", \"taioba\", \"dasheen\", \"quequisque\", \"\u02bb ape\" and (in Papua New Guinea) as Singapore taro (\"taro kongkong\"). Many other species (including especially \"X. roseum\") are used as ornamental plants, and in popular horticultural literature are known as \u2018ape or elephant ear (from the purported resemblance of the leaf to an elephant's ear), although the latter name is sometimes also applied to members with similar appearance and uses in the closely related genera \"Caladium\", \"Colocasia\" (i.e., taro), and \"Alocasia\".",
+        "Caladium: Caladium is a genus of flowering plants in the family Araceae. They are often known by the common name elephant ear (which they share with the closely related genera \"Alocasia\", \"Colocasia\", and \"Xanthosoma\"), Heart of Jesus, and Angel Wings. There are over 1000 named cultivars of \"Caladium bicolor\" from the original South American plant.",
+        "Valletta: Valletta ( ; ] ) is the capital city of Malta, colloquially known as Il-Belt (] ; lit. \"The City\") in Maltese. Geographically, it is located in the South Eastern Region, in the central-eastern portion of the main island of Malta having its western coast with access to the Marsamxett Harbour and its eastern coast in the Grand Harbour. The historical city has a population of 6,444 (as of March 2014), while the metropolitan area around it has a population of 393,938. Valletta is the southernmost capital of Europe and the second southernmost capital of the European Union after Nicosia."
+      ],
+      "em": 1.0,
+      "f1": 0.1333,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "The 2000 ICC KnockOut Trophy was the debut of a Jamaican cricketer who is a right-handed what?",
+      "answer": "The 2000 ICC KnockOut Trophy was the debut of Marlon Samuels, a Jamaican cricketer who is a right-handed middle order batsman and an off-spinner.",
+      "passages": [
+        "Marlon Samuels: Marlon Nathaniel Samuels (born 5 February 1981) is a Jamaican cricketer who plays internationally for the West Indies in all three formats, and a former ODI captain. He is a right-handed middle order batsman and an off-spinner. He was a key member of the West Indies team that won the 2012 ICC World Twenty20 and 2016 ICC World Twenty20, and was named man of the match in the final of both tournaments, becoming first man to achieve the feat.",
+        "2000 ICC KnockOut Trophy: The 2000 ICC KnockOut Trophy was a One Day International cricket tournament held in Kenya (which helped to booster cricket in Kenya). New Zealand were crowned champions and cashed the winner's cheque of US$250 000. It was their first win in a major ICC tournament. Zaheer Khan, Yuvraj Singh and Marlon Samuels made their ODI debuts during the competition.",
+        "2000 ICC KnockOut Trophy squads: These were the eleven squads (all Test nations and two ODI nations) picked to take part in the 2000 ICC KnockOut Trophy, the second installment of the Champions Trophy cricket tournament. The tournament was held in Kenya from 3 to 15 October 2000. In the preliminary quarter finals, two ODI full-status teams Kenya and Zimbabwe played with India and Sri Lanka respectively, and India and Sri Lanka won their matches convincingly. In third preliminary quarter final, England beat Bangladesh to secure his position in Knockout Tournament. New Zealand won the second edition of the ICC KnockOut Trophy by defeating India in the final by four wickets, which was their first ICC event to be won.",
+        "Ray Wynter: Ray Ricardo Wynter (born 27 November 1955) is a former Jamaican cricketer who played first-class and one-day cricket for Jamaica from 1975 until 1982. A right-handed batsman and right-arm opening bowler, he played 30 matches in all in those formats. In 1983, Wynter participated in a rebel tour of South Africa. As a result, he and all the other players on the tour received a lifetime ban from West Indian cricket. Wynter later emigrated to the United States, and played for the U.S. national team at the 1990 ICC Trophy.",
+        "1998 ICC KnockOut Trophy Final: The 1998 ICC KnockOut Trophy (officially known as Wills International Cup, also known as Mini World Cup) was a One Day International (ODI) cricket tournament held in Bangladesh. It was the first tournament apart from the World Cups to involve all Test playing nations. The winners of the Knock-out stage\u2014India, South Africa, Sri Lanka and Indies\u2014reached the semi-finals. South Africa made their way to the final by defeating Sri Lanka in the first semi-final by 92 runs; the match was reduced to 39 overs per innings due to rain. In the second semi-final, West Indies defeated India by six wickets, and qualified for the final."
+      ],
+      "em": 1.0,
+      "f1": 0.2222,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Bytham Castle is a castle in the civil parish of how many houses?",
+      "answer": "According to the text, Bytham Castle is located in the village of Castle Bytham, which is a civil parish of around 300 houses.",
+      "passages": [
+        "Castle Bytham: Castle Bytham is a village and civil parish of around 300 houses in South Kesteven, Lincolnshire, England. The population was measured at 768 in 317 households at the 2011 census.",
+        "Bytham Castle: Bytham Castle was a castle in the village of Castle Bytham in Lincolnshire (grid reference [ SK992186] .)",
+        "Marian civil war: The Marian civil war in Scotland (1568\u20131573) was a period of conflict which followed the abdication of Mary, Queen of Scots, and her escape from Loch Leven Castle in May 1568. Those who ruled in the name of her infant son James VI fought against the supporters of the Queen, who was exiled in England. Edinburgh Castle, which was garrisoned in her name, became the focus of the conflict and surrendered only after an English intervention in May 1573. The conflict in 1570 was called an \"intestine war in the bowels of this commonwealth\", and the period was called soon after an \"intestine war driven by questions against authority.\"",
+        "Listed buildings in Egremont, Cumbria: Egremont is a civil parish in the Borough of Copeland, Cumbria, England. It contains 25 buildings that are recorded in the National Heritage List for England. Of these, one is listed at Grade\u00a0I, the highest of the three grades, and the others are at Grade\u00a0II, the lowest grade. The parish contains the town of Egremont and the surrounding countryside. The oldest listed building is Egremont Castle; this and associated structures are listed. Most of the other listed buildings are houses and associated structures, farmhouses and farm buildings. The other listed buildings include churches, cemetery buildings, shops, two former toll houses, a milestone, a monument, a town hall, a drinking fountain, and a war memorial.",
+        "Braunton: Braunton is an English village, civil parish, ecclesiastical parish and former manor in North Devon. The village is situated 5 mi west of Barnstaple. While not the largest village in England, it is amongst the most populous in Devon with a population at the 2011 census of 7,353 people. There are two electoral wards (East and West). Their joint population at the above census was 8,218. Within the parish is the fertile, low-lying Braunton Great Field, which adjoins the undulating Braunton Burrows, the Core Area in North Devon Biosphere Reserve, the largest psammosere (sand dune system) in England. It confronts the Atlantic Ocean at the west of the parish at the large beach of Saunton Sands, one of the South West's international-standard surfing beaches."
+      ],
+      "em": 1.0,
+      "f1": 0.0833,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which is located in Cornwall, Southwell Minster or Truro Cathedral?",
+      "answer": "Truro Cathedral is located in Cornwall. According to the text, Truro Cathedral is situated in the city of Truro, Cornwall, England. Southwell Minster, on the other hand, is located in Southwell, Nottinghamshire, England. Additionally, Penryn is also located in Cornwall.",
+      "passages": [
+        "Penryn, Cornwall: Penryn ( Cornish: Pennrynn , meaning 'promontory') is a civil parish and town in Cornwall, England, United Kingdom. It is situated on the Penryn River about 1 mi north-west of Falmouth. The population was 7,166 in the 2001 census and a receded 6,812 in the 2011 census, a drop of more than 300 people across the ten year time gap. There are two electoral wards covering Penryn: 'Penryn East and Mylor' and 'Penryn West'. The total population of both wards in the 2011 census was 9,790",
+        "Truro Cathedral: The Cathedral of the Blessed Virgin Mary, Truro is a Church of England cathedral in the city of Truro, Cornwall. It was built between 1880 and 1910 to a Gothic Revival design by John Loughborough Pearson on the site of the parish church of St Mary. It is one of only three cathedrals in the United Kingdom with three spires.",
+        "Southwell Minster: Southwell Minster or is a minster and cathedral, in Southwell, Nottinghamshire, England. It is situated six miles from Newark-on-Trent and thirteen miles from Mansfield. It is the seat of the Bishop of Southwell and Nottingham and the Diocese of Southwell and Nottingham.",
+        "Southwell, Nottinghamshire: Southwell ( or ) is a town in Nottinghamshire, England, best known as the site of Southwell Minster, the seat of the Diocese of Southwell and Nottingham, the Church of England diocese that covers Nottinghamshire. Its population is about 6,900, being measured as 7,297 at the 2011 Census. The origin of Southwell's name is not clear, but there a number of locations which claim to be the original \"well\", most notably at GR [ SK708535] where a plaque has been placed; in the Admiral Rodney public house; one on the south side of the minster which was called Lady Well in the 19th century; and one by the cloisters called Holy Well. Norwell approximately eight miles northwest may support the notion of there being \"south\" and \"north\" wells in the area. The town lies on the River Greet, approximately 14 miles (22\u00a0km) northeast of Nottingham. In addition to the Minster (the cathedral and parish church of St Mary of Southwell), there are a number of other historic buildings in the town, notably the impressive prebendal houses along Church Street and Westgate, and the town's Methodist church has the unusual feature of an old right-of-way running underneath it, necessitating a larger upstairs than downstairs seating capacity. The old workhouse, built in 1824, was the prototype for many others around the country. It is now owned by the National Trust and recreates the same appearance and conditions as it did in the 19th century.",
+        "Dean of Truro: The Dean of Truro is the head (\"primus inter pares\" \u2013 first among equals) and chair of the chapter of canons, the ruling body of Truro Cathedral. The dean and chapter are based at the \"Cathedral Church of the Blessed Virgin Mary\" in Truro. The cathedral is the mother church of the Diocese of Truro and seat of the Bishop of Truro. The current dean is Roger Bush."
+      ],
+      "em": 0.0,
+      "f1": 0.2083,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "How do the Peter Laufer books Forbidden Creatures and No Animals Were Harmed differ in their focus on animals?",
+      "answer": "The Peter Laufer books \"Forbidden Creatures\" and \"No Animals Were Harmed\" differ in their focus on animals. \"Forbidden Creatures\" explores the lives of those who own exotic animals or have been involved in illegal animal smuggling, with a strong focus on a specific case involving a chimpanzee. In contrast, \"No Animals Were Harmed\" examines the line between using animals for entertainment purposes and abusing them, and how people's opinions on this issue can change. While \"Forbidden Creatures\" delves into the world of exotic pets and animal smuggling, \"No Animals Were Harmed\" takes a more nuanced look at the complex relationships between humans and animals in the context of entertainment.",
+      "passages": [
+        "Forbidden Creatures: Forbidden Creatures: Inside the World of Animal Smuggling and Exotic Pets is a 2010 book by Doctor of Philosophy Peter Laufer. It is the second book in his untitled animal trilogy, following \"The Dangerous World of Butterflies\" in 2009 and preceding \"No Animals Were Harmed\" in 2011. The book explores the lives of those that either own exotic animals or have been captured for illegally smuggling them, with a strong focus on Travis, the chimpanzee who attacked Charla Nash in 2009.",
+        "No Animals Were Harmed (book): No Animals Were Harmed: The Controversial Line Between Entertainment and Abuse is a 2011 book by Peter Laufer. It is the third book in his untitled animal trilogy, following \"Forbidden Creatures\" in 2010 and \"The Dangerous World of Butterflies\" in 2009. The book explores what those who work with animals believe to be the line between using animals for entertainment purposes and abusing them. Meanwhile, the author recounts how his own opinions changed about that line when he talks to the different people about their beliefs.",
+        "Do not feed the animals: The prohibition \"do not feed the animals\" reflects a policy forbidding the artificial feeding of wildlife (wild or feral animals) in situations where the animals, or the people doing the feeding, might be harmed. Signs displaying this message are commonly found in zoos, circuses, animal theme parks, aquariums, national parks, parks, public spaces, farms, and other places where people come into contact with wildlife. In some cases there are laws to enforce such no-feeding policies. However, some people (such as some of those who enjoy feeding pigeons in cities) openly and strongly oppose such laws claiming that animals such as pigeons can be an amenity for people who do not have company such as friends or family, and say that the laws prohibiting feeding animals in urban places must change. In some countries, such as Greece, feeding the pigeons in cities is a widespread practice. Cultural hostility to feeding animals in cities and laws that ban the practice raise concerns about how humans relate to other living beings in the urban environment. Politicians have also protested laws that ban feeding feral pigeons in cities. Feral pigeons in cities existed for thousands of years but only recently in some countries humans started seeing them as a nuisance and became hostile to them. In India, feeding feral animals in cities is considered a noble act. Academicians say that how humans treat animals is related to how humans treat each other and thus raise concerns about the cultural shift from seeing feral city pigeons as harmless in the 1800s to seeing them a undesirable in some countries in the 2000s.",
+        "List of films about animals: This is a list of notable films that are primarily about and/or feature animals. While films involving dinosaurs and other prehistoric animals are included on this list, those concerning mythical creatures, such as dragons or vampires, are not; however, films concerning anthropomorphized animals (such as Scooby-Doo), gigantized animals (such as King Kong), mutated forms of real animals (such as \"Anaconda\"), or fictional hybrids of real animals (such as \"Sharktopus\") are considered to be films about animals, and are thus featured on this list.",
+        "The Dangerous World of Butterflies: The Dangerous World of Butterflies: The Startling Subculture of Criminals, Collectors, and Conservationists is a 2009 book by Doctor of Philosophy Peter Laufer. It is the first book in his untitled animal trilogy, preceding \"Forbidden Creatures\" in 2010 and \"No Animals Were Harmed\" in 2011. The book explores the presence of the butterfly in the fields of organized crime, ecological devastation, species depletion, natural history museum integrity, and chaos theory."
+      ],
+      "em": 0.0,
+      "f1": 0.0354,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Who is a winner of the 2013 6 Hours of Silverstone a co-commentator for?",
+      "answer": "Allan McNish, a winner of the 2013 6 Hours of Silverstone, is a co-commentator for BBC Formula One coverage.",
+      "passages": [
+        "2013 6 Hours of Silverstone: The 2013 6 Hours of Silverstone was an auto racing event held at the Silverstone Circuit, near Silverstone, England on 12\u201314 April 2013. The event was the opening round of the 2013 FIA World Endurance Championship season, and served as the annual award for the Royal Automobile Club's Tourist Trophy. Briton Allan McNish, Dane Tom Kristensen, and Frenchman Lo\u00efc Duval won the race for Audi, just over three seconds ahead of their teammates. The British Delta-ADR team were victorious in the LMP2 category, while Aston Martin Racing secured both the LMGTE Pro and LMGTE Am classes.",
+        "6 Hours of Silverstone: The 6 Hours of Silverstone (formerly the 1000\u00a0km of Silverstone) is an endurance sports car race held at Silverstone Circuit near the Northamptonshire villages of Silverstone and Whittlebury. First run in 1976 as part of the World Sportscar Championship, the race continues today with the FIA World Endurance Championship. Since 2013, the RAC Tourist Trophy has been awarded to the winners of the event.",
+        "2014 6 Hours of Silverstone: The 2014 6 Hours of Silverstone was an endurance sports car racing event held at the Silverstone Circuit near Silverstone, England on 17\u201320 April 2014. The event served as the opening round of the 2014 World Endurance Championship, and overall race winners were awarded the annual Tourist Trophy by the Royal Automobile Club. Toyota became the first Japanese manufacturer to win Silverstone's endurance race, with Anthony Davidson, S\u00e9bastien Buemi, and Nicolas Lapierre leading the team's second TS040 Hybrid to a 1\u20132 finish. The race, which had run under mixed weather conditions, was stopped in the final half-hour of competition due to heavy rains and not restarted.",
+        "Allan McNish: Allan McNish (born 29 December 1969) is a British former racing driver, commentator, and journalist from Scotland. He is a three-time winner of the 24 Hours of Le Mans, most recently in 2013, as well as a three-time winner of the American Le Mans Series, which he last won in 2007. He won the FIA World Endurance Championship (FIA WEC) in 2013. He has also been a co-commentator and pundit for BBC Formula One coverage on TV, radio and online.",
+        "2013 6 Hours of Shanghai: The 2013 6 Hours of Shanghai was an endurance auto race held at the Shanghai International Circuit in Shanghai, China on 9 November 2013. The race was the seventh round of the 2013 FIA World Endurance Championship season."
+      ],
+      "em": 1.0,
+      "f1": 0.2727,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which 2009 animated film is from Japan, Summer Wars or The Secret of Kells?",
+      "answer": "The 2009 animated film from Japan is Summer Wars.",
+      "passages": [
+        "Summer Wars: Summer Wars (Japanese: \u30b5\u30de\u30fc\u30a6\u30a9\u30fc\u30ba , Hepburn: Sam\u0101 W\u014dzu ) is a 2009 Japanese animated science fiction film directed by Mamoru Hosoda, animated by Madhouse and distributed by Warner Bros. Pictures. The film's voice cast includes Ryunosuke Kamiki, Nanami Sakuraba, Mitsuki Tanimura, Sumiko Fuji and Ayumu Sait\u014d. The film tells the story of Kenji Koiso, a timid eleventh-grade math genius who is taken to Ueda by twelfth-grade student Natsuki Shinohara to celebrate her great-grandmother's 90th birthday. However, he is falsely implicated in the hacking of a virtual world by a sadistic artificial intelligence named Love Machine. Kenji must repair the damage done to it and find a way to stop the rogue computer program from causing any further damage.",
+        "Cartoon Saloon: Cartoon Saloon is an Irish animation film and television studio which provides illustration, design, film and TV services. The company is based in Kilkenny. The company developed the successful cartoon series \"Skunk Fu!\". It was nominated for a BAFTA Children's Award in October 2008. The company has also developed the animated film \"The Secret of Kells\". The film features the voice of Brendan Gleeson and is set in the 9th century AD when the Book of Kells was written. The film premiered on February 22, 2009 at the closing Gala of the Jameson Dublin International Film Festival. On February 2, 2010 \"The Secret of Kells\" was nominated in the category of best animated film at the 82nd Academy Awards.",
+        "2009 in anime: At the Mainichi Film Awards, \"Summer Wars\" won the Animation Film Award and \"Denshin-Bashira Elemi no Koi\" won the \u014cfuji Nobur\u014d Award. \"Summer Wars\" also won the Japan Academy Prize for Animation of the Year. Internationally, \"The Sky Crawlers\", \"Summer Wars\" and \"First Squad\" were nominated for the Asia Pacific Screen Award for Best Animated Feature Film.",
+        "The Secret of Kells: The Secret of Kells is a 2009 French-Belgian-Irish animated fantasy film animated by Cartoon Saloon that premiered on 8 February 2009 at the 59th Berlin International Film Festival. It went into wide release in Belgium and France on 11 February, and Ireland on 3 March.",
+        "Egger (company): EGGER is a global family company founded in 1961 in Tyrol, Austria (where its headquarters are held) that produces wood-based panel Products. EGGER is represented by 17 production sites in Europe (Austria, Germany, France, United Kingdom, Romania, Russia and Turkey) and currently has 23 sales offices worldwide (France, Belgium, Denmark, Italy, Switzerland, Slovenia, Lithuania, Ukraine, China, Japan, India, Chile, Australia, Romania, Croatia, Czech Republic, Hungary, Poland, Serbia, Bulgaria, Turkey, Russia and Belarus). In 2006 the company invested \u20ac210 million in the construction of a new production site located in R\u0103d\u0103u\u021bi, Romania with a capacity of 600,000 cubic meters of melamine faced chipboard. At the Romanian site the company operates a combined heat and electricity cogeneration power station with a capacity of 40.5 MW."
+      ],
+      "em": 1.0,
+      "f1": 0.3636,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Are Steve Perry and Leslie West both singers?",
+      "answer": "According to the text, Steve Perry (the Oregon musician) is a lead singer, and Leslie West is a vocalist. Therefore, yes, both Steve Perry and Leslie West are singers.",
+      "passages": [
+        "S. D. Perry: Stephani Danelle Perry (credited as S. D. Perry in her works) is an American novelist. She is the daughter of writer Steve Perry.",
+        "Steve Perry (Oregon musician): Stephen Henry Perry (born October 8, 1963) is an American musician, best known as lead singer, songwriter and rhythm guitarist for the Oregon ska-swing band the Cherry Poppin' Daddies.",
+        "Leslie West: Leslie West (born Leslie Weinstein; October 22, 1945) is an American rock guitarist, vocalist, and songwriter. He is best known as a founding member of the hard rock band Mountain.",
+        "Adam Pascal: Adam Pascal (born October 25, 1970) is an American actor, singer, and musician, known for his performance as Roger Davis in the original cast of Jonathan Larson's musical \"Rent\" on Broadway 1996, the 2005 movie version of the musical, and the Broadway Tour of \"Rent\" in 2009. He is also known for originating the role of Radames in Elton John and Tim Rice's \"Aida\", for playing the Emcee from the 1998 revival of \"Cabaret\", and for playing Huey Calhoun in the Broadway Company of \"Memphis\". Most recently, he played William Shakespeare in the Tony Award-winning musical \"Something Rotten!\"",
+        "Heather Morris: Heather Elizabeth Morris (born February 1, 1987) is an American actress, dancer, singer and model, known for her role as Brittany S. Pierce in the Fox musical comedy-drama series \"Glee\"."
+      ],
+      "em": 1.0,
+      "f1": 0.0667,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "In what year was the Golden State NBA player, who was part of the Cavaliers-Warriors rivalry, named NBA Finals Most Valuable Player?",
+      "answer": "Andre Iguodala was named the NBA Finals Most Valuable Player in 2015.",
+      "passages": [
+        "Cavaliers\u2013Warriors rivalry: The Cavaliers\u2013Warriors rivalry is a National Basketball Association (NBA) rivalry between the Cleveland Cavaliers and the Golden State Warriors. While the two teams have played each other since the Cavaliers joined the league in 1970, their rivalry did not develop until the 2014\u201315 season, when they met in the first of three consecutive NBA Finals series. The two teams have met in three straight NBA Finals, becoming the only two teams in NBA history to do so. Of these three series, the Warriors have won two, most recently in 2017the Cavaliers have won one, in 2016. The two teams feature 11 NBA All-Stars: LeBron James, Kyrie Irving, Kevin Love, Deron Williams and Kyle Korver (Cleveland), and Stephen Curry, Kevin Durant, Draymond Green, Klay Thompson, David West and Andre Iguodala (Golden State). Two players, Andrew Bogut and Anderson Varej\u00e3o, played for both teams during this time.",
+        "Klay Thompson: Klay Alexander Thompson (born February 8, 1990) is an American professional basketball player for the Golden State Warriors of the National Basketball Association (NBA). The son of former NBA player Mychal Thompson, he played college basketball for three seasons at Washington State University, where he was a two-time first-team all-conference selection in the Pac-10. Thompson was selected in the first round of the 2011 NBA draft by Golden State with the 11th overall pick. In 2014, he and teammate Stephen Curry set a then NBA record with 484 combined three-pointers in a season, as the pair were given the nickname the \"Splash Brothers\". Thompson is a three-time NBA All-Star and a two-time All-NBA Third Team honoree. In 2015, he helped lead the Warriors to their first NBA Championship since 1975. Thompson helped the Warriors return to the NBA Finals for a third straight year in 2017, winning his second NBA Championship.",
+        "Andre Iguodala: Andre Tyler Iguodala ( ; born January 28, 1984) is an American professional basketball player for the Golden State Warriors of the National Basketball Association (NBA). The swingman was an NBA All-Star in 2012 and has been named to the NBA All-Defensive Team twice. Iguodala won an NBA championship with the Warriors in 2015, when he was named the NBA Finals Most Valuable Player. Iguodala helped the Warriors return to the NBA Finals for a third straight year in 2017, winning his second NBA Championship. He was also a member of the United States national team at the 2010 FIBA World Championship and 2012 Summer Olympics, winning the gold medal both times.",
+        "1978 NBA Finals: The 1978 NBA World Championship Series was the championship round of the National Basketball Association (NBA)'s 1977\u201378 season, and the culmination of the season's playoffs. The series featured the Western Conference champion Seattle SuperSonics against the Eastern Conference champion Washington Bullets. The Bullets defeated the SuperSonics in seven games to win the NBA championship. Bullets power forward/center Wes Unseld was named MVP of the series. Before the Cleveland Cavaliers' Game 7 win at Golden State in the 2016 NBA Finals, this was the last time a road team had won Game 7 in the NBA Finals. The 1978 Finals is the only NBA Finals series since the 1958 NBA Finals in which both teams had under 50 wins. The 1979 Finals are the only NBA Finals to feature two teams with under 50 wins in an 82-game season.",
+        "Kevin Durant: Kevin Wayne Durant (born September 29, 1988) is an American professional basketball player for the Golden State Warriors of the National Basketball Association (NBA). He has won an NBA championship, an NBA Most Valuable Player Award, the Bill Russell NBA Finals Most Valuable Player Award, the NBA All-Star Game Most Valuable Player Award, four NBA scoring titles, the NBA Rookie of the Year Award, and two Olympic gold medals. Durant has also been selected to seven All-NBA teams and eight NBA All-Star teams."
+      ],
+      "em": 1.0,
+      "f1": 0.1538,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What is the name of the actor who wrote the memoir Without you: A memoir of love, loss, and the Musical Rent and also stared as Mark Cohen in the Broadway production of \"Rent\"?",
+      "answer": "The name of the actor who wrote the memoir \"Without You: A Memoir of Love, Loss, and the Musical Rent\" and also starred as Mark Cohen in the Broadway production of \"Rent\" is Anthony Rapp.",
+      "passages": [
+        "Without You (book): Without You: A Memoir of Love, Loss, and the Musical Rent is a 2006 memoir by a musical theater actor, Anthony Rapp. Later it was turned into a staged musical adaptation by the same name.",
+        "Anthony Rapp: Anthony Deane Rapp (born October 26, 1971) is an American stage and film actor and singer best known for originating the role of Mark Cohen in the Broadway production of \"Rent\" in 1996 and later for reprising the role in the film version and the Broadway Tour of \"Rent\" in 2009. He also performed the role of Charlie Brown in the 1999 Broadway revival of \"You're a Good Man, Charlie Brown\" and originated the role of Lucas in the musical \"If/Then\" in 2014.",
+        "Look Around (Anthony Rapp album): Look Around is the first full-length album by American actor/singer Anthony Rapp, known as a singer for his performance as Mark Cohen in the musical Rent and the film adaptation of the musical. It was released on October 1, 2000.",
+        "Rent (film): Rent is a 2005 American musical drama film directed by Chris Columbus. It is an adaptation of the Broadway musical of the same name, in turn based on Giacomo Puccini's opera \"La boh\u00e8me\". The film depicts the lives of several Bohemians and their struggles with sexuality, drugs, paying their rent, and life under the shadow of AIDS. It takes place in the East Village of New York City from 1989 to 1990. The film features six of the original Broadway cast members reprising their roles.",
+        "Adam Pascal: Adam Pascal (born October 25, 1970) is an American actor, singer, and musician, known for his performance as Roger Davis in the original cast of Jonathan Larson's musical \"Rent\" on Broadway 1996, the 2005 movie version of the musical, and the Broadway Tour of \"Rent\" in 2009. He is also known for originating the role of Radames in Elton John and Tim Rice's \"Aida\", for playing the Emcee from the 1998 revival of \"Cabaret\", and for playing Huey Calhoun in the Broadway Company of \"Memphis\". Most recently, he played William Shakespeare in the Tony Award-winning musical \"Something Rotten!\""
+      ],
+      "em": 1.0,
+      "f1": 0.1081,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "One Raffles Place is one of the tallest skyscrapers in the city of Singapore and tallest in the wolrd outside North America until it was succeeded by a Building in city?",
+      "answer": "According to the text, One Raffles Place was the tallest building in the world outside North America until it was succeeded by the Bank of China Tower, but the city where the Bank of China Tower is located is not specified in the provided text.",
+      "passages": [
+        "One Raffles Place: One Raffles Place, formerly Overseas Union Bank Centre or OUB Centre is one of the tallest skyscrapers in the city of Singapore. It was the tallest together with the UOB Plaza and Republic Plaza until the construction of Tanjong Pagar Centre in 2016. At 280 m , it was also the tallest building in the world outside North America at the time of its completion in 1986, surpassing South Korea's 63 Building completed one year earlier, until it was succeeded by the Bank of China Tower. The building sits at the city centre of Raffles Place.",
+        "Republic Plaza (Singapore): Republic Plaza (Chinese: \u5171\u548c\u5927\u53a6) is one of the three tallest skyscrapers in Singapore, located at the Southern end of Raffles Place in the Downtown Core, the central business district of Singapore. It shares the title of \"tallest building\" with the OUB Centre and UOB Plaza One. Built at 280 metres (919 feet) tall, it was completed in 1995, and incorporates earthquake proof features despite the city being relatively far from earthquake zones.",
+        "52nd National Hockey League All-Star Game: The 52nd National Hockey League All-Star Game took place on February 2, 2002, at the Staples Center in Los Angeles, California. The final score was World 8, North America 5. This was the last National Hockey League All-Star Game to have the North America vs. World All-Star format. It was also the last All-Star Game that was held in the same year as the Winter Olympics until the 2018 edition.",
+        "North American Cordillera: The North American Cordillera is the North American portion of the American Cordillera which is a mountain chain (cordillera) along the western side of the Americas. The North American Cordillera covers an extensive area of mountain ranges, intermontane basins, and plateaus in western North America, including much of the territory west of the Great Plains. It is also sometimes called the Western Cordillera, the Western Cordillera of North America, or the Pacific Cordillera.",
+        "Raffles Place MRT Station: Raffles Place MRT Station (NS26/EW14) is an underground Mass Rapid Transit (MRT) cross-platform interchange station on the North South Line and the East West Line in Downtown Core, Singapore. It is directly underneath the centre of the financial area of Raffles Place, located in the Downtown Core area, south of the Singapore River. It is one of the more prominent and busier stations within Singapore's transport system, especially being an interchange station located within the Central Area. The station has a large number of entrances/exits, the two main ones facing the Raffles Gardens, with the building being a miniature facade of the historic John Little building."
+      ],
+      "em": 0.0,
+      "f1": 0.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Where is the ice hockey team based that Zdeno Ch\u00e1ra currently serving as captain of?",
+      "answer": "The Boston Bruins, the ice hockey team that Zdeno Ch\u00e1ra is currently serving as captain of, is based in Boston.",
+      "passages": [
+        "Garuda Indonesia Flight 200: Garuda Indonesia Flight 200 (GA200/GIA 200) was a scheduled domestic passenger flight of a Boeing 737-400 operated by Garuda Indonesia between Jakarta and Yogyakarta, Indonesia. The aircraft overran the runway, crashed into a rice field and burst into flames while landing at Adisucipto International Airport on 7 March 2007. Twenty passengers and one crew member were killed. Both the captain and the first officer survived.",
+        "Denis Kulyash: Denis Kulyash (Russian: \u0414\u0435\u043d\u0438\u0441 \u041a\u0443\u043b\u044f\u0448 ; born May 31, 1983) is a professional ice hockey defenceman currently playing for Salavat Yulaev Ufa of the Kontinental Hockey League (KHL). Kulyash has been a long-time member of Russia's national ice hockey team known for his extremely hard slap shot, which gained him a nickname \"Tsar Cannon\" (Russian: \u0426\u0430\u0440\u044c-\u043f\u0443\u0448\u043a\u0430 ). Kulyash currently holds a record of fastest ice hockey shot previously held by Boston Bruins defenceman Zdeno Chara with a speed of 110.3\u00a0mph (177.6\u00a0km/h).",
+        "Norway men's national junior ice hockey team: The Norwegian men's national junior ice hockey team is the national junior ice hockey team in Norway. The team represents Norway at the International Ice Hockey Federation's IIHF World U20 Championship.",
+        "Miroslav P\u0159erost: Miroslav P\u0159erost (born 1963) is a Czech former professional ice hockey forward who played with HC Plzen during the 1982\u201383 Czech Extraliga season. He is currently the head coach of the Czech Republic men's national junior ice hockey team. He coached the men's national junior ice hockey team at the 2012, 2013 and the 2014 World Junior Ice Hockey Championships.",
+        "Zdeno Ch\u00e1ra: Zdeno Ch\u00e1ra (] ; born 18 March 1977) is a Slovak professional ice hockey defenseman, currently serving as captain of the Boston Bruins of the National Hockey League (NHL). He won the James Norris Memorial Trophy while playing for the Bruins in the 2008\u201309 season."
+      ],
+      "em": 0.0,
+      "f1": 0.0909,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Sand Mountainis part of the southern tip of a mountain chain in which part of North America ?",
+      "answer": "Eastern North America.",
+      "passages": [
+        "Dueodde: Dueodde is a beach in Denmark on Bornholm's southernmost tip. It is known for its very fine white sand. The area around Dueodde was originally a large sandy area, but in the eighteenth century, it was planted with pines, as well as Ammophila and Leymus grasses to reduce sand drift. Today, Dueodde is a protected area. The sand at Dueodde moves easily with the wind to form dunes. The vast dune area and associated sandy beach start at Haslemere extending some 30 km almost without interruption. Apart from the beach, one noteworthy feature is the Dueodde Lighthouse on the southern tip. It is the tallest on the island. Built in 1962, it offers a panoramic view of the surroundings. The two old lighthouses, \"Dueodde Syd\" (next to the new lighthouse) and \"Dueodde Nord\" are not open for the public.",
+        "Sand Mountain (Alabama): Sand Mountain is a sandstone plateau in northeastern Alabama and (to a far lesser extent) northwestern Georgia. It is part of the southern tip of the Appalachian mountain chain and it is the largest plateau in the chain. Geologically a continuation of Walden Ridge, Sand Mountain is part of the Cumberland Plateau, separated from the main portion of the plateau by the Tennessee River and Sequatchie Valley. The average elevation on Sand Mountain is around 1500 ft above sea level, compared to about 650 ft in the surrounding area. This elevation leads to its having the coolest climate in the state of Alabama. The largest city on Sand Mountain is Albertville, in Marshall County. As of the 2010 census, the population of the city was 21,160.",
+        "Appalachian Mountains: The Appalachian Mountains ( , French: \"les Appalaches\" ), often called the Appalachians, are a system of mountains in eastern North America. The Appalachians first formed roughly 480 million years ago during the Ordovician Period. It once reached elevations similar to those of the Alps and the Rocky Mountains before naturally occurring erosion. The Appalachian chain is a barrier to east-west travel, as it forms a series of alternating ridgelines and valleys oriented in opposition to most roads running east or west.",
+        "Taconic orogeny: The Taconic orogeny was a mountain building period that ended 440 million years ago and affected most of modern-day New England. A great mountain chain formed from eastern Canada down through what is now the Piedmont off the East coast of the United States. As the mountain chain eroded in the Silurian and Devonian periods, sediments from the mountain chain spread throughout the present-day Appalachians and midcontinental North America.",
+        "Hill chain: A hill chain, sometimes also hill ridge, is an elongated line of hills that usually includes a succession of more or less prominent hilltops, domed summits or \"kuppen\", hill ridges and saddles and which, together with its associated lateral ridges and branches, may form a complex topographic structure. It may occur within a hill range, within an area of low rolling hill country or on a plain. It may link two or more otherwise distinct hill ranges. The transition from a hill chain to a mountain chain is blurred and depends on regional definitions of a hill or mountain. For example, in the UK and Ireland a mountain must officially be 600 metres or higher, whereas in North America mountains are often (unofficially) taken as being 1,000 feet high or more."
+      ],
+      "em": 1.0,
+      "f1": 1.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "At what intersection was the former home of the wooden roller coaster now located at Six Flags Great America in Gurnee, Illinois located?",
+      "answer": "The text does not mention the intersection where the former home of the Little Dipper wooden roller coaster was located. It only mentions that it was previously located at Kiddieland Amusement Park in Melrose Park, Illinois.",
+      "passages": [
+        "Viper (Six Flags Great America): Viper is a wooden roller coaster located at Six Flags Great America in Gurnee, Illinois, which opened in 1995. Viper features a layout that is a mirror image of the Coney Island Cyclone and is the only roller coaster ever to be built directly by Six Flags. Viper is also the only wooden roller coaster that has ever carried this name, (all the other Viper roller coasters, both operating and not, have been steel roller coasters). It was built by Rygiel Construction.",
+        "Peoria, Illinois: Peoria ( , ) is a city in and the county seat of Peoria County, Illinois, United States, and the largest city on the Illinois River. Established in 1691 by the French explorer Henri de Tonti, Peoria is the oldest European settlement in Illinois, and is named after the Peoria tribe. As of the 2010 census, the city was the seventh-most populated in Illinois (and the third largest outside of the Chicago metropolitan area), with a population of 115,007. The Peoria Metropolitan Statistical Area had a population of 373,590 in 2011.",
+        "American Eagle (roller coaster): American Eagle is a wooden racing roller coaster located at Six Flags Great America. It was the first wooden roller coaster designed by Intamin of Switzerland and was built in 1981 by the contracting firm Figley-Wright. While the records have since been broken, American Eagle had the longest drop and fastest speed among wooden roller coasters when it debuted and is still recognized as a top racing coaster in the United States. In 2006, American Eagle celebrated its Silver Anniversary (25th Anniversary).",
+        "Little Dipper (Six Flags Great America): Little Dipper is a wooden roller coaster located at Six Flags Great America in Gurnee, Illinois. It was originally built in 1950 by Philadelphia Toboggan Coasters and previously operated at Kiddieland Amusement Park in Melrose Park, Illinois until the park closed in September 2009. On November 24, 2009, Six Flags Great America purchased the ride for $33,000 at an auction. The ride was relocated and reopened on May 27, 2010, in its original configuration within the Yukon Territory section of Six Flags Great America.",
+        "Goliath (Six Flags Great America): Goliath is a wooden roller coaster at Six Flags Great America in Gurnee, Illinois. Manufactured by Rocky Mountain Construction and designed by Alan Schilke, the ride set three world records for wooden roller coasters when it opened to the public on June 19, 2014: the longest drop at 180 ft , the steepest drop at 85\u00b0, and the fastest speed at 72 mph . The 100-second ride also features two inversions."
+      ],
+      "em": 0.0,
+      "f1": 0.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "\"Heartbreak Hurricane\" was recorded by which country artist, that also goes by the name Ricky Skaggs?",
+      "answer": "Ricky Skaggs, whose full name is Rickie Lee Skaggs.",
+      "passages": [
+        "Heartbreak Hurricane: \"Heartbreak Hurricane\" is a song written by Larry Cordle and Jim Rushing, and recorded by American country music artist Ricky Skaggs. It was released in December 1989 as the third single from the album \"Kentucky Thunder\". The song reached No. 13 on the \"Billboard\" Hot Country Singles & Tracks chart.",
+        "Ricky Skaggs: Rickie Lee Skaggs (born July 18, 1954), known professionally as Ricky Skaggs, is an American country and bluegrass singer, musician, producer, and composer. He primarily plays mandolin; however, he also plays fiddle, guitar, mandocaster and banjo.",
+        "Lovin' Only Me: \"Lovin' Only Me\" is a song written by Hillary Kanter and Even Stevens, and recorded by American country music artist Ricky Skaggs. It was released in February 1989 as the first single from the album \"Kentucky Thunder\". \"Lovin' Only Me\" was Ricky Skaggs' twelfth and final number one on the country chart. The single went to number one for one week and spent a total of fifteen weeks on the country chart.",
+        "Highway 40 Blues: \"Highway 40 Blues\" is a song written by Larry Cordle, and recorded by American country music artist Ricky Skaggs. It was released in March 1983 as the third single from the album \"Highways & Heartaches\". \"Highway 40 Blues\" was Ricky Skaggs' fifth number one on the country chart and his fifth consecutive number one. The single stayed at number one for one week and spent a total of twelve weeks on the chart.",
+        "Cajun Moon: \"Cajun Moon' is a song written by Jim Rushing, and recorded by American country artist Ricky Skaggs. It was released in January 1986 as the second single from the album \"Live in London\". \"Cajun Moon\" was Ricky Skaggs' tenth number one on the country chart. The single went to number one for one week and spent thirteen weeks on the country chart."
+      ],
+      "em": 1.0,
+      "f1": 0.5,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "The View from the Bottom is the fifth studio album by an American rock band best known for what hit song?",
+      "answer": "The View from the Bottom is the fifth studio album by the American rock band Lit, and they are best known for their hit song \"My Own Worst Enemy\".",
+      "passages": [
+        "Lit (band): Lit is an American rock band, formed in 1995 in Fullerton, California. They are best known for their hit song \"My Own Worst Enemy\".",
+        "The View from the Bottom: The View from the Bottom is the fifth studio album by the American rock band Lit, released on June 19, 2012 through Megaforce Records. It is the band's first new album in eight years, since the release of their self-titled album in 2004. It also marks the first album with Nathan Walker on drums, succeeding the late Allen Shellenberger, who died in 2009, and rhythm guitarist Ryan Gillmor, making it the only time the band has recorded as a five-piece.",
+        "The Classic Crime: The Classic Crime is an American rock band from Seattle, Washington formed in 2004. The band's current lineup consists of Matt MacDonald (vocals, guitar), Alan Clark (bass), Robert \"Cheeze\" Negrin (guitar), and Paul \"Skip\" Erickson (drums, vocals). They have released three albums and an EP on Tooth & Nail Records, two of which, \"The Silver Cord\" (2008) and \"Vagabonds\" (2010), charted in the \"Billboard\" 200. In July 2011, the band left Tooth & Nail to produce a fourth album with the help of fan donations via Kickstarter, called \"Phoenix\" (2012). In April 2016, The Classic Crime created a Kickstarter to raise funds for a fifth studio album. Within three hours they acquired the necessary $30,000 for the album. On April 28th, 2017 they released their fifth studio album titled \"How to Be Human\"(2017).",
+        "Chris Robinson Brotherhood: Chris Robinson Brotherhood is an American blues rock band formed in 2011 by Black Crowes singer Chris Robinson while The Black Crowes were on hiatus. The band has released four studio albums: \"Big Moon Ritual\", \"The Magic Door\", \"Phosphorescent Harvest\", and \"Any Way You Love, We Know How You Feel\". The band consists of Robinson, guitarist Neal Casal, keyboardist Adam MacDougall, bassist Jeff Hill (who replaced original bassist Mark Dutton in 2016), and drummer Tony Leone (who replaced original drummer George Sluppick in January 2015).",
+        "Step Back (album): Step Back is an album by blues guitarist and singer Johnny Winter. It features performances by a number of guest musicians, including Eric Clapton, Dr. John, Billy Gibbons from ZZ Top, Joe Perry from Aerosmith, Leslie West from Mountain, and Brian Setzer from the Stray Cats. It was released by Megaforce Records on September 2, 2014."
+      ],
+      "em": 1.0,
+      "f1": 0.2424,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "This Experts Network sports analysts was inducted into the Pro Football Hall of Fame in 2000 and played in the NFL for how many seasons?",
+      "answer": "Howie Long, a sports analyst for The Experts Network, was inducted into the Pro Football Hall of Fame in 2000 and played in the NFL for 13 seasons.",
+      "passages": [
+        "Ken Riley: Kenneth Jerome Riley (born August 6, 1947) is a former professional American football defensive back who played his entire career for the Cincinnati Bengals, in the American Football League in 1969 and in the NFL from 1970 through 1983. Riley recorded 65 interceptions in his career, which was the fourth most in Pro Football history at the time of his retirement behind three members of the Pro Football Hall of Fame; Dick Lane, Emlen Tunnell and Paul Krause. But despite his accomplishments, Riley was never an exceptionally popular or well known player. In his 15 seasons, Riley was never once selected to play in the AFL All-Star Game or the AFC-NFC Pro Bowl, and to this date has not been voted into the Pro Football Hall of Fame.",
+        "Howie Long: Howard Matthew Moses \"Howie\" Long (born January 6, 1960) is an American former National Football League (NFL) defensive end, actor and sports analyst. He played in the NFL for 13 seasons and spent the entirety of his career with the Raiders franchise. During his tenure as a player, Long was named to eight Pro Bowls and helped the Raiders win a Super Bowl title in XVIII. He was inducted into the Pro Football Hall of Fame in 2000.",
+        "The Experts Network: The Experts Network, also known as TXN and TXN Sports, is an interactive digital sports network consisting of sports analysts Cris Collinsworth, Boomer Esiason, Nick Faldo, Howie Long, Cal Ripken Jr. and Phil Simms.",
+        "Derrick Thomas: Derrick Vincent Thomas (January 1, 1967February 8, 2000), nicknamed D.T., was an American football linebacker and defensive end for the Kansas City Chiefs of the National Football League (NFL). He played his entire 11-year career for the Chiefs after being drafted fourth overall in the 1989 NFL Draft. Thomas, a member of the class of 2009 Pro Football Hall of Fame, was a premier football player throughout the 1990s and is considered one of the best pass rushers of all time. In 1990 against the Seattle Seahawks, he set an NFL record with seven sacks in a single game. On February 8, 2000, Thomas died from a massive blood clot that developed in his paralyzed legs and traveled to his lungs, causing a pulmonary embolism. His paralysis was the result of severe injuries sustained in a car accident weeks earlier. Thomas was inducted posthumously into the College Football Hall of Fame in 2014 and the Pro Football Hall of Fame in 2009",
+        "LaDainian Tomlinson: LaDainian Tramayne Tomlinson (born June 23, 1979) is a former professional American football player who was a running back in the National Football League (NFL) for eleven seasons. He played the majority of his career with the San Diego Chargers, who selected him with the fifth overall pick in the 2001 NFL Draft. Tomlinson was invited to five Pro Bowls, was an All-Pro six times, and won consecutive rushing titles in 2006 and 2007. At the time of his retirement, he ranked fifth in career rushing yards (13,684), seventh in all-purpose yards (18,456), second in career rushing touchdowns (145), and third in touchdowns from scrimmage (162). He currently serves as an analyst on NFL Network. After being elected to the College Football Hall of Fame in 2014, Tomlinson was inducted into the Pro Football Hall of Fame in August 2017, his first year of eligibility."
+      ],
+      "em": 1.0,
+      "f1": 0.1333,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "In between  Polytechnic University of the Philippines and California Polytechnic State University which was founded as a vocational high school?",
+      "answer": "California Polytechnic State University was founded as a vocational high school in 1901.",
+      "passages": [
+        "California Polytechnic State University: California Polytechnic State University, also known as California Polytechnic State University, San Luis Obispo, Cal Poly San Luis Obispo, or Cal Poly, is a public university located in San Luis Obispo, California, United States. Founded in 1901 as a vocational high school, it is currently one of only two polytechnic universities in the 23-member California State University system. With six colleges, the university offers 64 bachelor's degrees, 32 master's degrees, and 7 teaching credentials. The university does not grant doctoral degrees.",
+        "Polytechnic University of the Philippines: Polytechnic University of the Philippines (Filipino: \"Politeknikong Unibersidad ng Pilipinas\"; abbreviated as PUP and commonly known as PUP Main, PUP Sta. Mesa, and PUP Manila) is a coeducational, research state university located in Santa Mesa, Manila, Philippines. It was founded on October 19, 1904 as the Manila Business School. The university is ruled by Republic Act Number 8292, or the Higher Education Modernization Act of 1997. PUP has a total of 71,963 students enrolled, and it has 25 branches and campuses located in Metro Manila, Northern and Central Luzon, and in Southern Luzon.",
+        "University of Northern Philippines: The University of Northern Philippines (UNP) is a university in Barangay Tamag, in the City of Vigan in the province of Ilocos Sur, Philippines. It is the first and oldest state university in Northern Luzon which offers low tuition fee, tracing its roots to 1906, which is older than the University of the Philippines by two years. It is the only state university in the province aimed for less-fortunate people and one of three state-owned educational institutions of higher learning operating in Ilocos Sur (with the Ilocos Sur Polytechnic State College and the Northern Luzon Polytechnic State College, a former branch of the university).",
+        "Myron Angel House: The Myron Angel House is a historic house located at 714 Buchon St. in San Luis Obispo, California. Built circa 1880, the house has a vernacular design which does not follow a particular architectural style. The two-story wood frame house has redwood siding, a shingled gable roof, and some Eastlake details in the window surrounds and gable ends. The house was the home of Myron Angel, the main figure in the establishment of California Polytechnic State University. Angel, who lived in the house from 1889 to his 1911 death, proposed and lobbied for the creation of a polytechnic school in California; it was mainly due to his campaign that Cal Poly was founded in San Luis Obispo. In addition to his educational activism, Angel was also an influential journalist and historian.",
+        "Michael Marlow (economist): Michael L. Marlow is a professor of economics at California Polytechnic State University (Cal Poly). He is also an affiliated senior scholar at the Mercatus Center at George Mason University. He holds a BA from George Washington University and a PhD from Virginia Tech, both in economics. He joined the California Polytechnic State University faculty in 1988 and was named a University Distinguished Scholar by the university in 2007. Prior to joining Cal Poly, he was an associate professor of economics at George Washington University from 1979 to 1983, and also worked as a senior financial economist at the U.S. Treasury from 1983 to 1988. He is known for opposing government regulation of e-cigarettes and of unhealthy foods and beverages. He has also argued that alcohol taxes primarily reduce consumption by light drinkers, not by heavy drinkers, and has criticized Proposition 65 for being ineffective with respect to public health benefits. His research into the effects of smoking laws has been criticized for being funded by Philip Morris, and for methodological flaws."
+      ],
+      "em": 1.0,
+      "f1": 0.4706,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+      "answer": "Yes, both Giuseppe Verdi and Ambroise Thomas are opera composers. According to the text, Ambroise Thomas is best known for his operas \"Mignon\" and \"Hamlet\", and Giuseppe Verdi is also a renowned opera composer, with works such as \"Don Carlos\" mentioned in the text. Additionally, the text lists major opera composers and mentions that the list includes Giuseppe Verdi, implying that Ambroise Thomas is also considered a major opera composer.",
+      "passages": [
+        "Ambroise Thomas: Charles Louis Ambroise Thomas (5 August 1811 \u2013 12 February 1896) was a French composer, best known for his operas \"Mignon\" (1866) and \"Hamlet\" (1868, after Shakespeare) and as Director of the Conservatoire de Paris from 1871 till his death.",
+        "List of major opera composers: This list provides a guide to opera composers, as determined by their presence on a majority of compiled lists of significant opera composers. (See the \"Lists Consulted\" section for full details.) The composers run from Jacopo Peri, who wrote the first ever opera in late 16th century Italy, to John Adams, one of the leading figures in the contemporary operatic world. The brief accompanying notes offer an explanation as to why each composer has been considered major. Also included is a section about major women opera composers, compiled from the same lists. For an introduction to operatic history, see opera. The organisation of the list is by birthdate.",
+        "Armand Castelmary: Armand Castelmary, real name Comte Armand de Castan, born Toulouse 16 August 1834, died New York City 10 February 1897, was a French operatic bass. He created roles in three major premieres at the Paris Opera \u2013 Don Diego in \"L'Africaine\" by Meyerbeer (1865), the Monk in Verdi's \"Don Carlos\" (1867), and Horatio in Ambroise Thomas's \"Hamlet\" (1868). Castelmary also appeared at opera houses in England and the United States, and died onstage at the Metropolitan Opera House, New York, during a performance of \"Martha\" by Friedrich von Flotow.",
+        "Giuseppe Verdi (film): Giuseppe Verdi is a 1938 Italian biographical film directed by Carmine Gallone and starring Fosco Giachetti, Gaby Morlay and Germana Paolieri. The film portrays the life of the composer Giuseppe Verdi (1813-1901). The casting of Giachetti as Verdi was intended to emphasise the composer's patriotism, as he had recently played patriotic roles in films such as \"The White Squadron\". The film was made at the Cinecitt\u00e0 Studios in Rome. The film is also known by the alternative title The Life of Giuseppe Verdi.",
+        "Verdi, the King of Melody: Giuseppe Verdi, released theatrically in the USA as The Life and Music of Giuseppe Verdi and on video as Verdi, the King of Melody, is a 1953 Italian biographical film starring Pierre Cressoy and directed by Raffaello Matarazzo. It is based on adult life events of the composer Giuseppe Verdi. The film was a commercial success, grossing over 957 million lire at the Italian box office."
+      ],
+      "em": 1.0,
+      "f1": 0.0282,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which historical drama filmed in the Winter Palace of the Russian State Hermitage Museum stars Sergey Dreyden?",
+      "answer": "The historical drama film that stars Sergey Dreyden and was filmed in the Winter Palace of the Russian State Hermitage Museum is \"Russian Ark\".",
+      "passages": [
+        "Russian Ark: Russian Ark (Russian: \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u043a\u043e\u0432\u0447\u0435\u0433 , \"Russkij Kovcheg\") is a 2002 historical drama film directed by Alexander Sokurov. It was filmed entirely in the Winter Palace of the Russian State Hermitage Museum using a single 96-minute Steadicam sequence shot. The film was entered into the 2002 Cannes Film Festival.",
+        "Sergey Dreyden: Sergey Simonovich Dreyden (Dontsov) (Russian: \u0421\u0435\u0440\u0433\u0435\u0301\u0439 \u0421\u0438\u0301\u043c\u043e\u043d\u043e\u0432\u0438\u0447 \u0414\u0440\u0435\u0301\u0439\u0434\u0435\u043d (\u0414\u043e\u043d\u0446\u043e\u0301\u0432) ; born September 14, 1941) is a Russian actor and star of Alexander Sokurov's Russian Ark.",
+        "The State Hermitage Youth Education Center: The State Hermitage Youth Education Center (Russian: \u041c\u043e\u043b\u043e\u0434\u0451\u0436\u043d\u044b\u0439 \u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0446\u0435\u043d\u0442\u0440 \u0413\u043e\u0441\u0443\u0434\u0430\u0440\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0433\u043e \u042d\u0440\u043c\u0438\u0442\u0430\u0436\u0430), is a contemporary art education program in Saint Petersburg, Russia that is part of The Hermitage Museum. The program is offered for all students, whether from St. Petersburg, other Russian cities or from abroad. Activities include lectures on the history and theory of art, exhibitions of contemporary art, masterclasses, and access to Museum curators and collections. There are also special semester programs for students studying from abroad. State Hermitage Youth Education Center organizes a number of international festivals and cultural programs on the history and traditions of different countries and nations.",
+        "Semyon Aranovich: Semyon Davidovich Aranovich (Ukrainian: \u0421\u0435\u043c\u0451\u043d \u0410\u0440\u0430\u043d\u043e\u0432\u0438\u0447, 23 July 1934, Derazhnya, Ukraine, Soviet Union \u2013 8 September 1996, Hamburg, Germany) was a Soviet and Russian film director.",
+        "Jim Cohen: Jim Cohen (born August 2, 1942) is an American human rights activist, attorney, environmentalist, and former candidate for the United States Senate seat from Minnesota then held by Republican Norm Coleman. Cohen sought the endorsement of the Minnesota Democratic-Farmer-Labor Party, but withdrew his candidacy after trailing far behind Al Franken, who subsequently was elected U.S. Senator."
+      ],
+      "em": 1.0,
+      "f1": 0.1538,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Who was born first, Karen Joy Fowler or Bruce Chatwin?",
+      "answer": "Bruce Chatwin was born first. He was born on May 13, 1940, while Karen Joy Fowler was born on February 7, 1950.",
+      "passages": [
+        "Bruce Chatwin: Charles Bruce Chatwin (13 May 194018 January 1989) was an English travel writer, novelist, and journalist. His first book, \"In Patagonia\" (1977), established Chatwin as a travel writer, although he considered himself instead a storyteller, interested in bringing to light unusual tales. He won the James Tait Black Memorial Prize for his novel \"On the Black Hill\" (1982) and his novel \"Utz\" (1988) was shortlisted for the Man Booker Prize. In 2008 \"The Times\" named Chatwin #46 on their list of \"50 Greatest British Writers Since 1945.\"",
+        "Karen Joy Fowler: Karen Joy Fowler (born February 7, 1950) is an American author of science fiction, fantasy, and literary fiction. Her work often centers on the nineteenth century, the lives of women, and alienation.",
+        "Readercon: Readercon is an annual science fiction convention, held every July in the Boston, Massachusetts area, in Burlington, Massachusetts. It was founded by Bob Colby and statistician Eric Van in the mid-1980s with the goal of focusing almost exclusively on science fiction/fantasy/slipstream/speculative fiction in the written form (on the rare occasion that there is a discussion held about non-written science fiction, it will have a tongue-in-cheek title such as \"Our biannual media panel\"). Past guests of honor have included authors such as Greer Gilman, Gene Wolfe, Octavia Butler, Samuel R. Delany, Karen Joy Fowler, Brian Aldiss, Nalo Hopkinson, Joe Haldeman, Caitl\u00edn R. Kiernan, Peter Straub, and China Mi\u00e9ville, and editors such as Ellen Datlow and David G. Hartwell. The convention also makes a point of honoring a deceased author as the Memorial Guest of Honor. In 2009, for instance, the guests of honor were the living writers Elizabeth Hand and Greer Gilman and the memorial guest of honor was Hope Mirrlees.",
+        "Writers of the Future: Writers of the Future (WOTF) is a science fiction and fantasy story contest that was established by L. Ron Hubbard in the early 1980s. A sister contest, Illustrators of the Future, presents awards for science fiction art. Hubbard characterized the contest as a way of \"giving back\" to the field that had defined his professional writing life. The contest has no entry fee and is the highest-paying contest for amateur science-fiction and fantasy writers. Notable past winners of WOTF include Stephen Baxter, Karen Joy Fowler, James Alan Gardner, Nina Kiriki Hoffman, Jay Lake, Michael H. Payne, Patrick Rothfuss, Robert Reed, Dean Wesley Smith, Sean Williams, Dave Wolverton, Nancy Farmer, and David Zindell.",
+        "Lady Churchill's Rosebud Wristlet: Lady Churchill's Rosebud Wristlet (LCRW) is a twice-yearly small press zine published by Small Beer Press, edited by Gavin Grant and Kelly Link. It contains an eclectic mix of fiction, poetry, and nonfiction, with an emphasis on speculative fiction, fantasy or slipstream. Link, Karen Joy Fowler, and Ursula K. Le Guin are among the most prominent of writers who have published in \"LCRW\"."
+      ],
+      "em": 1.0,
+      "f1": 0.1667,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What WikiLeaks using whistleblower is notable for having a hacking organization with a user base of over 1,800,000?",
+      "answer": "None of the WikiLeaks using whistleblowers mentioned are notable for having a hacking organization with a user base of over 1,800,000. However, Jeremy Hammond, a WikiLeaks using whistleblower, founded HackThisSite, which has a user base of over 1,800,000.",
+      "passages": [
+        "Sigurdur Thordarson: Sigurdur Thordarson (Sigur\u00f0ur Ingi \u00de\u00f3r\u00f0arson) was born in 1992 in Reykjav\u00edk. He is known for his involvement with the whistleblowing organization WikiLeaks, as well as his interactions with the Federal Bureau of Investigation (FBI). In 2010 he was arrested for stealing and leaking classified information about the bank structure in Iceland. He obtained the information from a lawyer that aided wealthy people in tax evasion, whose name was Gunnar Gunnarsson. Gunnar worked for an investment firm called Milestone ehf. Gunnar obtained Sigurdur's services to set up computer systems and delete data. After Sigurdur was arrested he was introduced to Julian Assange, the editor and founder of WikiLeaks. Sigurdur started his time there in early 2010, and participated in preparing many of WikiLeaks's biggest leaks. After a year in WikiLeaks service Sigurdur was suspected of embezzling funds from the WikiLeaks online store. WikiLeaks filed criminal charges against Sigurdur with the Metropolitan Police of Iceland, who investigated the case and later dropped it due to lack of evidence. Sigurdur later plead guilty to the embezzlement along with other economic crimes, in 2013. Sigurdur was ordered to pay the victims 15 million ISK (roughly $115,000)",
+        "Owen Walker: Owen Thor Walker (online pseudonym AKILL) is a computer hacker living in New Zealand, who was discharged without conviction despite pleading guilty to several charges of 'cybercrime'. In 2008 he admitted to being the ringleader of an international hacking organization estimated to have caused $26 million worth of damage.",
+        "HackThisSite: HackThisSite.org, commonly referred to as HTS, is an online hacking and security website founded by Jeremy Hammond, with the site being maintained by a members of the community after his departure. It aims to provide users with a way to learn and practice basic and advanced \"hacking\" skills through a series of challenges in a safe and legal environment. The organization has a user base of over 1,800,000. The actual number of active members is believed to be much lower. The most users online at the same time was 1,995 on February 5, 2012 at 2:46:10 AM CST.",
+        "Jeremy Hammond: Jeremy Hammond (born January 8, 1985) is a political hacktivist and computer hacker from Chicago. He was convicted and sentenced in November 2013 to 10 years in US Federal Prison for hacking the private intelligence firm Stratfor and releasing the leaks through the whistle-blowing website WikiLeaks. He founded the computer security training website HackThisSite in 2003.",
+        "Friends of WikiLeaks: Friends of WikiLeaks, sometimes reduced and stylized as FoWL, was a surveillance-resistant social network site created in support of WikiLeaks. Founded in May 2012, the site was intended for those who support WikiLeaks and its activities to perform advocacy. In contrast to more traditional forms of social networking, FoWL aimed at bringing together like-minded people who do not yet know each other. To achieve this goal, the site would ask about the language the user speaks as well as any preferences in the ways of hobbies or other activities. The site would then find six friends who share the user's views within your country, and another six from other parts of the world who speak your language. If one of those friends cancelled their account or became inactive, a new friend would be matched to the user's circle and would replace the previous inactive one."
+      ],
+      "em": 1.0,
+      "f1": 0.1,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Egremont Castle is located in what market town, civil parish, and two electoral wards in the Borough of Copeland in Cumbria, England?",
+      "answer": "Egremont Castle is located in the market town, civil parish, and two electoral wards of Egremont, in the Borough of Copeland in Cumbria, England.",
+      "passages": [
+        "Listed buildings in Egremont, Cumbria: Egremont is a civil parish in the Borough of Copeland, Cumbria, England. It contains 25 buildings that are recorded in the National Heritage List for England. Of these, one is listed at Grade\u00a0I, the highest of the three grades, and the others are at Grade\u00a0II, the lowest grade. The parish contains the town of Egremont and the surrounding countryside. The oldest listed building is Egremont Castle; this and associated structures are listed. Most of the other listed buildings are houses and associated structures, farmhouses and farm buildings. The other listed buildings include churches, cemetery buildings, shops, two former toll houses, a milestone, a monument, a town hall, a drinking fountain, and a war memorial.",
+        "Egremont, Cumbria: Egremont is a market town, civil parish and two electoral wards (North and South) in the Borough of Copeland in Cumbria, England, 5 mi south of Whitehaven and on the River Ehen. Historically in Cumberland, the town, which lies at the foot of Uldale Valley and Dent Fell, has a long industrial heritage including dyeing, weaving and iron ore mining. It had a population of 7,444 in 2001, increasing to 8,194 at the 2011 Census.",
+        "Egremont Castle: Egremont Castle is located in the town of Egremont, Cumbria. (grid reference [ NY00981050] )",
+        "Newbiggin, Ainstable: Newbiggin is a small hamlet in Cumbria, England Cumrew beck flows north-west through Newbiggin eventually joining the Eden close to Armathwaite. The village contains many houses of a traditional design, a historic chapel (now a private home) and several large acreage farms. On the fells around the village there are traces of the old mines that used to operate in the area, as well as the skeletons of Lime kiln. A track from the village leads up to new water river, which can be followed north to Castle Carrock. There is a pub, The Blue Bell Inn.",
+        "2000 ICC KnockOut Trophy squads: These were the eleven squads (all Test nations and two ODI nations) picked to take part in the 2000 ICC KnockOut Trophy, the second installment of the Champions Trophy cricket tournament. The tournament was held in Kenya from 3 to 15 October 2000. In the preliminary quarter finals, two ODI full-status teams Kenya and Zimbabwe played with India and Sri Lanka respectively, and India and Sri Lanka won their matches convincingly. In third preliminary quarter final, England beat Bangladesh to secure his position in Knockout Tournament. New Zealand won the second edition of the ICC KnockOut Trophy by defeating India in the final by four wickets, which was their first ICC event to be won."
+      ],
+      "em": 1.0,
+      "f1": 0.08,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which opera has more acts, La jolie fille de Perth or Mitridate, re di Ponto?",
+      "answer": "La jolie fille de Perth has 4 acts, while Mitridate, re di Ponto has 3 acts. Therefore, La jolie fille de Perth has more acts.",
+      "passages": [
+        "Teatro Regio Ducal: The Teatro Regio Ducal (Italian, \"Royal Ducal Theatre\") was the opera house in Milan from 26 December 1717 until 25 February 1776, when it was burned down following a carnival gala. Many famous composers and their operas are associated with it, including the premieres of Mozart's \"Ascanio in Alba\", \"Mitridate, re di Ponto\", and \"Lucio Silla\". The opera house also saw the premiere of Maria Teresa Agnesi Pinottini's \"Ciro in Armenia\" in 1753; one of the earliest successfully received operas by a female composer. Variant forms such as \"Regio-Ducal Teatro\" and \"Teatro Regio Ducale\" are also seen.",
+        "La fille de Madame Angot: La fille de Madame Angot (\"The Daughter of Madame Angot\") is an op\u00e9ra comique in three acts by Charles Lecocq. The French text was by Clairville, Paul Siraudin and Victor Koning.",
+        "Mitridate, re di Ponto: Mitridate, re di Ponto (\"Mithridates, King of Pontus\"), K. 87 (74a), is an early opera seria in three acts by Wolfgang Amadeus Mozart. The libretto is by after Giuseppe Parini's Italian translation of Jean Racine's play \"Mithridate\".",
+        "Arsilda, regina di Ponto: Arsilda, regina di Ponto is a dramma per musica by Antonio Vivaldi. The opera was first performed at the Teatro Sant'Angelo in Venice on 27 or 28 October 1716.",
+        "La jolie fille de Perth: La jolie fille de Perth \"(The Fair Maid of Perth)\" is an opera in four acts by Georges Bizet (1838\u20131875), from a libretto by Jules-Henri Vernoy de Saint-Georges and Jules Adenis, after the novel by Sir Walter Scott. Many writers have reserved severe criticism for the librettists for their stock devices and improbable events, while praising Bizet's advance on his earlier operas in construction of set pieces and his striking melodic and instrumental ideas."
+      ],
+      "em": 0.0,
+      "f1": 0.3415,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What subsidiary of the largest airline of the Republic of China (Taiwan) has a main hub at Taichung Airport?",
+      "answer": "Mandarin Airlines, a subsidiary of China Airlines, has a main hub at Taichung Airport.",
+      "passages": [
+        "Mandarin Airlines: Mandarin Airlines () is an airline based in Taipei, Taiwan, whose parent company is China Airlines. The Taiwanese carrier operates domestic and regional international flights, while its parent company focuses on international operations. Charter services are also operated by the company. Its other main hub is the Taichung Airport.",
+        "2007 Baseball World Cup: The XXXVII International Baseball Federation (IBAF) Baseball World Cup was held in the Republic of China (Taiwan, competing under the name of Chinese Taipei) from November 6 through November 18, 2007. Four stadiums hosted. Taichung Intercontinental Baseball Stadium and Taichung Baseball Field in Taichung City, Tianmu Baseball Stadium in Taipei City and Sinjhuang City all played host to the tournament. Sixteen teams participated. At one time, Venezuela\u2019s participation was in question due to possible sanctions to be considered by the International Baseball Federation in the wake of their refusal to grant visas to a youth team from Taichung to participate in the Youth World Baseball championships in August, 2007, but they were allowed to participate. China was originally scheduled to participate in Pool B, but dropped out and was replaced by Thailand, who placed fifth behind China at the Asian Games.",
+        "China Airlines: China Airlines (CAL) () () is the flag carrier and largest airline of the Republic of China (Taiwan). It is headquartered in Taoyuan International Airport and has 12,607 regular employees. China Airlines operates over 1,400 flights weekly to 118 airports in 115 cities (including codeshare) across Asia, Europe, North America and Oceania. The cargo division operates 91 pure freighter flights weekly. The carrier was, in 2013, the 29th and 10th largest airline in the world in terms of passenger revenue per kilometer (RPK) and freight RPK, respectively. China Airlines has three airline subsidiaries: Mandarin Airlines operates flights to domestic and low-demand regional destinations; China Airlines Cargo, a member of Skyteam Cargo, operates a fleet of freighter aircraft and manages its parent airline's cargo-hold capacity; Tigerair Taiwan is a low-cost carrier established by China Airlines and Singaporean airline group Tigerair Holdings and is wholly owned by China Airlines Group.",
+        "Taichung International Airport: Taichung International Airport () (IATA: RMQ,\u00a0ICAO: RCMQ) , previously known as Ching Chuan Kang Airport (), is an international airport located in Taichung City, Taiwan (ROC) for both commercial and military purposes. It is also the third international airport in Taiwan, with scheduled services to Mainland China, Japan, South Korea and Vietnam.",
+        "AirAsia: AirAsia Berhad () is a Malaysian low-cost airline headquartered near Kuala Lumpur, Malaysia. It is the largest airline in Malaysia by fleet size and destinations. AirAsia Group operates scheduled domestic and international flights to more than 165 destinations spanning 25 countries. Its main hub is klia2, the low-cost carrier terminal at Kuala Lumpur International Airport (KLIA) in Sepang, Selangor, Malaysia. Its affiliate airlines Thai AirAsia, Indonesia AirAsia, Philippines AirAsia, and AirAsia India have hubs in Don Mueang International Airport, Soekarno\u2013Hatta International Airport, Ninoy Aquino International Airport, and Kempegowda International Airport respectively, while its sister airline, AirAsia X, focuses on long-haul routes. AirAsia's registered office is in Petaling Jaya, Selangor while its head office is at Kuala Lumpur International Airport."
+      ],
+      "em": 1.0,
+      "f1": 0.25,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What is the name of the former MGM Grand Garden Special Events Center where the Mayweather-Ortiz fight took place?",
+      "answer": "The MGM Grand Garden Arena.",
+      "passages": [
+        "MGM Grand Garden Arena: The MGM Grand Garden Arena (originally known as the MGM Grand Garden Special Events Center) is a multi-purpose arena located within the MGM Grand Las Vegas on the Las Vegas Strip.",
+        "Canelo \u00c1lvarez vs. Alfonso G\u00f3mez: Canelo \u00c1lvarez vs. Alfonso G\u00f3mez was a Light Middleweight fight for the WBC World title. The fight took place in Staples Center, Los Angeles, California, United States on 17 September 2011 on the Floyd Mayweather Jr.-Victor Ortiz pay-per-view broadcast. The Mayweather-Ortiz fight took place at another location at the MGM Grand Garden Arena in Las Vegas, Nevada taking place on the Mexican Independence weekend. Fans at Staples Center will be able to see the live feed from Las Vegas and also see Canelo Alvarez fight live that night, and the people in Las Vegas can see the live feed from the Canelo fight in the Staples Center.",
+        "Floyd Mayweather Jr. vs. Canelo \u00c1lvarez: Floyd Mayweather Jr. vs. Canelo \u00c1lvarez, billed as \"The One\", was a boxing light middleweight championship superfight. The bout was held on September 14, 2013, in the MGM Grand Garden Arena, at the MGM Grand Hotel & Casino in Las Vegas, Nevada, United States, on Showtime PPV. Mayweather received $41.5 million for this fight before taking into account pay-per-view sales.",
+        "Floyd Mayweather Jr. vs. Manny Pacquiao: Floyd Mayweather Jr. vs. Manny Pacquiao, billed as \"The Fight of the Century\", or the \"Battle for Greatness\", was a professional boxing match between undefeated five-division world champion Floyd Mayweather Jr. and eight-division world champion Manny Pacquiao. It took place on May 2, 2015, at the MGM Grand Garden Arena in Las Vegas, Nevada. Mayweather Jr. won the contest by unanimous decision, with two judges scoring it 116\u2013112 and the other 118\u2013110. Although the fight was considered to be one of the most anticipated sporting events in history, it was largely considered a letdown by critics and audiences alike upon its broadcast.",
+        "Floyd Mayweather Jr. vs. Marcos Maidana: Floyd Mayweather Jr. vs. Marcos Maidana, billed as \"The Moment\", was a boxing welterweight championship fight. The bout was held on May 3, 2014, in the MGM Grand Garden Arena, at the MGM Grand Hotel & Casino in Las Vegas, Nevada, United States, on Showtime PPV."
+      ],
+      "em": 1.0,
+      "f1": 0.8889,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Who created the NBC sitcom that Johnny Pemberton appears in as the character Bo Thompson?",
+      "answer": "The NBC sitcom that Johnny Pemberton appears in as the character Bo Thompson is \"Superstore\", which was created by Justin Spitzer.",
+      "passages": [
+        "Johnny Pemberton: Johnny Pemberton (born in 1981) is an American actor and comedian from Rochester, Minnesota. He is best known for his role as the titular \"Son of Zorn\" in the short-lived Fox sitcom, and has also appeared as the recurring character Bo Thompson in the NBC sitcom \"Superstore\".",
+        "Superstore (TV series): Superstore is an American single-camera sitcom television series that premiered on NBC on November 30, 2015. The series was created by Justin Spitzer, who also serves as an executive producer. Starring America Ferrera (who also serves as a producer) and Ben Feldman, \"Superstore\" follows a group of employees working at \"Cloud 9\", store number 1217, a fictional big-box store in St. Louis, Missouri. The ensemble and supporting cast features Lauren Ash, Colton Dunn, Nico Santos, Nichole Bloom, and Mark McKinney.",
+        "Son of Zorn: Son of Zorn is an American live-action/animated sitcom television series created by Reed Agnew and Eli Jorn\u00e9. It aired on Fox from September 11, 2016, to February 19, 2017. The series stars Cheryl Hines, Johnny Pemberton, Tim Meadows, Artemis Pebdani, and Jason Sudeikis as the voice of Zorn.",
+        "Julia Benjamin: Julia Benjamin (born February 21, 1957) is a retired American film and television actress of the 1960s, 1970s and 1980s. She is best remembered for her character role as Susie Baxter, the daughter of Steve and Barbara Baxter and the first cousin of Harold \"Sport\" Baxter on the 1960s sitcom \"Hazel.\" Benjamin was also well known for her roles in the movies \"Mr. and Mrs. Bo Jo Jones\" and \"The Jordan Chance.\" Benjamin's career began at the age of eight on \"Hazel\" in 1965. \"Hazel\" was a sitcom that first aired in 1961 on NBC. The series centered on the Baxter family. The family included husband George Baxter, (Don DeFore), his wife Dorothy Baxter, (Whitney Blake) and their only child, son Harold \"Sport\" Baxter, (Bobby Buntrock). At the end of the 1964-65 television season, NBC canceled the series. CBS decided to pick it up for a fifth season. CBS cast Ray Fulmer, Lynn Borden, and Benjamin as George Baxter's brother Steve, his wife Barbara and their daughter Susie. The premise of the fifth season was that George and Dorothy had to move to the Middle East as part of a job promotion. So, Hazel and Harold moved in with Steve, Barbara, and Susie. The series was cancelled by CBS airing its last episode on April 11, 1966. It was never picked up again. After Hazel, Benjamin would only get roles in a limited few number of movies and guest starring roles on television. After Hazel went off the air, Benjamin would have only five roles in movies and television. Her television credits include three guest starring roles on the television shows \"My Three Sons,\" \"The Rockford Files\" and \"Riptide.\" Her movie credits include two TV movies; \"Mr. and Mrs. Bo Jo Jones\" (1971), and \"The Jordan Chance\" (1978). \"Riptide\" was Benjamin's last acting appearance. She has not acted in anything since.",
+        "Fred G. Sanford: Fred G. Sanford is a fictional character portrayed by actor/comedian Redd Foxx on the 1972\u20131977 NBC sitcom \"Sanford and Son\" and the 1980\u20131981 NBC sitcom \"Sanford\"."
+      ],
+      "em": 1.0,
+      "f1": 0.1739,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which aircraft engine powers a General Dynamics aircraft of which over 4500 have been built?",
+      "answer": "The text does not explicitly state which engine powers the General Dynamics F-16 Fighting Falcon. However, it is widely known that the General Dynamics F-16 Fighting Falcon is powered by a single engine, and the most common engine used in the F-16 is the Pratt & Whitney F100 or the General Electric F110. Neither of these engines is mentioned in the provided text. The only engine mentioned is the Curtiss OX-5, but it is not associated with the General Dynamics F-16 Fighting Falcon in the text.",
+      "passages": [
+        "General Dynamics F-16 Fighting Falcon: The General Dynamics F-16 Fighting Falcon is a single-engine supersonic multirole fighter aircraft originally developed by General Dynamics (now Lockheed Martin) for the United States Air Force (USAF). Designed as an air superiority day fighter, it evolved into a successful all-weather multirole aircraft. Over 4,500 aircraft have been built since production was approved in 1976. Although no longer being purchased by the U.S. Air Force, improved versions are still being built for export customers. In 1993, General Dynamics sold its aircraft manufacturing business to the Lockheed Corporation, which in turn became part of Lockheed Martin after a 1995 merger with Martin Marietta.",
+        "Curtiss OX-5: The Curtiss OX-5 was an early V-8 American liquid-cooled aircraft engine built by Curtiss. It was the first American-designed aircraft engine to enter mass production, although it was considered obsolete when it did so in 1917. It nevertheless found widespread use on a number of aircraft, perhaps the most famous being the JN-4 \"Jenny\". Some 12,600 units were built through early 1919. The wide availability of the engine in the surplus market made it common until the 1930s, although it was considered unreliable for most of its service life. Today, the engine can be found powering many Edwardian automobile racing specials on the historic racing scene.",
+        "Garuda Indonesia Flight 200: Garuda Indonesia Flight 200 (GA200/GIA 200) was a scheduled domestic passenger flight of a Boeing 737-400 operated by Garuda Indonesia between Jakarta and Yogyakarta, Indonesia. The aircraft overran the runway, crashed into a rice field and burst into flames while landing at Adisucipto International Airport on 7 March 2007. Twenty passengers and one crew member were killed. Both the captain and the first officer survived.",
+        "Robert H. Widmer: Robert Henry Widmer (May 17, 1916 \u2013 June 20, 2011) was an American aeronautical engineer who specialized in designing aircraft for the military. He spent his career working for Convair which became General Dynamics, then Lockheed, and then Lockheed Martin. His feisty personality and at times insubordinate attitude at one time led company leaders to strongly consider firing him. However, his brilliance at envisioning and designing desirable aircraft years before there was even a market for them led to his appointment as Vice President for science and engineering for all of General Dynamics.",
+        "General Dynamics F-111K: The General Dynamics F-111K was a planned variant of the General Dynamics F-111 Aardvark medium-range interdictor and tactical strike aircraft by General Dynamics, to meet a requirement for such an aircraft for the Royal Air Force."
+      ],
+      "em": 1.0,
+      "f1": 0.0682,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which British racing driver has raced for 7 different teams and won the European Grand Prix in 1999?",
+      "answer": "According to the text, Johnny Herbert is a British racing driver who has raced for 7 different teams. However, the text does not mention him winning the European Grand Prix in 1999. In fact, Luca Badoer is mentioned as standing in for Felipe Massa at the 2009 European Grand Prix, but there is no mention of Johnny Herbert winning the European Grand Prix in 1999. Therefore, the answer is not explicitly stated in the text, and it is possible that the question contains incorrect information.",
+      "passages": [
+        "Johnny Herbert: John Paul \"Johnny\" Herbert (born 25 June 1964) is a British racing driver. He raced in Formula One from 1989 to 2000, for 7 different teams, winning three races and placed 4th in the 1995 championship. He also raced sports cars winning the Le Mans 24 Hours in 1991 driving a Mazda 787B. He enjoyed much success in lower-level motor racing.",
+        "Belarusian Second League: Belarusian Second League is the third division of professional football in Belarus. A strict number of teams is not set for the competition and every season it depends on how many teams are able to obtain a license or have an intention to apply for one. As of 2017, the league consists of 14 teams. At the end of the season two best teams will be promoted to Belarusian First League. The competition is organized by the Belarusian Football Federation.",
+        "Luca Badoer: Luca Badoer (born 25 January 1971) is an Italian former racing driver. Badoer has raced for the Scuderia Italia, Minardi, Forti Corse and most recently, Ferrari teams. In addition to his racing duties, Badoer was one of the active test and reserve drivers for Ferrari from 1998 to 2010 and in 2009 stood in for Ferrari's regular race driver Felipe Massa at the European Grand Prix and the Belgian Grand Prix after the Brazilian was injured during qualifying for the Hungarian Grand Prix and his original replacement, Michael Schumacher, pulled out due to injury.",
+        "Peter Westbury: Peter Westbury (26 May 1938 \u2013 7 December 2015) was a British racing driver from England. He participated in two World Championship Formula One Grands Prix, scoring no championship points. In 1969 he raced a Formula 2 Brabham-Cosworth, driving in his first Grand Prix in the 1969 German Grand Prix. He finished ninth on the road, fifth in the F2 class. The following year he failed to qualify for the 1970 United States Grand Prix driving a works BRM, after an engine failure.",
+        "1923 Grand Prix season: The 1923 Grand Prix season saw Grand Prix motor racing in Europe. For the first time, the Indianapolis 500 was also designated a Grand \u00c9preuve by the International Sporting Commission of the AIACR. The French Grand Prix was held in Tours. The Italian Grand Prix (which was also the European Grand Prix) was held at Monza. Spain entered the Grand Prix circus with the Spanish Grand Prix at Sitges-Terramar and the first San Sebasti\u00e1n Grand Prix at Lasarte."
+      ],
+      "em": 1.0,
+      "f1": 0.046,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "In what city can a person find both the Nusretiye Clock Tower and the Eski Imaret Mosque be found?",
+      "answer": "Istanbul, Turkey.",
+      "passages": [
+        "Nusretiye Clock Tower: Nusretiye Clock Tower, aka Tophane Clock Tower, is a clock tower situated in Tophane, a neighborhood in Beyo\u011flu district of Istanbul, Turkey next to Nusretiye Mosque and Tophane Kiosk at the European waterfront of Bosphorus. It was ordered by the Ottoman sultan Abd\u00fclmecid I (1823-1861), designed by architect Garabet Amira Balyan and completed in 1848.",
+        "Eski Imaret Mosque: Eski Imaret Mosque (Turkish: \"Eski Imaret Camii\" ) is a former Eastern Orthodox church converted into a mosque by the Ottomans. The church has traditionally been identified with that belonging to the Monastery of Christ Pantepoptes (Greek: \u039c\u03bf\u03bd\u03ae \u03c4\u03bf\u03c5 \u03a7\u03c1\u03b9\u03c3\u03c4\u03bf\u03cd \u03a0\u03b1\u03bd\u03c4\u03b5\u03c0\u03cc\u03c0\u03c4\u03b7 ), meaning \"Christ the all-seeing\". It is the only documented 11th-century church in Istanbul which survives intact, and represents a key monument of middle Byzantine architecture. Despite that, the building remains one among the least studied of the city.",
+        "Egger (company): EGGER is a global family company founded in 1961 in Tyrol, Austria (where its headquarters are held) that produces wood-based panel Products. EGGER is represented by 17 production sites in Europe (Austria, Germany, France, United Kingdom, Romania, Russia and Turkey) and currently has 23 sales offices worldwide (France, Belgium, Denmark, Italy, Switzerland, Slovenia, Lithuania, Ukraine, China, Japan, India, Chile, Australia, Romania, Croatia, Czech Republic, Hungary, Poland, Serbia, Bulgaria, Turkey, Russia and Belarus). In 2006 the company invested \u20ac210 million in the construction of a new production site located in R\u0103d\u0103u\u021bi, Romania with a capacity of 600,000 cubic meters of melamine faced chipboard. At the Romanian site the company operates a combined heat and electricity cogeneration power station with a capacity of 40.5 MW.",
+        "Clock Tower of Murshidabad: The Clock Tower of Murshidabad (locally known just as \"Clock Tower\" or \"Ghari Ghar\", also known as \"Big Ben of Murshidabad\") is a clock tower in the Nizamat Fort Campus in West Bengal, India. The clock tower stands in the garden space between the Nizamat Imambara and the Hazarduari Palace; to its east, hardly a few feet away, is the old Madina Mosque and the Bacchawali Tope.",
+        "Tashkopryu Mosque: Tashkyopryu Mosque (Bulgarian: \u0422\u0430\u0448\u043a\u044c\u043e\u043f\u0440\u044e \u0434\u0436\u0430\u043c\u0438\u044f \"Tashkyopryu Dzhamiya\", Turkish: \"Ta\u015fk\u00f6pr\u00fc Camii\") is a mosque in Plovdiv, Bulgaria , built by Ottoman Turks in 16th century during their 500-year rule in today's Bulgaria. It is currently the third mosque in Plovdiv which is in good condition after Dzhumaya Mosque and Imaret Mosque. It is currently inactive despite efforts and demands, mainly by Turks of Bulgaria, to give active status for it."
+      ],
+      "em": 1.0,
+      "f1": 1.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which English musician is known for both the songs \"See Yourself\" and \"Withing You Without You\"?",
+      "answer": "George Harrison",
+      "passages": [
+        "See Yourself: \"See Yourself\" is a song by English musician George Harrison, released on his 1976 album \"Thirty Three & 1/3\". Harrison began writing the song in 1967, while he was a member of the Beatles, in response to the public outcry surrounding bandmate Paul McCartney's admission that he had taken the hallucinogenic drug LSD. McCartney's announcement created a reaction in the press similar to that caused in 1966 by John Lennon's statement that the Beatles were more popular than Christianity. In its finished form, the song's lyrics advocate self-awareness and consideration for the consequences of one's actions. Musically, the composition contains unusual shifts in time signature from standard 4/4 to 9/8, while the songwords reflect the era of its genesis by recalling themes first espoused in the Beatles tracks \"Within You Without You\" and \"All You Need Is Love\".",
+        "2000 ICC KnockOut Trophy squads: These were the eleven squads (all Test nations and two ODI nations) picked to take part in the 2000 ICC KnockOut Trophy, the second installment of the Champions Trophy cricket tournament. The tournament was held in Kenya from 3 to 15 October 2000. In the preliminary quarter finals, two ODI full-status teams Kenya and Zimbabwe played with India and Sri Lanka respectively, and India and Sri Lanka won their matches convincingly. In third preliminary quarter final, England beat Bangladesh to secure his position in Knockout Tournament. New Zealand won the second edition of the ICC KnockOut Trophy by defeating India in the final by four wickets, which was their first ICC event to be won.",
+        "Listed buildings in Egremont, Cumbria: Egremont is a civil parish in the Borough of Copeland, Cumbria, England. It contains 25 buildings that are recorded in the National Heritage List for England. Of these, one is listed at Grade\u00a0I, the highest of the three grades, and the others are at Grade\u00a0II, the lowest grade. The parish contains the town of Egremont and the surrounding countryside. The oldest listed building is Egremont Castle; this and associated structures are listed. Most of the other listed buildings are houses and associated structures, farmhouses and farm buildings. The other listed buildings include churches, cemetery buildings, shops, two former toll houses, a milestone, a monument, a town hall, a drinking fountain, and a war memorial.",
+        "History of United States prison systems: Imprisonment as a form of criminal punishment only became widespread in the United States just before the American Revolution, though penal incarceration efforts had been ongoing in England since as early as the 1500s, and prisons in the form of dungeons and various detention facilities had existed since long before then. Prison building efforts in the United States came in three major waves. The first began during the Jacksonian Era and led to widespread use of imprisonment and rehabilitative labor as the primary penalty for most crimes in nearly all states by the time of the American Civil War. The second began after the Civil War and gained momentum during the Progressive Era, bringing a number of new mechanisms\u2014such as parole, probation, and indeterminate sentencing\u2014into the mainstream of American penal practice. Finally, since the early 1970s, the United States has engaged in a historically unprecedented expansion of its imprisonment systems at both the federal and state level. Since 1973, the number of incarcerated persons in the United States has increased five-fold, and in a given year 7,000,000 people were under the supervision or control of correctional services in the United States. These periods of prison construction and reform produced major changes in the structure of prison systems and their missions, the responsibilities of federal and state agencies for administering and supervising them, as well as the legal and political status of prisoners themselves.",
+        "Marian civil war: The Marian civil war in Scotland (1568\u20131573) was a period of conflict which followed the abdication of Mary, Queen of Scots, and her escape from Loch Leven Castle in May 1568. Those who ruled in the name of her infant son James VI fought against the supporters of the Queen, who was exiled in England. Edinburgh Castle, which was garrisoned in her name, became the focus of the conflict and surrendered only after an English intervention in May 1573. The conflict in 1570 was called an \"intestine war in the bowels of this commonwealth\", and the period was called soon after an \"intestine war driven by questions against authority.\""
+      ],
+      "em": 1.0,
+      "f1": 1.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Who has written more than 300 papers, Semyon Aranovich Gershgorin or Pavel Alexandrov?",
+      "answer": "Pavel Alexandrov has written about 300 papers, making important contributions to set theory and topology. There is no information provided about the number of papers written by Semyon Aranovich Gershgorin, but it is mentioned that he made contributions, including the Gershgorin circle theorem. Therefore, based on the given information, Pavel Alexandrov is the one who has written around 300 papers.",
+      "passages": [
+        "Pavel Alexandrov: Pavel Sergeyevich Alexandrov (Russian: \u041f\u0430\u0301\u0432\u0435\u043b \u0421\u0435\u0440\u0433\u0435\u0301\u0435\u0432\u0438\u0447 \u0410\u043b\u0435\u043a\u0441\u0430\u0301\u043d\u0434\u0440\u043e\u0432 ), sometimes romanized Paul Alexandroff or Aleksandrov (7 May 1896 \u2013 16 November 1982), was a Soviet mathematician. He wrote about three hundred papers, making important contributions to set theory and topology.",
+        "Semyon Aranovich Gershgorin: Semyon Aronovich Gershgorin (August 24, 1901 \u2013 May 30, 1933) was a Soviet (born in Pruzhany, Belarus, Russian Empire) mathematician. He began as a student at the Petrograd Technological Institute in 1923, became a Professor in 1930, and was given an appointment at the Leningrad Mechanical Engineering Institute in the same year. His contributions include the Gershgorin circle theorem.",
+        "Gershgorin circle theorem: In mathematics, the Gershgorin circle theorem may be used to bound the spectrum of a square matrix. It was first published by the Soviet mathematician Semyon Aronovich Gershgorin in 1931. The spelling of S. A. Gershgorin's name has been transliterated in several different ways, including Ger\u0161gorin, Gerschgorin, Gershgorin, Hershhorn, and Hirschhorn.",
+        "Alexandroff extension: In the mathematical field of topology, the Alexandroff extension is a way to extend a noncompact topological space by adjoining a single point in such a way that the resulting space is compact. It is named for the Russian mathematician Pavel Alexandrov.",
+        "Nerve of a covering: In topology, the nerve of an open covering is a construction of an abstract simplicial complex from an open covering of a topological space \"X\" that captures many of the interesting topological properties in an algorithmic or combinatorial way. It was introduced by Pavel Alexandrov. and now has many variants and generalisations, among them the \u010cech nerve of a cover, which in turn is generalised by hypercoverings."
+      ],
+      "em": 0.0,
+      "f1": 0.0635,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Which software application was originally made for the company that acquired RadioShack in 1963?",
+      "answer": "None of the software applications mentioned (Ivi TV player) were originally made for the company that acquired RadioShack in 1963, which is Tandy Corporation. The text does not mention any software application being developed by Tandy Corporation. It only mentions that Tandy Corporation acquired RadioShack in 1963 and later dropped its name to become RadioShack Corporation in 2000.",
+      "passages": [
+        "Tandy Corporation: Tandy Corporation was an American family-owned leather goods company based in Fort Worth, Texas. Tandy Leather was founded in 1919 as a leather supply store and acquired a number of craft retail companies, including RadioShack in 1963. In 2000, the Tandy Corporation name was dropped and the entity became the RadioShack Corporation.",
+        "General Dynamics Mission Systems: General Dynamics Mission Systems is a business unit of American defense and aerospace company General Dynamics. General Dynamics Mission Systems integrates secure communication and information systems and technology. General Dynamics Mission Systems has core manufacturing in secure communications networks; radios and satellite technology for the defense, cyber, public safety, and intelligence communities.",
+        "Ivi, Inc.: Ivi Inc. also called Ivi, is a Seattle-based American corporation which offers a software application providing live video streaming over the Internet for a flat rate. Ivi (pronounced 'ivy') is the first online cable company. The Ivi TV player is a downloadable software application that runs on Windows, Macintosh, or Linux computers that offers live television over the Internet.",
+        "Payload specialist: A payload specialist (PS) is an individual selected and trained by commercial or research organizations for flights of a specific payload on a NASA Space Shuttle mission. People assigned as payload specialists included individuals selected by the research community, a company or consortium flying a commercial payload aboard the spacecraft, and non-NASA astronauts designated by international partners.",
+        "Floating licensing: Floating licensing is a software licensing approach in which a limited number of licenses for a software application are shared among a larger number of users over time. When an authorized user wishes to run the application they request a license from a central license server. If a license is available the license server allows the application to run. When they finish using the application, or when the allowed license period expires, the license is reclaimed by the license server and made available to other authorized users."
+      ],
+      "em": 0.0,
+      "f1": 0.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Who wrote Bring Me Sunshine and where did they write it?",
+      "answer": "The text doesn't mention \"Bring Me Sunshine\" being written by anyone. However, it does mention a song called \"Sunshine\" by Scarface, which was featured on the Rap-a-Lot Records 10th Anniversary compilation album. The text doesn't specify where the song was written.",
+      "passages": [
+        "10th Anniversary: Rap-a-Lot Records: 10th Anniversary: Rap-A-Lot Records is a compilation album released by Rap-a-Lot Records to celebrate the label's tenth anniversary. The compilation contained 11 hits from the likes of the Geto Boys, Scarface and the 5th Ward Boyz, as well as two previously unreleased songs (\"Sunshine\" by Scarface and \"Don't Give No...\" by Do or Die) and one song recorded exclusively for the album (\"Bring It On\"). Former 1 of the Girls member, Nina Creque, daughter of jazz musician Neal Creque, is featured on the previously unreleased \"Sunshine\" by Scarface.",
+        "Move Over, Darling: Move Over, Darling is a 1963 American comedy film starring Doris Day, James Garner, and Polly Bergen and directed by Michael Gordon. The picture was a remake of a 1940 screwball comedy film, \"My Favorite Wife\", with Irene Dunne, Cary Grant and Gail Patrick. In between these movies, an unfinished version entitled \"Something's Got to Give\" began shooting in 1962, directed by George Cukor and starring Marilyn Monroe (she got fired but hired again and died soon after) and Dean Martin.",
+        "Amber (Amber album): Amber, Amber's second album, was released in 1999 on Tommy Boy Records, and features Dance-pop, Hi-NRG, House music, and Urban contemporary songs. It is her most well-received album by the American Pop mainstream to date. She co-wrote three songs with songwriters/producers Rick Nowels and Billy Steinberg: \"Sexual (Li Da Di),\" \"Above the Clouds,\" and \"Love One Another.\" The song \"Above the Clouds\" was featured in the Season Three finale of the television series \"Sex and The City.\"",
+        "Geet (1944 film): Geet or The Song is a 1944 Bollywood film. Geet was directed by S. U. Sunny and produced by Abdul Rashid Kardar. The film starred Shahu Modak, Nirmala Devi, Aamir Ali, Shakir Ali and Chandabai. The music for the film was composed by Naushad with lyrics by D. N. Madhok.",
+        "Fifty Shades of Oy Vey: A Parody: Fifty Shades of Oy Vey: A Parody by E.L. Jamesbergstein is a parody of E.L. James' \"Fifty Shades of Grey\". It was published in print and e-book editions by Alfred A. Knish in 2013. Described on its book jacket as \"So erotic, you'll plotz,\" the comic novel, which follows the outline of the original \"Fifty Shades of Grey\", tells the story of the relationship between a beautiful young woman, Anatevka Stein, and a portly bagel tycoon, Chaim Silver."
+      ],
+      "em": 0.0,
+      "f1": 0.1818,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What American professional Hawaiian surfer born 18 October 1992 won the Rip Curl Pro Portugal?",
+      "answer": "John John Florence.",
+      "passages": [
+        "MEO Rip Curl Pro Portugal: MEO Rip Curl Pro Portugal formerly known as \"Moche Rip Curl Pro Portugal\" or \"Rip Curl Pro Portugal\" is a professional surfing competition of the ASP World Tour held every year in October at the Supertubos beach in Peniche, Portugal. The event was first founded in 2009 as \"Rip Curl Search Portugal\". The defending champion is the 2016 WSL champion, John John Florence who won the event in 2016.",
+        "John John Florence: John \"John\" Alexander Florence (born 18 October 1992) is an American professional surfer. He is known as \"one of the most dominant Pipe surfers of his era\" and has most recently won the title of 2016 World Surf League Men's Champion, thus naming him the best surfer in the world. He is the first Hawaiian champion since 3 times world champion Andy Irons.",
+        "Barton Lynch: Barton Lynch (born August 9, 1963) is an Australian surfer known for his competitive prowess and style. In 1988, he was crowned ASP World Tour Champion. He also won the 1991 Rip Curl Pro. In 1998, he was inducted into the Australian Surfing Hall of Fame, and in 2000, he was inducted into the Australian Sporting Hall of Fame.",
+        "Coco Ho: Coco Malia Camille Hapaikekoa Ho (born April 28, 1991) is a professional Hawaiian surfer born in Honolulu, Hawaii. She began surfing at 7 years old, following in the footsteps of her family. Today, Coco has won over 25 surfing awards and has been voted a top three fan favorite in Surfer magazine\u2019s Surfer Poll.",
+        "Impuzamugambi: The Impuzamugambi (] , \"\"those with the same goal\"\") was a Hutu militia in Rwanda formed in 1992. Together with the Interahamwe militia, which formed earlier and had more members, the Impuzamugambi was responsible for many of the deaths of Tutsis and moderate Hutus during the Rwandan Genocide of 1994."
+      ],
+      "em": 1.0,
+      "f1": 1.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Bill Nelson flew as a Payload Specialist on a Space Shuttle launched for the first time in what year?",
+      "answer": "1981 \n\nBill Nelson flew as a Payload Specialist on the Space Shuttle \"Columbia\" in 1986, but according to the text, the Space Shuttle \"Columbia\" launched for the first time on mission STS-1 on April 12, 1981.",
+      "passages": [
+        "Space Shuttle Columbia: Space Shuttle \"Columbia\" (Orbiter Vehicle Designation: OV-102) was the first space-rated orbiter in NASA's Space Shuttle fleet. It launched for the first time on mission STS-1 on April 12, 1981, the first flight of the Space Shuttle program. Over 22 years of service it completed 27 missions before disintegrating during re-entry near the end of its 28th mission, STS-107 on February 1, 2003, resulting in the deaths of all seven crew members.",
+        "Bill Nelson: Clarence William Nelson II (born September 29, 1942) is an American politician and a member of the Democratic Party who serves as the senior United States Senator from Florida, in office since 2001. Nelson began his career in the Florida House of Representatives, where he served from 1972 to 1978. He then served in the United States House of Representatives from 1979 to 1991. In January 1986, Nelson became the first sitting member of the United States House of Representatives to fly in space. He flew as a Payload Specialist on the Space Shuttle \"Columbia\".",
+        "Payload specialist: A payload specialist (PS) is an individual selected and trained by commercial or research organizations for flights of a specific payload on a NASA Space Shuttle mission. People assigned as payload specialists included individuals selected by the research community, a company or consortium flying a commercial payload aboard the spacecraft, and non-NASA astronauts designated by international partners.",
+        "Byron K. Lichtenberg: Byron Kurt Lichtenberg, Sc. D. (born February 19, 1948) is an American engineer and fighter pilot who flew aboard two NASA Space Shuttle missions as a Payload Specialist. In 1983, he and Ulf Merbold became the first Payload Specialists to fly on the shuttle.",
+        "STS-51-G: STS-51-G was the eighteenth flight of NASA's Space Shuttle program, and the fifth flight of Space Shuttle \"Discovery\". The seven-day mission launched from Kennedy Space Center, Florida, on June 17, 1985, and landed at Edwards Air Force Base, California, on June 24. Sultan Salman Al Saud of Saudi Arabia was on board as a payload specialist; Al Saud became the first Arab, the first Muslim, and the first member of a royal family to fly into space. It was also the first Space Shuttle mission which flew without at least one astronaut from the pre-Shuttle era among its crew."
+      ],
+      "em": 1.0,
+      "f1": 0.0541,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "The actress and singer Heather Morris is best known for her role in which series, becoming a regular character in the second season?",
+      "answer": "Heather Morris is best known for her role as Brittany S. Pierce in the Fox musical comedy-drama series \"Glee\".",
+      "passages": [
+        "Heather Morris: Heather Elizabeth Morris (born February 1, 1987) is an American actress, dancer, singer and model, known for her role as Brittany S. Pierce in the Fox musical comedy-drama series \"Glee\".",
+        "Something Wicked This Way Comes (Ugly Betty): \"Something Wicked This Way Comes\" is the sixth episode in season two of the dramedy series \"Ugly Betty\", and the 29th episode in the series, which aired on November 1, 2007. The episode was written by Henry Alonso Myers and directed by Wendey Stanzler. The episode takes its title from the phrase \"something wicked this way comes\", as well as the fact that this episode features the popular Broadway musical \"Wicked\" as a date venue.",
+        "Amber (Amber album): Amber, Amber's second album, was released in 1999 on Tommy Boy Records, and features Dance-pop, Hi-NRG, House music, and Urban contemporary songs. It is her most well-received album by the American Pop mainstream to date. She co-wrote three songs with songwriters/producers Rick Nowels and Billy Steinberg: \"Sexual (Li Da Di),\" \"Above the Clouds,\" and \"Love One Another.\" The song \"Above the Clouds\" was featured in the Season Three finale of the television series \"Sex and The City.\"",
+        "Damian Perkins: Damian Perkins is a singer, actor, dancer, artist and model. He played Mereb in the original Broadway cast of the Broadway musical Aida and also played the role of Benny in the Canadian tour of the musical Rent. Aside from his work on Broadway, he has made guest appearances in shows such as \"\", \"Family Matters\", \"Charmed\", \"Providence\", \"The Net\", \"The Sentinel\", and \"Then Came You\".",
+        "Hiroki Aiba: Hiroki Aiba (\u76f8\u8449 \u88d5\u6a39 , Aiba Hiroki ) is an actor, dancer and singer. He is best known for his role as Shusuke Fuji in \"The Prince of Tennis\" musical series, Tenimyu, and the live film adaptation. He was also part of a young men's 3-member streetdancing group called \"Brights\", which was disbanded in 2004. His other most known role was the part of Ry\u016bnosuke Ikenami/ShinkenBlue in the 33rd Super Sentai series, \"Samurai Sentai Shinkenger\"."
+      ],
+      "em": 1.0,
+      "f1": 0.1,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What age was Georgia Middleman when she started singing in the seventh-most populated city in the United States?",
+      "answer": "Georgia Middleman started singing at the age of 10, in San Antonio, Texas, which is the seventh-most populated city in the United States.",
+      "passages": [
+        "Lewis P. Dayton: Lewis P. Dayton (1821\u20131900) was Mayor of the City of Buffalo, New York, serving 1874\u20131875. He was born at Eden, New York on the family farm in 1821. He studied medicine in the office of Dr. Timothy T. Lockwood and moved to Buffalo. He graduated in 1846 from the Geneva Medical College, in Geneva, New York. He returned to Buffalo as a physician in the Black Rock section. Around 1846 he married Grace Webster Holley, who died at a young age. Dayton first remarried Mrs. Alice Maud Hayes, who died about a year after their marriage, then in 1892, he married Margaret Vogt.",
+        "Georgia Middleman: Georgia Leigh Middleman (born December 27, 1967) is an American country singer. Middleman sang from age ten at the Texas Star Inn in San Antonio, and began writing songs shortly thereafter. She sold recordings of her first song, There's a Rainbow in Everybody's Heart, on her elementary school playground. In her teens, she opened in concert for Willie Nelson and Merle Haggard, and collaborated with Dick Wagner at age 17. After graduating from high school, she attended New York University on a theater scholarship, and worked on Off-Broadway shows and as a songwriter.",
+        "Anita Bitri: Bitri started singing at the age of sixteen, and she became popular in Albania with her song \"First Love\". She emigrated to the United States in 1996. At the time of her death, she was in the process of recording two albums, one in Albanian and one in English.",
+        "Zymer Bytyqi: Zymer Bytyqi (born 11 September 1996) is a Norwegian footballer who plays as a winger for Viking. He previously played for Sandnes Ulf and Red Bull Salzburg, and became the youngest player that has ever played in the Norwegian top league when he made his first-team debut in 2012 (the record has since been broken by Martin \u00d8degaard). Bytyqi, who is of Albanian descent, has represented Norway at youth international level and Kosovo at a senior international level.",
+        "Marc Ford: Marc Ford (born April 13, 1966), is an American blues-rock guitarist. He's a former lead guitarist of the rock and roll jam band The Black Crowes and the leader of his own bands: Burning Tree, Marc Ford & The Neptune Blues Club, Jefferson Steelflex, Fuzz Machine, Marc Ford & The Sinners. He is currently performing with other former Black Crowes members in The Magpie Salute."
+      ],
+      "em": 0.0,
+      "f1": 0.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Stockely Webster has paintings hanging in what home (that serves as the residence for the Mayor of New York)?",
+      "answer": "Gracie Mansion",
+      "passages": [
+        "Gracie Mansion: Archibald Gracie Mansion (commonly called Gracie Mansion) is the official residence of the Mayor of the City of New York. Built in 1799, it is located in Carl Schurz Park, at East End Avenue and 88th Street in the Yorkville neighborhood of Manhattan. The mansion overlooks Hell Gate channel in the East River.",
+        "Stokely Webster: Stokely Webster (1912 \u2013 2001) was best known as an American impressionist painter who studied in Paris. His paintings can be found in the permanent collections of many museums, including the Metropolitan Museum of Art in New York, the National Museum of American Art, the Smithsonian Institution, the White House, Gracie Mansion in New York, the Senate Office Building, and the Museum of the City of New York.",
+        "Soviet sale of Hermitage paintings: The Soviet sale of Hermitage paintings in 1930 and 1931 resulted in the departure of some of the most valuable paintings from the collection of the State Hermitage Museum in Leningrad to Western museums. Several of the paintings had been in the Hermitage Collection since its creation by Empress Catherine the Great. About 250 paintings were sold, including masterpieces by Jan van Eyck, Titian, Rembrandt, Rubens, Raphael, and other important artists. Andrew Mellon donated the twenty-one paintings he purchased from the Hermitage to the United States government in 1937, which became the nucleus of the National Gallery of Art in Washington, D.C.",
+        "Archibald Gracie: Archibald Gracie (June 25, 1755 \u2013 April 11, 1829) was a Scottish-born shipping magnate and early American businessman and merchant in New York City and Virginia whose spacious home, Gracie Mansion, now serves as the residence of the Mayor of New York City.",
+        "Chirlane McCray: Chirlane Irene McCray (born November 29, 1954) is an American writer, editor, communications professional, and political figure. She has published poetry and worked in politics as a speechwriter. Married to current New York City Mayor Bill de Blasio, she is the First Lady of New York City. They have two children, Chiara and Dante. They moved from their home in Park Slope, Brooklyn, into Gracie Mansion, the traditional residence of New York City mayors."
+      ],
+      "em": 1.0,
+      "f1": 1.0,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "What composer with an Italian libretto was born 4 March 1678?",
+      "answer": "Antonio Vivaldi was the composer born on 4 March 1678.",
+      "passages": [
+        "Jacques Hardel: Jacques Hardel (died March 1678) was a French composer and harpsichordist.",
+        "Antonio Vivaldi: Antonio Lucio Vivaldi (] ; 4 March 1678 \u2013 28 July 1741) was an Italian Baroque composer, virtuoso violinist, teacher and cleric. Born in Venice, he is recognized as one of the greatest Baroque composers, and his influence during his lifetime was widespread across Europe. He composed many instrumental concertos, for the violin and a variety of other instruments, as well as sacred choral works and more than forty operas. His best-known work is a series of violin concertos known as \"The Four Seasons\".",
+        "Amica (opera): Amica is an opera in two acts by Pietro Mascagni, originally composed to a libretto by Paul B\u00e9rel (the pseudonym of Paul de Choudens). The only opera by Mascagni with a French libretto, it was an immediate success with both the audience and the critics on its opening night at the Th\u00e9\u00e2tre du Casino in Monte-Carlo on 16 March 1905. Mascagni himself conducted the performance. The opera had its Italian premiere (with an Italian libretto by Mascagni's close collaborator, Giovanni Targioni-Tozzetti) on 13 May 1905 at the Teatro Costanzi in Rome.",
+        "Alfio: Alfio (born Alfio Bonanno, 24 October 1976) is an Australian-Italian tenor, songwriter, musician, and composer. He began singing at a very early age and started singing professionally at the age of 17, concentrating on recorded music and concerts so far. Alfio has performed in Australia, the United States, Europe, and Asia.",
+        "Aurelio Valle: Aurelio Valle is an American singer, guitarist, composer and visual art residing in New York, New York born in Chicago, Illinois and raised in Kingsville, Texas. He is a founding member of the experimental rock group CALLA from New York City/Brooklyn, New York and is best known for his work with that group. The band was formed in New York City in 1997 along with Wayne Magruder and Sean Donovan, later adding member Peter Gannon."
+      ],
+      "em": 0.0,
+      "f1": 0.3077,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "Ellie Parker is a 2005 American drama-comedy film whose title character is played by an English actress who made her screen debut in what Australian drama film?",
+      "answer": "The title character in the 2005 American drama-comedy film \"Ellie Parker\" is played by Naomi Watts, an English actress who made her screen debut in the Australian drama film \"For Love Alone\" (1986).",
+      "passages": [
+        "Naomi Watts: Naomi Ellen Watts (born 28 September 1968) is an English actress and film producer. She made her screen debut in the Australian drama film \"For Love Alone\" (1986) and then appeared in the Australian television series' \"Hey Dad..!\" (1990), \"Brides of Christ\" (1991), \"Home and Away\" (1991) and the coming-of-age comedy-drama film \"Flirting\" (1991). After moving to America, Watts appeared in films, including \"Tank Girl\" (1995), \"\" (1996) and \"Dangerous Beauty\" (1998) and had the lead role in the television series \"Sleepwalkers\" (1997\u20131998).",
+        "Ellie Parker: Ellie Parker is a 2005 American drama-comedy film, written and directed by Scott Coffey. The title character, played by Naomi Watts, is a young woman struggling as an actress in Los Angeles.",
+        "Howie Long: Howard Matthew Moses \"Howie\" Long (born January 6, 1960) is an American former National Football League (NFL) defensive end, actor and sports analyst. He played in the NFL for 13 seasons and spent the entirety of his career with the Raiders franchise. During his tenure as a player, Long was named to eight Pro Bowls and helped the Raiders win a Super Bowl title in XVIII. He was inducted into the Pro Football Hall of Fame in 2000.",
+        "The Year Of Spectacular Men: The Year Of Spectacular Men is an upcoming drama-comedy film which is directorial debut of actress Lea Thompson and stars her daughters, Madelyn Deutch (who also wrote the screenplay) and Zoey Deutch. The film had its world premiere in June 2017, under the \"LA Muse\" section in Los Angeles Film Festival 2017.",
+        "Henry P. Haney: Henry P. Haney (November 25, 1846 - November 19, 1923) was an American Last survivor of The Great Locomotive Chase during the American Civil War. He was a 15-year-old fireman on the \"Texas\", the locomotive used by the \"General's\" crew to pursue the \"General\" on the second half of the chase after it was stolen by the Andrews Raiders."
+      ],
+      "em": 1.0,
+      "f1": 0.1667,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    },
+    {
+      "question": "A scam involving a male calling small town fast-food restaurants and pretending to be a police officer to have them strip search employees was turned into a movie of what name?",
+      "answer": "The movie based on the scam is called \"Compliance\".",
+      "passages": [
+        "Strip search phone call scam: The strip search phone call scam is a series of incidents that extended over a period of about ten years before an arrest was made in 2004. The incidents involved a man prank calling a restaurant or grocery store, claiming to be a police officer and then convincing managers to conduct strip searches of female employees, and to perform other bizarre acts on behalf of \"the police\". The calls were most often placed to fast-food restaurants in small towns, located in rural areas of the United States.",
+        "Compliance (film): Compliance is a 2012 American thriller film written and directed by Craig Zobel, and starring Ann Dowd, Dreama Walker, and Pat Healy. The plot focuses on a prank caller who, posing as a police officer, convinces the manager of a fast food restaurant to carry out intrusive and unlawful procedures on an employee. The film is based on the strip search prank call scam that took place at a Mount Washington, Kentucky McDonald's restaurant in Bullit County. Dowd's performance as Sandra, the manager, won her the National Board of Review Award for Best Supporting Actress.",
+        "Online gaming in China: Online gaming in China represents one of the largest and fastest growing Internet business sectors in the world. With 457 million Internet users currently active in the PRC, the country now has the largest online user base in world, of which two-thirds engage in online game play. The average online gamer in China is relatively young (18 to 30 years old), male, and has at least completed a secondary level of education. Demographically the online gaming user base in China is very similar to base of China Internet users, most of whom live in larger cities.",
+        "American Humane Association: American Humane (AH) is an organization founded in 1877, committed to ensuring the safety, welfare and well-being of animals. American Humane's leadership programs are first to serve in promoting and nurturing the bonds between animals and humans. It was previously called the International Humane Association, before changing its name in 1878. In 1940, it became the sole monitoring body for the humane treatment of animals on the sets of Hollywood films and other broadcast productions. American Humane is best known for its trademarked certification \"No Animals Were Harmed\", which appears at the end of film or television credits. It has also run the Red Star Animal Emergency Services since 1916. In 2000, American Humane formed the Farm Animal Services program, an animal welfare label system for food products. American Humane is currently headquartered in Washington D.C. It is a section 501(c)(3) nonprofit organization.",
+        "Inland Empire (film): Inland Empire is an internationally co-produced 2006 film written and directed by David Lynch. The feature took two-and-a-half years to complete, and was Lynch's first film to have been shot entirely in standard definition digital video. The film is a co-production of France, Poland and the United States. It premiered in Italy at the Venice Film Festival on 6 September 2006. The film tells the story of an actress (Laura Dern) whose world becomes nightmarish and surreal when she starts to take on the personality of a character she plays in a film."
+      ],
+      "em": 1.0,
+      "f1": 0.2,
+      "Recall@1": 0.0,
+      "Recall@2": 0.0,
+      "Recall@5": 0.0
+    }
+  ],
+  "request_id": "6585c67a-2258-475d-9675-115871e55502"
+}

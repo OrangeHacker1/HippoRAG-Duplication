@@ -17,7 +17,7 @@ llm:
 retrieval:
   # "hipporag" — full pipeline: triple matching + PPR graph walk (default)
   # "dense"    — baseline: embed query, return top-k passages by cosine similarity
-  mode: "dense"
+  mode: "hipporag"
   top_k: 5
   ppr_alpha: 0.85
   max_iter: 30
