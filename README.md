@@ -19,6 +19,7 @@ git clone https://github.com/OrangeHacker1/HippoRAG-Duplication.git
 cd HippoRAG-Duplication
 cp .env.example .env
 # edit .env and fill in TEACHER_BASE_URL, TEACHER_MODEL, TEACHER_API_KEY (REQUIRED)
+docker compose build --no-cache
 docker compose up
 ```
 
