@@ -263,7 +263,9 @@
 
 **Expected end state:** A `hotpotqa` trained model is listed in Panel 4 and is the active KG. The Query page answers questions using passages from the HotPotQA corpus.
 
-**Reference screenshot:** `docs/assets/stories/us_08_expected.png`
+**Reference screenshot 1:** `docs/assets/stories/us_08_expected_a.png`
+
+**Reference screenshot 2:** `docs/assets/stories/us_09_expected_b.png`
 
 ---
 
