@@ -16,8 +16,8 @@ scikit-learn==1.5.1
 numpy==1.26.4
 scipy==1.13.1
 
-# Torch (required by sentence-transformers)
-torch>=2.2.0
+# Torch (required by sentence-transformers) — CPU-only to avoid SIGBUS in WSL2
+torch==2.2.2+cpu
 transformers==4.44.2
 
 # Optional but recommended (performance + progress tracking)

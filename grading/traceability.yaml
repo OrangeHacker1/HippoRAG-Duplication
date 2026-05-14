@@ -5,30 +5,92 @@
 # docs/STORIES.md must appear here exactly once.
 
 - story_id: US-01
-  spec_section: "4.1 HTTP API and 4.2 Python interfaces"
+  spec_section: "4. Public Interfaces — POST /api/query"
   source_modules:
-    - src/myproject/api.py
-    - src/myproject/router.py
-    - src/myproject/retriever.py
-    - src/myproject/generator.py
+    - src/myproject/api/app.py
+    - src/myproject/retrieval/retriever.py
+    - src/myproject/llm/llm_client.py
   tests:
-    - tests/user_stories/test_us_01.py
-    - tests/integration/test_query_pipeline.py
+    - tests/user_stories/test_stories.py::test_us01_submit_query_returns_answer
+    - tests/integration/test_api.py
 
 - story_id: US-02
-  spec_section: "4.1 HTTP API (error response)"
+  spec_section: "4. Public Interfaces — input validation"
   source_modules:
-    - src/myproject/api.py
+    - src/myproject/api/app.py
   tests:
-    - tests/user_stories/test_us_02.py
-    - tests/edge/test_empty_input.py
+    - tests/user_stories/test_stories.py::test_us05_empty_query_returns_error
+    - tests/edge/test_edge_cases.py
 
 - story_id: US-03
-  spec_section: "6 Configuration"
+  spec_section: "4. Public Interfaces — POST /api/train"
   source_modules:
-    - src/myproject/api.py
-    - src/myproject/generator.py
+    - src/myproject/api/app.py
+    - src/myproject/kg/builder.py
   tests:
-    - tests/user_stories/test_us_03.py
+    - tests/user_stories/test_stories.py::test_us03_health_check
+    - tests/integration/test_api.py
 
-# Add one entry per story in docs/STORIES.md
+- story_id: US-04
+  spec_section: "4. Public Interfaces — POST /api/query (passages field)"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/retrieval/retriever.py
+  tests:
+    - tests/user_stories/test_stories.py::test_us02_retrieved_passages_visible
+    - tests/integration/test_api.py
+
+- story_id: US-05
+  spec_section: "4. Public Interfaces — error responses"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/llm/llm_client.py
+  tests:
+    - tests/user_stories/test_stories.py::test_us05_empty_query_returns_error
+    - tests/edge/test_edge_cases.py
+
+- story_id: US-06
+  spec_section: "4. Public Interfaces — HTTP 503 on LLM failure"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/llm/llm_client.py
+  tests:
+    - tests/user_stories/test_stories.py::test_us06_llm_unavailable_returns_503
+    - tests/edge/test_edge_cases.py
+
+- story_id: US-07
+  spec_section: "4. Public Interfaces — POST /api/evaluate"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/eval/metrics.py
+  tests:
+    - tests/user_stories/test_stories.py::test_us04_evaluate_returns_metrics
+    - tests/integration/test_api.py
+
+- story_id: US-08
+  spec_section: "4. Public Interfaces — POST /api/load"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/kg/graph_store.py
+  tests:
+    - tests/integration/test_api.py
+
+- story_id: US-09
+  spec_section: "4. Public Interfaces — POST /api/query (multi-hop)"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/retrieval/retriever.py
+    - src/myproject/retrieval/ppr.py
+  tests:
+    - tests/user_stories/test_stories.py::test_us01_submit_query_returns_answer
+    - tests/integration/test_api.py
+
+- story_id: US-10
+  spec_section: "4. Public Interfaces — POST /api/evaluate (custom dataset)"
+  source_modules:
+    - src/myproject/api/app.py
+    - src/myproject/eval/metrics.py
+    - src/myproject/data/eval_dataset.py
+  tests:
+    - tests/user_stories/test_stories.py::test_us04_evaluate_returns_metrics
+    - tests/integration/test_api.py

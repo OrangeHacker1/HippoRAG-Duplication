@@ -7,7 +7,8 @@ FROM python:3.11.9-slim-bookworm AS builder
 
 WORKDIR /build
 COPY requirements.txt ./
-RUN pip wheel --wheel-dir=/wheels -r requirements.txt
+RUN pip wheel --wheel-dir=/wheels -r requirements.txt \
+    --extra-index-url https://download.pytorch.org/whl/cpu
 
 # ---------------------------------------------------------------------------
 # Runtime stage
