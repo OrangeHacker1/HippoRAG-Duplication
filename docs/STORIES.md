@@ -265,7 +265,7 @@
 
 **Reference screenshot 1:** `docs/assets/stories/us_08_expected_a.png`
 
-**Reference screenshot 2:** `docs/assets/stories/us_09_expected_b.png`
+**Reference screenshot 2:** `docs/assets/stories/us_08_expected_b.png`
 
 ---
 
