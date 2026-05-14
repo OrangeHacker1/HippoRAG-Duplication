@@ -140,10 +140,12 @@
 
 1. Complete steps 1–3.
 2. Confirm that there is a KG loaded.
-3. Confirm a section labeled **"Retrieved Passages"** is visible on the page.
-4. Confirm each passage is displayed as a distinct list item or card. (No duplicates.)
-5. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
-6. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
+3. Traverse to the Query page and try a question like `Who is Albert Einstein?`.
+4. Confirm a section labeled **"Retrieved Passages"** is visible on the page.
+5. Confirm that the `Answer` section contains an answer.
+6. Confirm each passage is displayed as a distinct list item or card. (No duplicates.)
+7. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
+8. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
 
 ---
 

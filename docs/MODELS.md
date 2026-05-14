@@ -13,22 +13,9 @@
 - **Size:** API Only
 - **Used for:** Embeding / Constructing RAG; Retrieval
 
-### Download
+- **URL**=http://10.246.100.230/v1
 
-```bash
-make download-models
-```
-
-API-based models (Anthropic, OpenAI) do not require a download step; they
-require credentials in `.env`.
-
-For HuggingFace models:
-
-```bash
-mkdir -p models
-huggingface-cli download <org/model> --revision <revision> \
-    --local-dir models/<model_name>
-```
+- **MODEL**=llama-3.3-70b-instruct-awq
 
 
 ## Model 1: [name]

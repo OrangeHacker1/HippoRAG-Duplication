@@ -16,6 +16,8 @@
 - Authored all documentation (`docs/`)
 - Configured CI tooling (`Makefile`, `pyproject.toml`, `Dockerfile`)
 - Wrote test suites (`tests/`)
+- Worked on `app.py`.
+- Worked on `test.html`, `evaluate.html`, `train.html`
 
 ### OrangeHacker1
 - Implemented knowledge graph construction (`kg/builder.py`, `kg/graph_store.py`, `kg/embeddings.py`)
@@ -23,6 +25,11 @@
 - Set up configuration system (`config/`)
 - Authored evaluation dataset (`data/eval_dataset.py`)
 - Initial project structure and skeleton code
+- Create `GraphRAG` files.
+- Worked on `app.py`.
+- Worked on `test.html`, `evaluate.html`, `train.html`
+- Authored all documentation (`docs/`) we were supposed to edit.
+- Worked on `retrieval` files.
 
 ## Verification
 
