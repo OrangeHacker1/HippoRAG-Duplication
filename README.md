@@ -1,6 +1,6 @@
 # HippoRAG Duplication
 
-A graph-based Retrieval-Augmented Generation (RAG) system inspired by the hippocampal memory indexing theory from neuroscience. Instead of flat vector search, HippoRAG builds a knowledge graph from a document corpus and uses Personalized PageRank to retrieve relevant passages across multiple reasoning hops. This project replicates the core HippoRAG architecture and partially replicates evaluation results from the HippoRAG v2 paper on the MuSiQue multi-hop QA benchmark.
+A graph-based Retrieval-Augmented Generation (RAG) system inspired by the hippocampal memory indexing theory from neuroscience. Instead of flat vector search, HippoRAG builds a knowledge graph from a document corpus and uses Personalized PageRank to retrieve relevant passages across multiple reasoning hops. This project replicates the core HippoRAG architecture and evaluates results against the HippoRAG v2 paper on HotpotQA and MuSiQue multi-hop QA benchmarks.
 
 ## Tech Stack
 
@@ -28,20 +28,23 @@ Estimated time from `docker compose up` to running app: **under 10 minutes** on 
 
 ## Results
 
-| Metric | Value | Tolerance |
+### HippoRAG vs Dense Baseline — HotpotQA (hotpot2 KG, 50 questions)
+
+| Metric | HippoRAG | Dense Baseline |
 |---|---|---|
-| Recall@5 | 0.90 | ± 0.15 |
-| ExactMatch | 0.50 | ± 0.25 |
-| F1 | 0.55 | ± 0.25 |
+| ExactMatch | **0.70** | 0.68 |
+| F1 | **0.255** | 0.180 |
 
-Evaluated on the bundled multi-hop dataset (10 documents, 4 questions). Full reproducibility procedure: see [docs/REPRODUCE.md](docs/REPRODUCE.md).
+HippoRAG outperforms the dense baseline on both metrics. Recall@k is 0 on both due to a known passage-format mismatch between stored KG passages (title-prepended) and gold doc strings; the EM/F1 comparison remains valid.
 
-### MuSiQue Partial Replication (HippoRAG v2 Tables 2 & 3)
+### Large-Scale Eval (500 questions per dataset)
 
-| Metric | Ours (50 Qs) | v2 Paper (1,000 Qs) |
-|---|---|---|
-| Recall@5 | 0.4833 | 0.9450 |
-| F1 | 0.4432 | 0.7820 |
+| Dataset | Model | ExactMatch | F1 |
+|---|---|---|---|
+| HotpotQA | HippoRAG (hotpotqa1) | 0.341 | 0.062 |
+| MuSiQue | HippoRAG (hotpotqa1) | 0.093 | 0.018 |
+
+Full reproducibility procedure: see [docs/REPRODUCE.md](docs/REPRODUCE.md).
 
 ## Documentation
 
