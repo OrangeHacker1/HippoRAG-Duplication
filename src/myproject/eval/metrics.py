@@ -9,7 +9,9 @@ def _normalize(text):
 
 def recall_at_k(retrieved_docs, gold_docs, k):
     top_k = retrieved_docs[:k]
-    hits = sum(1 for doc in gold_docs if doc in top_k)
+    def _matches(gold, retrieved):
+        return gold[:100] == retrieved[:100]
+    hits = sum(1 for doc in gold_docs if any(_matches(doc, r) for r in top_k))
     return hits / len(gold_docs) if gold_docs else 0.0
 
 
