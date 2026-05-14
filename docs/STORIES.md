@@ -42,8 +42,7 @@
 6. Compare the screen to `docs/assets/stories/us_01_expected.png`. The layout
    should match (exact text content will vary).
 7. If the text box responds with 'Knowledge graph not loaded. Run python run_build_kg.py first.'
-   (a) Manual: Run the command ' docker compose exec app python src/myproject/run_build_kg.py' in the terminal.
-   (b) UI: Use the training tab to manually select what you want trained.
+   (a) Continue to step US-02. There will be an additional story for this in US-04.
 
 **Expected end state:** see `docs/assets/stories/us_01_expected.png`.
 
@@ -68,8 +67,8 @@
 2. Leave the search box empty.
 3. Click "Submit".
 4. Observe the error message that appears next to the search box: "Please enter a question".
-5. Verify the response area below the search box is unchanged from the
-   previous state (no spinner, no stack trace, no blank answer).
+5. Verify the response area below the search box is unchanged from the previous state (no spinner, no stack trace, no blank answer).    
+   If there was a was an issue loading the latest model, then continue to this test after US-04 to ensure that there are no issuees clearing prompts.
 6. Open browser dev tools, Network tab, confirm no request was sent to /api/query.
 7. Compare to `docs/assets/stories/us_02_expected.png`.
 
