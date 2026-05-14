@@ -77,7 +77,77 @@
 
 ---
 
-## US-03 [ERROR PATH]: Missing API key surfaces a clear server error
+> Add stories US-04, US-05, ... here for every major feature in the spec.
+> Repeat the format above. Each story must have:
+>   - A stable ID
+>   - Given / When / Then
+>   - Numbered manual steps a human can follow without reading source code
+>   - A reference screenshot in docs/assets/stories/
+>   - A matching test in tests/user_stories/test_us_NN.py
+
+---
+
+## US-03: Train the Knowledge Graph on the Built-in Eval Corpus
+
+**As a** developer or grader,
+**I want to** build a HippoRAG knowledge graph from the bundled evaluation corpus,
+**So that** the system is ready to answer questions without requiring any external dataset.
+
+**Acceptance criteria (Given / When / Then):**
+
+> Given the application is running and no knowledge graph has been loaded yet,
+> When the user navigates to the Train page, selects the built-in eval corpus, and clicks "Build Knowledge Graph",
+> Then the build log streams progress in real time, the build completes successfully, the model is listed in the saved-models table, and the KG status badge updates to show nodes and edges.
+
+**Manual walkthrough steps:**
+
+1. Confirm the app is running at `http://localhost:8080`.
+2. Navigate to `http://localhost:8080/train`.
+3. In **Panel 1 (Current Knowledge Graph Status)**, confirm the badge reads "⚠ No knowledge graph loaded" (or note the currently loaded model name if one is already present).
+4. In **Panel 2 (Train a New Knowledge Graph)**, confirm the **Dataset** selector defaults to "Built-in eval corpus (10 docs — scientists)". Leave it set to this value.
+5. In the **"Save model as"** field, confirm the value is `latest` (or type `latest` explicitly).
+6. Click **"Build Knowledge Graph"**.
+7. Confirm a build log box appears below the button and begins streaming progress lines within 3 seconds. Example lines to look for:
+   - `Starting KG build: dataset='eval_corpus' ...`
+   - `Processing document 1/10`
+   - `Extracted N triples`
+   - `Encoding N unique entities...`
+   - `Build complete: N nodes, N edges`
+8. Wait for the log to display a line beginning with `✓` or containing "is live". This confirms the build finished successfully.
+9. Scroll down to **Panel 4 (Load a Saved Knowledge Graph)**. Confirm the saved-models table now contains a row named `latest` with non-zero node and edge counts.
+11. Select `load`to load the model and continue with testing.
+10. Scroll back up to **Panel 1**. Click **"Refresh Status"**. Confirm the badge now reads "✓ Knowledge graph loaded" and shows a non-zero node count.
+11. Navigate to `http://localhost:8080` (the Query page) and submit the question: `"Where was Marie Curie born?"`. Confirm a non-empty answer is returned.
+
+**Expected end state:** The KG status badge shows loaded with at least 50 nodes. The Query page returns an answer that references Warsaw or Poland.
+
+---
+
+
+## US-04: Retrieved Passages Are Visible Alongside the Answer
+
+**As a** user,
+**I want to** see which source passages were used to generate the answer,
+**So that** I can verify the answer is grounded in the documents.
+
+### Acceptance Criteria
+
+- **Given** the user has submitted a question (US-01),
+- **When** the answer is displayed,
+- **Then** the retrieved passages are listed below the answer, each as a separate item.
+
+### Manual Steps
+
+1. Complete steps 1–3.
+2. Confirm that there is a KG loaded.
+3. Confirm a section labeled **"Retrieved Passages"** is visible on the page.
+4. Confirm each passage is displayed as a distinct list item or card. (No duplicates.)
+5. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
+6. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
+
+---
+
+## US-05 [ERROR PATH]: Missing API key surfaces a clear server error
 
 **As an** operator
 **I want** to know when an upstream LLM credential is missing
@@ -106,60 +176,6 @@
 
 ---
 
-> Add stories US-04, US-05, ... here for every major feature in the spec.
-> Repeat the format above. Each story must have:
->   - A stable ID
->   - Given / When / Then
->   - Numbered manual steps a human can follow without reading source code
->   - A reference screenshot in docs/assets/stories/
->   - A matching test in tests/user_stories/test_us_NN.py
-
-## US-04: Retrieved Passages Are Visible Alongside the Answer
-
-**As a** user,
-**I want to** see which source passages were used to generate the answer,
-**So that** I can verify the answer is grounded in the documents.
-
-### Acceptance Criteria
-
-- **Given** the user has submitted a question (US-01),
-- **When** the answer is displayed,
-- **Then** the retrieved passages are listed below the answer, each as a separate item.
-
-### Manual Steps
-
-1. Complete steps 1–4 of US-01.
-2. Confirm a section labeled **"Retrieved Passages"** is visible on the page.
-3. Confirm each passage is displayed as a distinct list item or card.
-4. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
-5. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
-
----
-
-## US-05: Run Evaluation and View Metrics
-
-**As a** researcher,
-**I want to** trigger the evaluation pipeline from the web interface,
-**So that** I can see Recall@k, Exact Match, and F1 scores for the system.
-
-### Acceptance Criteria
-
-- **Given** the knowledge graph has been built,
-- **When** the user navigates to the Evaluate page and clicks **"Run Evaluation"**,
-- **Then** the system displays Recall@1, Recall@2, Recall@5, Exact Match, and F1 scores.
-
-### Manual Steps
-
-1. Open a browser and navigate to `http://localhost:8080/evaluate`.
-2. Confirm the page loads with a **"Run Evaluation"** button.
-3. Click **"Run Evaluation"**.
-4. Wait for the results to appear (may take up to 60 seconds).
-5. Confirm a results table appears with rows for: `Recall@1`, `Recall@2`, `Recall@5`, `ExactMatch`, `F1`.
-6. Confirm all values are numeric and between 0.0 and 1.0.
-
-**Reference screenshot:** `docs/assets/stories/us_04_expected.png`
-
----
 
 ## US-06: LLM Timeout Returns a Graceful Error (Error Path)
 
@@ -186,9 +202,93 @@
 
 **Reference screenshot:** `docs/assets/stories/us_06_expected.png`
 
+
 ---
 
-## US-07: Run Evaluation Against a Custom JSON Dataset
+
+## US-07: Run Evaluation and View Metrics
+
+**As a** researcher,
+**I want to** trigger the evaluation pipeline from the web interface,
+**So that** I can see Recall@k, Exact Match, and F1 scores for the system.
+
+### Acceptance Criteria
+
+- **Given** the knowledge graph has been built,
+- **When** the user navigates to the Evaluate page and clicks **"Run Evaluation"**,
+- **Then** the system displays Recall@1, Recall@2, Recall@5, Exact Match, and F1 scores.
+
+### Manual Steps
+
+1. Open a browser and navigate to `http://localhost:8080/evaluate`.
+2. Confirm the page loads with a **"Run Evaluation"** button.
+3. Click **"Run Evaluation"**.
+4. Wait for the results to appear (may take up to 60 seconds).
+5. Confirm a results table appears with rows for: `Recall@1`, `Recall@2`, `Recall@5`, `ExactMatch`, `F1`.
+6. Confirm all values are numeric and between 0.0 and 1.0.
+
+**Reference screenshot:** `docs/assets/stories/us_04_expected.png`
+
+---
+
+
+
+---
+
+## US-08: Load HotPotQA Model
+
+**As a** researcher,
+**I want to** load the pretrained Hotpot2 model of hippoRAG for the HotPotQA dataset.
+**So that** I can evaluate the system and test the improvements of HippoRAG against a base method mentioned later.    
+
+**Acceptance criteria (Given / When / Then):**
+
+> Given the application is running, a valid HotPotQA JSON file trained model has been placed in the `data/hotpot2/` directory,
+> When the user navigates to the Train page, scrolls down to the `Load a Saved Knowledge Graph` and select `load` for the hotpot2 model.
+> Then navigate back to the query page.
+
+**Manual walkthrough steps:**
+
+1. Confirm the app is running at `http://localhost:8080`.
+
+3. Navigate to `http://localhost:8080/train`.
+
+3. In **Panel 4 (Load a Saved Knowledge Graph)**, load the hotpot2 model.   
+
+4. Confirm the success callout reads: `✓ Loaded 'hotpotqa': N nodes, N edges.` where N is greater than the node count of the `latest` (built-in) model.
+
+5. Navigate to `http://localhost:8080` (the Query page) and submit a multi-hop question from the HotPotQA dataset. Confirm a non-empty answer is returned.
+
+**Expected end state:** A `hotpotqa` trained model is listed in Panel 4 and is the active KG. The Query page answers questions using passages from the HotPotQA corpus.
+
+---
+
+
+
+## US-09: Check that the Hotpot2 model is loaded and working.
+
+**As a** user,
+**I want to** see which source passages were used to generate the answer,
+**So that** I can verify the answer is grounded in the documents.
+
+### Acceptance Criteria
+
+- **Given** the user has submitted a question (US-01),
+- **When** the answer is displayed,
+- **Then** the retrieved passages are listed below the answer, each as a separate item.
+
+### Manual Steps
+
+1. Complete US-06.
+2. Confirm that there is a KG loaded.
+3. Run a query. Ask a question like `The fictional private detective that appears in "The Adventure of the Seven Clocks" what written by whom?`.
+4. Confirm each passage is displayed as a distinct list item or card. (No duplicates.)
+5. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
+6. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
+
+---
+
+## US-10: Run Evaluation Against a Custom JSON Dataset
 
 **As a** researcher,
 **I want to** upload a JSON question file and run the evaluation pipeline against it,

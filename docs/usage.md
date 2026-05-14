@@ -22,36 +22,21 @@ Tips:
 If you click Submit without typing anything, the UI displays
 "Please enter a question" inline. No API call is made, so no quota is consumed.
 
-## Configuration troubleshooting (US-03)
+## Train the Knowledge Graph on the Built-in Eval Corpus (US-03)
 
-If the system shows "The model service is not configured", the
-`ANTHROPIC_API_KEY` is missing or empty in `.env`. Stop the app, edit `.env`,
-and run `docker compose up` again.
+This is to show that the project has the ability to run the train functions. Due to time constraints, the default data is designed to create a smaller HippoRAG model. It is also possible to run a json training file, but it will likely take hours to finish training due to the large sizes.
+Make sure thst the log box properly returns trained values. If the model has issues reaching the LLM through the api key, then there will be issues.
 
-> Add one section per story.
 
 ## Retrieved Passages Are Visible Alongside the Answer (US-04)
 
 This is to make sure results are being properly returned. If empty results are being returned, either the RAG was not properly populated or the LLM is having issues reaching the RAG.
 
-## Running the evaluation pipeline (US-05)
+## [ERROR PATH]: Missing API key surfaces a clear server error (US-05)
 
-To measure system performance against the built-in multi-hop test dataset:
+This is to make sure there are no castestrophic failures when there is a missing api key.
 
-1. Visit http://localhost:8080/evaluate.
-2. Confirm the knowledge graph has been built first. If not, run:
-```bash
-   docker compose exec app python run_build_kg.py
-```
-3. Click "Run Evaluation". The pipeline may take up to 60 seconds to complete.
-4. A results table appears showing aggregate scores for:
-   Recall@1, Recall@2, Recall@5, ExactMatch, and F1.
-5. Per-question results are shown below the aggregate table, including the
-   retrieved passages and per-question scores.
-
-Note: All metric values are between 0.0 and 1.0. Higher is better.
-
-## LLM unavailable error (US-06)
+## LLM Timeout Returns a Graceful Error (Error Path) (US-06)
 
 If the LLM endpoint is unreachable or misconfigured, the system returns HTTP 503
 with the message "The language model is currently unavailable. Please try again
@@ -64,3 +49,24 @@ To reproduce this intentionally for testing:
 3. Restart: `docker compose up`.
 4. Submit any question — the error message will appear in the UI.
 5. Restore the correct URL in `.env` and restart before normal use.
+
+## Run Evaluation and View Metrics (US-07)
+
+After running the tests to ensure that the LLM is working, run the base evaluation method on the base model. This is to show that results can be recieved.
+
+1. Navigate to the Evaluate page.
+2. Run evaluate.
+3. Observe the restuls.
+
+## Load HotPotQA Model (US-08)
+
+Since time is tight, there will be a presaved model that has been trained on HotPotQA.
+
+## Check that the Hotpot2 model is loaded and working. (US-09)
+
+This is designed to show that the loaded HotPot2 model can be used for queries.
+
+## Run Evaluation Against a Custom JSON Dataset (US-10)
+
+This will be used to get the ressults for the HotPotQA testing model. The results will vary, since the HotPot2 model only has 1000 docs. If time permits, it is possible to run theb json trainer, but it would take over 20 to 40 hours as it takes about 8 hours to finish.
+Questions will take time; therefore, we have limited the amount of questions to 10. If there is more time for testing, then you can run more questions.
