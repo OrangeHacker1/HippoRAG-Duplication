@@ -113,12 +113,20 @@
    - `Encoding N unique entities...`
    - `Build complete: N nodes, N edges`
 8. Wait for the log to display a line beginning with `✓` or containing "is live". This confirms the build finished successfully.
-9. Scroll down to **Panel 4 (Load a Saved Knowledge Graph)**. Confirm the saved-models table now contains a row named `latest` with non-zero node and edge counts.
+9. Refresh the page.
+10. Scroll down to **Panel 4 (Load a Saved Knowledge Graph)**. Confirm the saved-models table now contains a row named `latest` with non-zero node and edge counts.
 11. Select `load`to load the model and continue with testing.
-10. Scroll back up to **Panel 1**. Click **"Refresh Status"**. Confirm the badge now reads "✓ Knowledge graph loaded" and shows a non-zero node count.
-11. Navigate to `http://localhost:8080` (the Query page) and submit the question: `"Where was Marie Curie born?"`. Confirm a non-empty answer is returned.
+12. Scroll back up to **Panel 1**. Click **"Refresh Status"**. Confirm the badge now reads "✓ Knowledge graph loaded" and shows a non-zero node count.
+13. Navigate to `http://localhost:8080` (the Query page) and submit the question: `"Where was Marie Curie born?"`. Confirm a non-empty answer is returned.
 
 **Expected end state:** The KG status badge shows loaded with at least 50 nodes. The Query page returns an answer that references Warsaw or Poland.
+
+**Reference screenshot 1:** `docs/assets/stories/us_03_expected_a.png`
+
+**Reference screenshot 2:** `docs/assets/stories/us_03_expected_b.png`
+
+**Reference screenshot 2:** `docs/assets/stories/us_03_expected_c.png`
+
 
 ---
 
