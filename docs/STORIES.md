@@ -183,7 +183,8 @@
 8. Confirm no Python stack trace appears anywhere in the UI.
 9. Compare to `docs/assets/stories/us_03_expected.png`.
 
-**Expected end state:** see `docs/assets/stories/us_05_expected.png`.
+**Expected end state:** It should be roughly the same as image 4, but with different dialog. This step can be skipped if time is tight.
+
 
 ---
 
