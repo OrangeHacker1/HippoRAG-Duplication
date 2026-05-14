@@ -35,4 +35,4 @@ dataset_versions:
 # Commit hash the team intends the TA to grade. The grading script picks this
 # up; if missing or stale, the TA grades the latest commit on main as of the
 # deadline. Update this on the final commit before pushing.
-commit_sha: "a5590a39b8e21e340303ee66678c22372bfc920b"
+commit_sha: "d93dae1"
