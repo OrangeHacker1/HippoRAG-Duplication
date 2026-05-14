@@ -47,6 +47,8 @@ from myproject.GraphRAG.graph_builder      import GraphRAGGraph
 from myproject.GraphRAG.community_detector import detect_communities
 from myproject.GraphRAG.summarizer         import CommunitySummarizer
 
+from myproject.config.config_loader import load_config
+
 logger = logging.getLogger(__name__)
 
 
@@ -66,6 +68,8 @@ class GraphRAGBuilder:
     def __init__(self, progress_callback: Optional[Callable[[str], None]] = None):
         self.progress_callback = progress_callback
         self.extractor         = EntityExtractor()
+        self.config = load_config()
+       # self.max_docs          = 
 
     # ------------------------------------------------------------------
     # Private helper
@@ -100,6 +104,12 @@ class GraphRAGBuilder:
                 "summaries":   dict[int, dict],
             }
         """
+
+
+        max_docs = self.config["kg"].get("max_docs", None)
+        if max_docs is not None:
+            docs = docs[:max_docs]
+
         graph_wrapper = GraphRAGGraph()
         total_docs    = len(docs)
 
