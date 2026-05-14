@@ -263,6 +263,8 @@
 
 **Expected end state:** A `hotpotqa` trained model is listed in Panel 4 and is the active KG. The Query page answers questions using passages from the HotPotQA corpus.
 
+**Reference screenshot:** `docs/assets/stories/us_08_expected.png`
+
 ---
 
 
@@ -287,6 +289,8 @@
 4. Confirm each passage is displayed as a distinct list item or card. (No duplicates.)
 5. Confirm at least one passage is a full sentence from the corpus (not a node name or empty string).
 6. Confirm the number of passages shown is between 1 and 5 (matching `top_k` in config).
+
+**Reference screenshot:** `docs/assets/stories/us_09_expected.png`
 
 ---
 
