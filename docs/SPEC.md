@@ -12,10 +12,6 @@ HippoRAG is a graph-based retrieval-augmented generation (RAG) system inspired b
 
 This project is designed to make a specialized local RAG using the methods used in the HippoRAG paper. This program aims reproduce this specialized RAG in an attempt to reproduce the graphs and charts presented inside of said paper.     
 
-[One paragraph: what does the system do, who uses it, and what is explicitly
-out of scope. Be specific. "An NLP question-answering system over a corpus of
-NIST cybersecurity documents that returns a cited answer in under 3 seconds"
-is good. "An AI assistant" is not.]
 
 ## 2. Component Inventory
 
@@ -39,6 +35,9 @@ is good. "An AI assistant" is not.]
 | KG Build Script | `src/myproject/run_build_kg.py` | CLI entry point for building the knowledge graph |
 | Query Script | `src/myproject/run_query.py` | CLI entry point for a single query |
 | Eval Script | `src/myproject/run_eval.py` | CLI entry point for the full evaluation pipeline |
+| GraphRAG | `src/myproject/GraphRAG` | This is designed to create and retrieve from a GraphRAG. This is not relevent for this project. It can be ignored. It is going to be used for future implimentation. |
+| Evaluation Manual | `src/myproject/run_eval.sh` | Runs the application and serves as the backend. |
+| Evaluation Manual 2 | `src/myproject/test_hotpot.sh` | Tests the hotpot2 model on the HotPotQA dataset. |
 
 
 
@@ -55,9 +54,7 @@ The grading script verifies this mapping via `grading/traceability.yaml`.
 
 ## 3. Data Flow
 
-[Reference the architecture diagram in docs/diagrams/architecture.png. Walk
-through the data flow in prose: input format, transformations at each stage,
-output format. Include error paths.]
+In this project, you are given a UI to test and use HippoRAGs. There are several prebuilt RAGs designed for TA testing. The project is broken into Query, evaluate and Train. The Query is designed to freely prompt an LLM. The LLM will use the HippoRAG currently loaded. The evaluate runs the json or default test on the loaded HippoRAG. The Train section is designed to make new HippoRAGs or load saved ones.
 
 ## 4. Public Interfaces
 
